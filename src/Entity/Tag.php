@@ -1,10 +1,9 @@
 <?php
 namespace App\Entity;
 
-use DateTime;
+use App\Traits\EntityTimeBlameTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -20,7 +19,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 
 class Tag {
-	
+
+    use EntityTimeBlameTrait;
+
 	/**
      * Unique tag identifier 
      * @var integer
@@ -71,33 +72,6 @@ class Tag {
      */
     protected $parent;
 
-    /**
-     * Creation date of the tag
-     * @var DateTime
-     * 
-     * @Gedmo\Timestampable(on="create") 
-     * @ORM\Column(type="datetime", nullable=false)
-     */
-    protected $createdDate;
-
-    /**
-     * Last modified date of the tag
-     * @var DateTime
-     * 
-     * @Gedmo\Timestampable(on="update") 
-     * @ORM\Column(type="datetime", nullable=false)
-     */
-    protected $modifiedDate;
-
-    /**
-     * User assigned to last modification of the tag
-     * @var User
-     * 
-     * @Gedmo\Blameable(on="update")
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="modifiedUser", referencedColumnName="id", nullable=false)
-     */
-    protected $modifiedUser;
 
     /**
      * Constructor
@@ -196,63 +170,4 @@ class Tag {
         return $this->collections;
     }
 
-    /**
-     * Set createdDate
-     * @param DateTime $createdDate
-     * @return Tag
-     */
-    public function setCreatedDate($createdDate) {
-
-        $this->createdDate = $createdDate;
-        return $this;
-    }
-
-    /**
-     * Get createdDate
-     * @return DateTime
-     */
-    public function getCreatedDate() {
-
-        return $this->createdDate;
-    }
-
-    /**
-     * Set modifiedDate
-     * @param DateTime $modifiedDate
-     * @return Tag
-     */
-    public function setModifiedDate($modifiedDate) {
-
-        $this->modifiedDate = $modifiedDate;
-        return $this;
-    }
-
-    /**
-     * Get modifiedDate
-     * @return DateTime
-     */
-    public function getModifiedDate() {
-
-        return $this->modifiedDate;
-    }
-
-    /**
-     * Set modifiedUser
-     * @param User $modifiedUser
-     * @return Tag
-     */
-    public function setModifiedUser(User $modifiedUser) {
-
-        $this->modifiedUser = $modifiedUser;
-        return $this;
-    }
-
-    /**
-     * Get modifiedUser
-     * @return User
-     */
-    public function getModifiedUser() {
-        
-        return $this->modifiedUser;
-    }
 }

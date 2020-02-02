@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace App\Entity;
 
-use DateTime;
+use App\Traits\EntityTimeBlameTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -24,6 +24,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity(fields={"name"}, message="This name is already in use")
  */
 class Activity implements ActivityInterface {
+
+    use EntityTimeBlameTrait;
 
     const TYPE_ACTIVITY = 'activity';
     const TYPE_WALK = 'walk';
@@ -121,41 +123,10 @@ class Activity implements ActivityInterface {
      * Url friendly activity name
      * @var string
      *
-     * @ORM\Column(type="string", length=190, nullable=true)
+     * @ORM\Column(type="string", length=190, nullable=true, unique=true)
      * @Gedmo\Slug(fields={"name"}, updatable=true)
      */
     protected $slug;
-
-    /**
-     * Creation date of the activity
-     * @var DateTime
-     * 
-     * @Gedmo\Timestampable(on="create") 
-     * @ORM\Column(type="datetime", nullable=false)
-     * @Groups({"activity"})
-     */
-    protected $createdDate;
-
-    /**
-     * Last modified date of the activity
-     * @var DateTime
-     * 
-     * @Gedmo\Timestampable(on="update") 
-     * @ORM\Column(type="datetime", nullable=false)
-     * @Groups({"activity"})
-     */
-    protected $modifiedDate;
-
-    /**
-     * User assigned to last modification of the activity
-     * @var User
-     *
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="modifiedUser", referencedColumnName="id", nullable=false)
-     * @Groups({"activity"})
-     */
-    protected $modifiedUser;
 
     // Related Entities
 
@@ -377,38 +348,6 @@ class Activity implements ActivityInterface {
         return $this->slug;
     }
 
-    public function setCreatedDate(DateTime $createdDate) :self {
-
-        $this->createdDate = $createdDate;
-        return $this;
-    }
-
-    public function getCreatedDate() : Datetime{
-
-        return $this->createdDate;
-    }
-
-    public function setModifiedDate(DateTime $modifiedDate) :self {
-
-        $this->modifiedDate = $modifiedDate;
-        return $this;
-    }
-
-    public function getModifiedDate() : DateTime {
-        
-        return $this->modifiedDate;
-    }
-
-    public function setModifiedUser(User $modifiedUser) :self {
-
-        $this->modifiedUser = $modifiedUser;
-        return $this;
-    }
-
-    public function getModifiedUser() :User {
-
-        return $this->modifiedUser;
-    }
 
 
     // Related Entities

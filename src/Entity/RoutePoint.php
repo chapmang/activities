@@ -1,9 +1,8 @@
 <?php
 namespace App\Entity;
 
-use DateTime;
+use App\Traits\EntityTimeBlameTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -15,7 +14,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\RoutePointRepository")
  */
 class RoutePoint {
-	
+
+    use EntityTimeBlameTrait;
+
 	/**
      * Unique route point identifier
      * @var integer
@@ -72,34 +73,6 @@ class RoutePoint {
 	 * @ORM\JoinColumn(name="direction", referencedColumnName="id", nullable=true)
 	 */
 	protected $direction;
-
-    /**
-     * Creation date of the route point
-     * @var DateTime
-     * 
-     * @Gedmo\Timestampable(on="create") 
-     * @ORM\Column(type="datetime", nullable=false)
-     */
-    protected $createdDate;
-
-    /**
-     * Last modified date of the route point
-     * @var DateTime
-     * 
-     * @Gedmo\Timestampable(on="update") 
-     * @ORM\Column(type="datetime", nullable=false)
-     */
-    protected $modifiedDate;
-
-    /**
-     * User assigned to last modification of the route point
-     * @var User
-     * 
-     * @Gedmo\Blameable(on="update")
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="modifiedUser", referencedColumnName="id", nullable=false)
-     */
-    protected $modifiedUser;
 
     /**
      * Get id
@@ -173,47 +146,6 @@ class RoutePoint {
     }
 
     /**
-     * Set createdDate
-     *
-     * @param DateTime $createdDate
-     * @return RoutePoint
-     */
-    public function setCreatedDate($createdDate) {
-
-        $this->createdDate = $createdDate;
-        return $this;
-    }
-
-    /**
-     * Get createdDate
-     * @return DateTime
-     */
-    public function getCreatedDate() {
-
-        return $this->createdDate;
-    }
-
-    /**
-     * Set modifiedDate
-     * @param DateTime $modifiedDate
-     * @return RoutePoint
-     */
-    public function setModifiedDate($modifiedDate) {
-
-        $this->modifiedDate = $modifiedDate;
-        return $this;
-    }
-
-    /**
-     * Get modifiedDate
-     * @return DateTime
-     */
-    public function getModifiedDate() {
-
-        return $this->modifiedDate;
-    }
-
-    /**
      * Set activity
      * @param Activity $activity
      * @return RoutePoint
@@ -253,23 +185,4 @@ class RoutePoint {
         return $this->direction;
     }
 
-    /**
-     * Set modifiedUser
-     * @param User $modifiedUser
-     * @return RoutePoint
-     */
-    public function setModifiedUser(User $modifiedUser) {
-        
-        $this->modifiedUser = $modifiedUser;
-        return $this;
-    }
-
-    /**
-     * Get modifiedUser
-     * @return User
-     */
-    public function getModifiedUser() {
-
-        return $this->modifiedUser;
-    }
 }

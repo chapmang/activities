@@ -52,34 +52,6 @@ class CollectionContents {
 	protected $position;
 
     /**
-     * Creation date of the activity
-     * @var \DateTime 
-     * 
-     * @Gedmo\Timestampable(on="create") 
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $createdDate;
-
-    /**
-     * Last modified date of the activity
-     * @var \DateTime
-     * 
-     * @Gedmo\Timestampable(on="update") 
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $modifiedDate;
-
-    /**
-     * User assigned to last modification of the activity
-     * @var User
-     *
-     * @Gedmo\Blameable(on="update")
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="modifiedUser", referencedColumnName="id", nullable=false)
-     */
-    protected $modifiedUser;
-
-    /**
      * Get id
      *
      * @return integer 
@@ -109,50 +81,6 @@ class CollectionContents {
     public function getPosition() {
 
         return $this->position;
-    }
-
-    /**
-     * Set createdDate
-     *
-     * @param \DateTime $createdDate
-     * @return CollectionContents
-     */
-    public function setCreatedDate($createdDate) {
-
-        $this->createdDate = $createdDate;
-        return $this;
-    }
-
-    /**
-     * Get createdDate
-     *
-     * @return \DateTime 
-     */
-    public function getCreatedDate() {
-
-        return $this->createdDate;
-    }
-
-    /**
-     * Set modifiedDate
-     *
-     * @param \DateTime $modifiedDate
-     * @return CollectionContents
-     */
-    public function setModifiedDate($modifiedDate) {
-
-        $this->modifiedDate = $modifiedDate;
-        return $this;
-    }
-
-    /**
-     * Get modifiedDate
-     *
-     * @return \DateTime 
-     */
-    public function getModifiedDate() {
-
-        return $this->modifiedDate;
     }
 
     /**
@@ -196,26 +124,4 @@ class CollectionContents {
         return $this->activity;
     }
 
-
-    /**
-     * Set modifiedUser
-     *
-     * @param User $user
-     * @return CollectionContents
-     */
-    public function setModifiedUser(User $user) {
-
-        $this->modifiedUser = $user;
-        return $this;
-    }
-
-    /**
-     * Get modifiedUser
-     *
-     * @return User
-     */
-    public function getModifiedUser() {
-
-        return $this->modifiedUser;
-    }
 }

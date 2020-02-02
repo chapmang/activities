@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace App\Entity;
 
-use DateTime;
+use App\Traits\EntityTimeBlameTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -21,6 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  */
 class Collection {
+
+    use EntityTimeBlameTrait;
 
 	/**
      * Unique collection identifier
@@ -66,33 +68,6 @@ class Collection {
      */
     protected $slug;
 
-	/**
-     * Creation date of the activity
-     * @var DateTime
-     * 
-     * @Gedmo\Timestampable(on="create") 
-     * @ORM\Column(type="datetime", nullable=false)
-     */
-    protected $createdDate;
-
-    /**
-     * Last modified date of the activity
-     * @var DateTime
-     * 
-     * @Gedmo\Timestampable(on="update") 
-     * @ORM\Column(type="datetime", nullable=false)
-     */
-    protected $modifiedDate;
-
-    /**
-     * User assigned to last modification of the activity
-     * @var User
-     *
-     * @Gedmo\Blameable(on="update")
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="modifiedUser", referencedColumnName="id", nullable=false)
-     */
-    protected $modifiedUser;
 
     // Related Entities
     
@@ -182,39 +157,6 @@ class Collection {
     public function getSlug() :string {
 
         return $this->slug;
-    }
-
-    public function setCreatedDate(DateTime $createdDate) :self {
-
-        $this->createdDate = $createdDate;
-        return $this;
-    }
-
-    public function getCreatedDate() : DateTime {
-
-        return $this->createdDate;
-    }
-
-    public function setModifiedDate(DateTime $modifiedDate) :self {
-
-        $this->modifiedDate = $modifiedDate;
-        return $this;
-    }
-
-    public function getModifiedDate() : DateTime{
-
-        return $this->modifiedDate;
-    }
-
-    public function setModifiedUser(User $user) :self {
-
-        $this->modifiedUser = $user;
-        return $this;
-    }
-
-    public function getModifiedUser() :User {
-
-        return $this->modifiedUser;
     }
 
     public function addContent(CollectionContents $contents) :self {

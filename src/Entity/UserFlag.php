@@ -1,9 +1,8 @@
 <?php
 namespace App\Entity;
 
-use DateTime;
+use App\Traits\EntityTimeBlameTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -16,7 +15,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class UserFlag {
 
-	/**
+    use EntityTimeBlameTrait;
+
+    /**
      * Unique tag identifier 
      * @var integer
      * 
@@ -57,35 +58,6 @@ class UserFlag {
 
 
     /**
-     * Creation date of the map royalty
-     * @var DateTime
-     * 
-     * @Gedmo\Timestampable(on="create") 
-     * @ORM\Column(type="datetime", nullable=false)
-     */
-    protected $createdDate;
-
-    /**
-     * Last modified date of the map royalty
-     * @var DateTime
-     * 
-     * @Gedmo\Timestampable(on="update") 
-     * @ORM\Column(type="datetime", nullable=false)
-     */
-    protected $modifiedDate;
-
-    /**
-     * User assigned to last modification of the map royalty
-     * @var User
-     *
-     * @Gedmo\Blameable(on="update")
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="modifiedUser", referencedColumnName="id", nullable=false)
-     */
-    protected $modifiedUser;
-
-
-    /**
      * Get id
      *
      * @return integer 
@@ -93,50 +65,6 @@ class UserFlag {
     public function getId() {
 
         return $this->id;
-    }
-
-    /**
-     * Set createdDate
-     *
-     * @param DateTime $createdDate
-     * @return UserFlag
-     */
-    public function setCreatedDate($createdDate)  {
-
-        $this->createdDate = $createdDate;
-        return $this;
-    }
-
-    /**
-     * Get createdDate
-     *
-     * @return DateTime
-     */
-    public function getCreatedDate() {
-
-        return $this->createdDate;
-    }
-
-    /**
-     * Set modifiedDate
-     *
-     * @param DateTime $modifiedDate
-     * @return UserFlag
-     */
-    public function setModifiedDate($modifiedDate) {
-
-        $this->modifiedDate = $modifiedDate;
-        return $this;
-    }
-
-    /**
-     * Get modifiedDate
-     *
-     * @return DateTime
-     */
-    public function getModifiedDate() {
-
-        return $this->modifiedDate;
     }
 
     /**
@@ -171,15 +99,5 @@ class UserFlag {
        
         $this->modifiedUser = $modifiedUser;
         return $this;
-    }
-
-    /**
-     * Get modifiedUser
-     *
-     * @return User
-     */
-    public function getModifiedUser() {
-        
-        return $this->modifiedUser;
     }
 }
