@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity
  * @ORM\Table(name="poi")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\PoiRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PoiRepository")
  */
 class Poi extends Activity {
 

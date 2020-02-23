@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @version 1.0
  * 
  * @ORM\Table(name="collection_contents")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CollectionContentsRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CollectionContentsRepository")
  */
 class CollectionContents {
 

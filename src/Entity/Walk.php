@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @version 1.0
  *
  * @ORM\Table(name="walk")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\WalkRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\WalkRepository")
  */
 class Walk extends Activity {
 

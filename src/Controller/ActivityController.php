@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Activity;
+use App\Repository\ActivityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +26,20 @@ class ActivityController extends AbstractController
     public function list($page = 1, Request $request)
     {
         $limit = $request->get('limit', 20);
-        return new Response($page);
+        return new Response($request);
+    }
+
+    /**
+     * @Route("/open", name="activity_open")
+     * @param ActivityRepository $repository
+     * @return Response
+     */
+    public function open(ActivityRepository $repository) {
+
+        $activities = $repository->findAllOpenOrderedByRecentUpdate();
+        return $this->render('activities/homepage.html.twig', [
+            'activities' => $activities
+        ]);
     }
 
     /**
@@ -36,7 +50,10 @@ class ActivityController extends AbstractController
     public function activity(Activity $activity)
     {
         // It's the same as doing find($id) on repository
-        return new Response('Hello');
+        return $this->render('base.html.twig',[
+            'activity' => $activity
+        ]);
+       // return new Response(var_dump($activity));
     }
 
     /**

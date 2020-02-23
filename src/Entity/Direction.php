@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @version 1.0
  *
  * @ORM\Table(name="direction")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\DirectionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DirectionRepository")
  */
 class Direction {
 

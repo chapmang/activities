@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * Class Cycle
  *
  * @ORM\Table(name="cycle")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CycleRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CycleRepository")
  *
  */
 class Cycle extends Activity {

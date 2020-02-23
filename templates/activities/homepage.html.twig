@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="ui container">
+        <div class="ui divided items">
+            {%  for a in activities %}
+                <div class="item">
+                    <div class="content">
+                        <a href="" class="header">{{ a.name }}</a>
+                        <div class="description">
+                            {{ a.description }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% endblock %}

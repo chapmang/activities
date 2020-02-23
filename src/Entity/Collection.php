@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @version 1.0
  *
  * @ORM\Table(name="collection")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CollectionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CollectionRepository")
  * @UniqueEntity("name")
  *
  */

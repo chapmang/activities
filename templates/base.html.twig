@@ -3,10 +3,40 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+    <img class="logo" src="{{ asset('images/AABeam_topdown.png') }}">
+    <div id="masterHead" class="ui secondary menu" >
+                <h1 class="header item">
+                     MAP ACTIVITIES
+                </h1>
+                <div class="right icon menu">
+                    {% if app.request.get('_route') != 'dashboard' %}
+                        <a href="#" class="item">
+                            <i class="home large icon"></i>Home
+                        </a>
+                    {% else %}
+                        <a id="mapViewSelector" class="item">
+                            <i class="globe large icon"></i>Map
+                        </a>
+                        <a id="collectionViewSelector" class="item">
+                            <i class="list large icon"></i>Collections
+                        </a>
+                        <a id="searchViewSelector" class="item">
+                            <i class="search icon"></i>Search
+                        </a>
+                    {% endif %}
+
+                </div>
+            </div>
+        {% block body %}
+            <h1 class="ui header>">{{ activity.name }}</h1>
+        {% endblock %}
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
     </body>
 </html>
