@@ -1,11 +1,24 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div class="ui container">
+        <h1>Activities Found: ({{ pagination.getTotalItemCount }})</h1>
+        <form>
+            <div class="ui search">
+                <div class="ui icon input">
+                    <input class="prompt" type="text" name="q" placeholder="Search...">
+                    <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+            </div>
+        </form>
         <div class="ui divided items">
-            {%  for a in activities %}
+            {%  for a in pagination %}
                 <div class="item">
                     <div class="content">
                         <a href="" class="header">{{ a.name }}</a>
+                        {%  for tag in a.tags %}
+                            <a class="ui label"><i class="tag icon"></i>{{  tag.name }}</a>
+                        {% endfor %}
                         <div class="description">
                             {{ a.description }}
                         </div>
@@ -13,6 +26,9 @@
                 </div>
             {% endfor %}
         </div>
+        {% if pagination.totalItemCount / 10 > 1 %}
+            {{ knp_pagination_render(pagination) }}
+        {% endif %}
     </div>
 
 

@@ -25,7 +25,6 @@ class WalkController extends AbstractController
      */
     public function new(EntityManagerInterface $em) {
 
-        die;
         return new Response('Lets Go Walking');
     }
 

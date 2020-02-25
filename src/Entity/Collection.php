@@ -77,6 +77,7 @@ class Collection {
      * 
      * @ORM\OneToMany(targetEntity="CollectionContents", mappedBy="collection", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\OrderBy({"position" = "DESC"})
      */
     protected $contents;
 
@@ -86,6 +87,7 @@ class Collection {
      *
      * @ORM\OneToMany(targetEntity="AdminNote", mappedBy="collection", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\OrderBy({"createdDate" = "DESC"})
      */
     protected $adminNotes = null;
 

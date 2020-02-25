@@ -146,6 +146,7 @@ class Activity implements ActivityInterface {
      * 
      * @ORM\ManyToMany(targetEntity="Tag", inversedBy="activities")
      * @ORM\JoinTable(name="activity_tag")
+     * @ORM\OrderBy({"name" = "DESC"})
      * @Groups({"activity"})
      */
     protected $tags;
@@ -156,6 +157,7 @@ class Activity implements ActivityInterface {
      * 
      * @ORM\OneToMany(targetEntity="Direction", mappedBy="activity", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\OrderBy({"position" = "DESC"})
      * @Groups({"activity"})
      */
     protected $directions;

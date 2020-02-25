@@ -14,6 +14,19 @@ class ActivityRepository extends ServiceEntityRepository {
         parent::__construct($registry, Activity::class);
     }
 
+    public function getWithSearchQueryBuilder(?string $term): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        if ($term) {
+            $qb->andWhere('a.name LIKE :term OR a.description LIKE :term')
+                ->setParameter('term', '%'.$term.'%');
+        }
+
+        return $qb
+            ->orderBy('a.name', 'DESC');
+    }
+
     public function findAllOpenOrderedByRecentUpdate()
     {
 
@@ -30,6 +43,8 @@ class ActivityRepository extends ServiceEntityRepository {
             ->andWhere('a.status = 0');
 
     }
+
+
 
     private function getOrCreateQueryBuilder(QueryBuilder $qb = null)
     {
