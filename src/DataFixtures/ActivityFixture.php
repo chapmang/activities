@@ -23,17 +23,10 @@ class ActivityFixture extends BaseFixture implements DependentFixtureInterface
             $activity->setModifiedUser($this->getReference(User::class.'_0'));
 
             $tags = $this->getRandomReferences(Tag::class, $this->faker->numberBetween(0, 5));
-            $arrayofTags = [];
-            for($i = 0; $i < count($tags); $i++) {
-                $id = $tags[$i]->getId();
-                if ($i == 1) {
-                    $arrayofTags[]=$id;
-                } else if (in_array($id, $arrayofTags)) {
-                    continue;
-                } else {
-                    $activity->addTag($tags[$i]);
-                }
+            foreach ($tags as $tag){
+                $activity->addTag($tag);
             }
+
         });
         $manager->flush();
 

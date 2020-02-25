@@ -15,7 +15,7 @@ class TagFixture extends BaseFixture implements DependentFixtureInterface
     protected function loadData(ObjectManager $manager) {
 
         $this->createMany(Tag::class, 10, function(Tag $tag) {
-            $tag->setName($this->faker->realText(15));
+            $tag->setName($this->faker->unique(true)->realText(15));
             $tag->setCreatedUser($this->getReference(User::class.'_0'));
             $tag->setModifiedUser($this->getReference(User::class.'_0'));
         });
