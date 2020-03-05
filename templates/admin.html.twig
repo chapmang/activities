@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{  parent() }}
+    {{ encore_entry_link_tags('admin') }}
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="ui attached menu adminMenu">
+            {%  if app.request.get('_route') == 'app_admin_list_users' %}
+            <a class="item active" href="{{ path('app_admin_list_users') }}">
+                <i class="user icon"></i> Users
+            </a>
+            {% else %}
+            <a class="item active" href="{{ path('app_admin_list_users') }}">
+                <i class="user large icon"></i> Users
+            </a>
+            {% endif %}
+            <a class="item">
+                <i class="list large icon"></i> Collections
+            </a>
+            <a class="item">
+                <i class="bicycle large icon"></i>Activities
+            </a>
+            <div class="ui simple dropdown item">
+                More
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <a class="item"><i class="edit icon"></i> Edit Profile</a>
+                    <a class="item"><i class="globe icon"></i> Choose Language</a>
+                    <a class="item"><i class="settings icon"></i> Account Settings</a>
+                </div>
+            </div>
+            {%  if app.request.get('_route') == 'app_admin_list_users' %}
+            <div class="right item">
+                <button id="addUser" class="ui primary labeled icon button">
+                    <i class="user icon"></i> Add User
+                </button>
+            </div>
+            {% endif %}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{  parent() }}
+    {{ encore_entry_script_tags('admin') }}
+{% endblock %}

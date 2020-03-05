@@ -1,0 +1,142 @@
+{% extends 'activity.html.twig' %}
+{% block body %}
+    {{ parent() }}
+    <div class="contentWrapper">
+        <div class="flexWrapper">
+            <div class="col">
+                <h1 class="ui header ">
+                    <img src="{{ asset('images/' ~ activity.activityType ~ '_' ~ activity.difficulty ~ '.png') }}" class="ui huge image">
+                    <div class="content">
+                        {{ activity.name }}
+                        <div class="sub header">{{ activity.shortDescription }}</div>
+                    </div>
+                </h1>
+                <div class="ui tab active" data-tab="details">
+                    <div class="ui large list">
+                        <div class="item">
+                            <div class="content">
+                                <div class="header">Distance</div>
+                                <div class="description">{{ activity.distance }} miles ({{ activity.distance }}km)</div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="content">
+                                <div class="header">Minimum Time</div>
+                                <div class="description">{{ activity.minimumTimeHours }}hrs {{ activity.minimumTimeMinutes }}min</div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="content">
+                                <div class="header">Ascent</div>
+                                <div class="description">{{ activity.ascentFeet }}ft ({{ activity.ascent }}m)</div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="content">
+                                <div class="header">Gradient</div>
+                                <div class="description">{{ activity.gradient }}</div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="content">
+                                <div class="header">Paths</div>
+                                <div class="description">{{ activity.paths }}</div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="content">
+                                <div class="header">Dog Friendliness</div>
+                                <div class="description">{{ activity.dogFriendliness }}</div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="content">
+                                <div class="header">Parking</div>
+                                <div class="description">{{ activity.parking }}</div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="content">
+                                <div class="header">Public Toilets</div>
+                                <div class="description">{{ activity.publicToilet }}</div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="content">
+                                <div class="header">Suggested Map</div>
+                                <div class="description">{{ activity.suggestedMap }}</div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="content">
+                                <div class="header">Start Point Grid Reference</div>
+                                <div class="description">{{ activity.startGridRef }}</div>
+                            </div>
+                        </div>
+                        {% if activity.finishGridRef %}
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">Finish Point Grid Reference</div>
+                                    <div class="description">{{ activity.finishGridRef }}</div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if activity.notes %}
+                            <div class="item">
+                                <div class="content">
+                                    <div class="header">Notes</div>
+                                    <div class="description">{{ activity.notes}}</div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <h4 class="ui horizontal divider header">
+                        <i class="tag icon"></i>
+                        Tags
+                    </h4>
+                    <div class="ui large grey labels">
+                        {% for tag in activity.tags %}
+                            <div class="ui label">{{ tag.name }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="ui tab" data-tab="description">
+                    <p>
+                        {{ activity.description }}
+                    </p>
+                </div>
+                <div class="ui tab" data-tab="directions">
+                    <h2 class="ui header">Here will be some directions</h2>
+                    {% for direction in activity.directions %}
+                        <p><img src="{{ asset('images/dir_' ~ activity.difficulty ~ '_' ~ direction.position ~'.png') }}" class="ui mini right spaced image">{{ direction.direction }}</p>
+                    {% endfor %}
+                </div>
+                <div class="ui tab" data-tab="nearby">
+                    <h2 class="ui header">These are the things nearby</h2>
+                </div>
+                <div class="ui tab" data-tab="collections">
+                    <h2 class="ui header">This activity appears in the following collections</h2>
+                </div>
+                <div class="ui tab" data-tab="royalties">
+                    <h2 class="ui header">We might have some info on royalties</h2>
+                </div>
+                <div class="ui tab" data-tab="notes">
+                    <h2 class="ui header">If we keep notes then they are here</h2>
+                </div>
+            </div>
+            <div class="col ">
+                <div class="ui two item menu mapMenu">
+                    <a class="active item" data-tab="tab-routeMap"><i class="map signs icon"></i>Route</a>
+                    <a class="item" data-tab="tab-bookMap"><i class="map icon"></i>Map</a>
+                </div>
+                <div id="routeMap" class="ui segment walkMapping active tab" data-tab="tab-routeMap">
+                    <!-- <div class="bookMap tab" data-tab="tab-bookMap"></div>-->
+                    <!-- <div id="routeMap" class="routeMap active tab" data-tab="tab-routeMap"></div>-->
+                </div>
+                <div class="ui segment walkMapping tab" data-tab="tab-bookMap"></div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -96,7 +96,7 @@ class Walk extends Activity {
     /**
      * Total ascent of the walk (feet)
      * NB: Not persisted, generated from ascent
-     * @var integer
+     * @var float
      */
     protected $ascentFeet;
     
@@ -220,6 +220,11 @@ class Walk extends Activity {
      */
     protected $extension;
 
+    /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     */
+    private $suggestedMap;
+
 
     public function setShortDescription(string $shortDescription = null) :self {
 
@@ -254,15 +259,14 @@ class Walk extends Activity {
         return $this->distance;
     }
 
-    public function setDistanceMiles(float $distanceMiles = null) :self {
-
-        $this->distanceMiles = $distanceMiles;
-        return $this;
-    }
 
     public function getDistanceMiles() :?float {
 
-        return $this->distanceMiles;
+        $x = $this->getDistance() * 0.621371;
+        $x = $x * 4;
+        $x = floor($x);
+        $x = $x/4;
+        return $x;
     }
 
     public function setMinimumTimeHours(int $minimumTimeHours = null) :self {
@@ -298,15 +302,9 @@ class Walk extends Activity {
         return $this->ascent;
     }
 
-    public function setAscentFeet (int $ascentFeet = null) :self {
+    public function getAscentFeet() :?float {
 
-        $this->ascentFeet = $ascentFeet;
-        return $this;
-    }
-
-    public function getAscentFeet() :?int {
-
-        return $this->ascent;
+        return round($this->getAscent() * 3.28084, 0);
     }
 
     public function setGradient(int $gradient = null) :self{
@@ -462,6 +460,18 @@ class Walk extends Activity {
         return $this->extension;
     }
 
+    public function getSuggestedMap(): ?string
+    {
+        return $this->suggestedMap;
+    }
+
+    public function setSuggestedMap(?string $suggestedMap): self
+    {
+        $this->suggestedMap = $suggestedMap;
+
+        return $this;
+    }
+
     /**
      * @return string
      * @Serializer\VirtualProperty()
@@ -471,4 +481,6 @@ class Walk extends Activity {
 
         return $this::TYPE_WALK;
     }
+
+
 }

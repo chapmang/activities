@@ -1,0 +1,64 @@
+{% extends 'activity.html.twig' %}
+{% block body %}
+    {{ parent() }}
+    <div class="contentWrapper">
+        <div class="flexWrapper">
+            <div class="col">
+                <div class="ui tab active" data-tab="description">
+                    <div class="ui text container">
+                        <h1 class="ui header">{{ activity.name }}</h1>
+                        <div class="ui sub header">
+                            {{ activity.shortDescription }}
+                        </div>
+                        <div>
+                            {{ activity.description }}
+
+                        </div>
+                    </div>
+                </div>
+                <div class="ui tab" data-tab="directions">
+                    <div class="ui text container">
+                        <h1 class="ui header">Here will be some directions</h1>
+
+                    </div>
+                </div>
+                <div class="ui tab" data-tab="nearby">
+                    <div class="ui text container">
+                        <h1 class="ui header">These are the things nearby</h1>
+                    </div>
+                </div>
+                <div class="ui tab" data-tab="tags">
+                    <div class="ui text container">
+                        <h1 class="ui header">The ubiquitous meta-data</h1>
+                    </div>
+                </div>
+                <div class="ui tab" data-tab="collections">
+                    <div class="ui text container">
+                        <h1 class="ui header">This activity is in these collections</h1>
+                    </div>
+                </div>
+                <div class="ui tab" data-tab="royalties">
+                    <div class="ui text container">
+                        <h1 class="ui header">We might have some info on royalities</h1>
+                    </div>
+                </div>
+                <div class="ui tab" data-tab="notes">
+                    <div class="ui text container">
+                        <h1 class="ui header">If we keep notes then they are here</h1>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col">
+                <div class="ui two item menu">
+                    <a class="active item">Map</a>
+                    <a class="item">Route</a>
+                </div>
+                <div class="ui segment walkMapping">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

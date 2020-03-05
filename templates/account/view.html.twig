@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manage Account{% endblock %}
+
+{% block stylesheets %}
+    {{  parent() }}
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+
+<div class="ui container profile">
+    <div class="ui segments">
+        <div class="ui secondary segment">
+            <div class="ui items">
+                <div class="ui item">
+                    <div class="image">
+                        <img src="/images/wireframeimage.png">
+                    </div>
+                    <div class="content">
+                        <h1 class="ui header">
+                            {{ u.firstName }} {{ u.surname }}
+                            <div class="sub header">{{ u.email }}</div>
+                        </h1>
+                        <div class="meta">
+                            {% if is_granted('ROLE_ADMIN') %}
+                            Administrator
+                            {% else %}
+                            Standard User
+                            {% endif %}
+                        </div>
+                        {%  if is_granted('MANAGE', u) %}
+                            <a class="ui large teal label">
+                                <i class="pencil alternate icon"></i>
+                                Update
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui segment">
+            Activities Created:
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

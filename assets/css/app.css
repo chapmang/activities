@@ -1,0 +1,137 @@
+html {
+    //margin-left: calc(100vw - 100%);
+    height: 100%;
+    //overflow: hidden;
+    margin: 0;
+}
+body {
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: #f8f8f8;
+}
+
+.logo {
+    position:fixed;
+}
+#masterHead {
+    margin:0;
+    background-color: #ffcc00;
+    border-bottom: 5px solid #198ced;
+    height:57px;
+    padding-left: 160px;
+}
+.ui.secondary.menu a.item {
+    border: solid #ffcc00 2px;
+}
+
+.ui.secondary.menu .active.item {
+    box-shadow: none;
+    background: rgba(0, 0, 0, 0.0);
+    color: rgba(0, 0, 0, 0.95);
+    border-radius: 0.28571429rem;
+    border: solid black 2px;
+}
+.login_container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+    overflow: auto;
+    background-position: 50% 50%;
+}
+.login_form {
+    position: absolute;
+    top: 30%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.75);
+    box-sizing: border-box;
+    -webkit-box-shadow: 3px 3px 5px 6px #ccc;
+    -moz-box-shadow: 3px 3px 5px 6px #ccc;
+    box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.35);
+}
+.login_form h1 {
+
+}
+.login_form .inputBox {
+    position:relative;
+}
+.login_form .inputBox input {
+    width: 100%;
+    padding:  10px 0;
+    font-size: 16px;
+    margin-bottom: 30px;
+    border: none;
+    outline: none;
+    background: transparent;
+    border-bottom: 1px solid #767676;
+}
+.login_form .inputBox label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px 0;
+    font-size: 16px;
+    pointer-events: none;
+    transition: .5s;
+}
+.login_form .inputBox input:focus ~label,
+.login_form .inputBox input:valid ~label {
+    top: -18px;
+    left: 0;
+    font-size: 12px;
+}
+.ui.modal .header{
+    background-color: #ffcc00;
+    border-bottom: 5px solid #198ced;
+}
+.contentWrapper {
+    padding: 12px 12px 20px 12px;
+    height: calc(100% - 107px);
+}
+.contentWrapper,
+.flexWrapper {
+    display: flex;
+}
+.contentWrapper {
+    flex-direction: column;
+}
+.flexWrapper {
+    justify-content: space-around;
+    overflow: hidden;
+    flex: 1;
+}
+.flexWrapper>.col {
+    width: 48%;
+}
+.col:first-child {
+    overflow: auto;
+}
+.walkMapping {
+    height: calc(100% - 65px)
+}
+.routeMap{
+    height:100%;
+    width: 100%
+}
+p {
+    font-size: 1.14285714rem;
+    line-height: 1.5;
+}
+.ui.input>input.menuSearch {
+    border: 1px solid #0f0f10 ;
+    background-color: #ffcc00;
+    color: rgba(0,0,0,.87);
+}
+.ui.input>input.menuSearch::placeholder {
+    color: rgba(0,0,0,.87);
+}

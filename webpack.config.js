@@ -23,7 +23,10 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
+    .addEntry('activity', './assets/js/activity.js')
+    .addEntry('admin', './assets/js/admin.js')
     .addEntry('app', './assets/js/app.js')
+
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 
@@ -43,7 +46,7 @@ Encore
      */
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()
-    .enableSourceMaps(!Encore.isProduction())
+    //.enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 
@@ -55,9 +58,9 @@ Encore
 
     // enables Sass/SCSS support
     //.enableSassLoader()
-    .enableLessLoader(options => {
-        options.modules = true;
-    })
+    //.enableLessLoader(options => {
+    //    options.modules = true;
+    //})
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
@@ -75,7 +78,4 @@ Encore
 ;
 
 // export the final configuration
-const config = Encore.getWebpackConfig();
-
-config.resolve.alias = {'../../theme.config$': path.join(__dirname, 'semantic-theme/theme.config')}
-module.exports = config;
+module.exports = Encore.getWebpackConfig();

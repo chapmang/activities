@@ -47,10 +47,17 @@ class ActivityController extends AbstractController
      */
     public function activity(Activity $activity)
     {
+
         // It's the same as doing find($id) on repository
-        return $this->render('base.html.twig',[
-            'activity' => $activity
-        ]);
+        switch ($activity->getActivityType()) {
+            case "walk":
+                return $this->render('walks/view.html.twig',[
+                    'activity' => $activity
+                ]);
+        }
+
+
+
         //return new Response(var_dump($activity));
     }
 
@@ -94,7 +101,12 @@ class ActivityController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/api/activity/{id}", name="api_activity", methods={"GET"})
+     */
+    public function apiFetch(){
 
 
+    }
 
 }

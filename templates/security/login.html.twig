@@ -1,25 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello SecurityController!{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block body %}
-    <form action="{{ path('app_login') }}" method="post">
-        {% if error %}
-            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="" name="_remember_me"> Remember me
-            </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">
-            Sign in
-        </button>
-    </form>
+<div class="login_container" style="background-image: url({{ asset('images/' ~ random(['landscape_1920', 'mountain_1920', 'people_1920', 'sea_1920', 'lake_district_1920']) ~ '.jpg') }})">
+    <div class="login_form">
+        <form method="post">
+            <h1 class="ui header center aligned">Map Activities</h1>
+            <div class="inputBox">
+                <input type="text" name="username" required autofocus>
+                <label for="username">Username</label>
+            </div>
+            <div class="inputBox">
+                <input type="password" name="password" required>
+                <label for="password">Password</label>
+            </div>
+            {% if error %}
+                <div class="ui error message"><div class="ui header center aligned">{{ error.messageKey|trans(error.messageData, 'security') }}</div></div>
+            {% endif %}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <!--<div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="" name="_remember_me"> Remember me
+                </label>
+            </div>-->
+            <button class="fluid ui blue button" type="submit">
+                Sign in
+            </button>
+        </form>
+    </div>
+</div>
 {% endblock %}

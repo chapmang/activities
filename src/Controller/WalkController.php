@@ -14,7 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class WalkController
  * @package App\Controller
- * @Route("/walk", name="walk_")
  */
 class WalkController extends AbstractController
 {
@@ -23,9 +22,21 @@ class WalkController extends AbstractController
      * @param EntityManagerInterface $em
      * @return Response
      */
-    public function new(EntityManagerInterface $em) {
+    public function createWalk(EntityManagerInterface $em) {
 
         return new Response('Lets Go Walking');
+    }
+
+    /**
+     * @Route("walk/edit/{id}", name="app_walk_edit")
+     * @param Walk $walk
+     * @return Response
+     */
+    public function editWalk(Walk $walk){
+
+        return $this->render('walks/edit.html.twig',[
+            'activity' => $walk
+        ]);
     }
 
     /**

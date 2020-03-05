@@ -1,0 +1,74 @@
+{% extends parent_template %}
+
+{% block title %}Manage Account{% endblock %}
+
+{% block stylesheets %}
+    {{  parent() }}
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+<div class="ui container profile">
+    <div class="ui segments">
+        <div class="ui secondary segment">
+            <div class="ui items">
+                <div class="ui item">
+                    <div class="image">
+                        <img src="/images/wireframeimage.png">
+                    </div>
+                    <div class="content">
+                        <form class="ui form" method="post" action="{{ path('app_edit_account', {id: u.id}) }}">
+                            <div class="two fields">
+                                <div class="field">
+                                    <label>First Name</label>
+                                    <input type="text" name="firstname" placeholder="First Name" value="{{ u.firstname }}"required autofocus>
+                                </div>
+                                <div class="field">
+                                    <label>Surname</label>
+                                    <input type="text" name="surname" placeholder="Surname" value="{{ u.surname }}"required>
+                                </div>
+                            </div>
+                            <div class="two fields">
+                                <div class="field">
+                                    <label>Email address</label>
+                                    <input type="email" name="email" placeholder="Email address" value="{{ u.email }}" required >
+                                </div>
+                                <div class="field">
+                                    <label>Username</label>
+                                    <input type="text" name="username" placeholder="Username" value="{{ u.username }}"required>
+                                </div>
+                            </div>
+                            <div class="two fields">
+                                <div class="field">
+                                    <label>Old Password</label>
+                                    <input type="password" name="oldPassword" placeholder="Old Password" value="">
+                                </div>
+                                <div class="field">
+                                    <label>New Password</label>
+                                    <input type="password" name="newPassword" placeholder="New Password" value="">
+                                </div>
+                            </div>
+                            {%  if app.request.get('_route') == 'app_admin_list_users' %}
+                                <div class="inline field" id="adminUserAuth">
+                                    <div class="ui toggle checkbox">
+                                        <input name="adminUser" type="checkbox">
+                                        <label>Admin User</label>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <button class="ui positive button" type="submit">
+                                Save
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui segment">
+            Activities Created:
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

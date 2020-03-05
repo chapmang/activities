@@ -39,7 +39,7 @@ class UserFlag {
 
     /**
      * Flag type
-     * @var Activity
+     * @var FlagType
      *
      * @ORM\ManyToOne(targetEntity="FlagType")
      * @ORM\JoinColumn(name="flagType", referencedColumnName="id", nullable=false)
@@ -49,7 +49,7 @@ class UserFlag {
 
     /**
      * Flag type
-     * @var FlagType
+     * @var string
      *
      * @ORM\Column(type="text", nullable=true)
      * @Groups({"activity"})

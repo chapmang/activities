@@ -8,15 +8,23 @@
         {% endblock %}
     </head>
     <body>
-    <img class="logo" src="{{ asset('images/AABeam_topdown.png') }}">
-    <div id="masterHead" class="ui secondary menu" >
+        {% block body %}
+            <img class="logo" src="{{ asset('images/AABeam_topdown.png') }}">
+            <div id="masterHead" class="ui secondary menu" >
                 <h1 class="header item">
-                     MAP ACTIVITIES
+                    MAP ACTIVITIES
                 </h1>
                 <div class="right icon menu">
-                    {% if app.request.get('_route') != 'dashboard' %}
+                    <div class="ui category search item">
+                        <div class="ui icon input">
+                            <input class="menuSearch" type="text" placeholder="Search...">
+                            <i class="search link icon"></i>
+                        </div>
+                        <div class="results"></div>
+                    </div>
+                    {% if app.request.get('_route') != 'activity_list' %}
                         <a href="#" class="item">
-                            <i class="home large icon"></i>Home
+                            <i class="home icon"></i>Home
                         </a>
                     {% else %}
                         <a id="mapViewSelector" class="item">
@@ -25,15 +33,14 @@
                         <a id="collectionViewSelector" class="item">
                             <i class="list large icon"></i>Collections
                         </a>
-                        <a id="searchViewSelector" class="item">
-                            <i class="search icon"></i>Search
+                    {% endif %}
+                    {% if is_granted('ROLE_USER') %}
+                        <a id="searchViewSelector" class="item" href="{{ path('app_logout') }}">
+                            <i class="user circle icon"></i>Logout
                         </a>
                     {% endif %}
-
                 </div>
             </div>
-        {% block body %}
-            <h1 class="ui header>">{{ activity.name }}</h1>
         {% endblock %}
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}

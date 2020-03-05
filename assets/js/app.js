@@ -6,10 +6,18 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import '../css/app.less';
-import "semantic-ui-less/semantic.less";
-
+import '../css/semantic.min.css';
+import '../css/app.css';
+import '../js/semantic.min.js';
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
-import $ from 'jquery';
+// import $ from 'jquery';
 
-console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
+// document.getElementById("addUser").onclick = function(){
+//     console.log('I was Clicked');
+//     $("ui.test.modal").modal('show');
+// }
+$('.ui.dropdown')
+    .dropdown()
+;
+$('.mapMenu .item').tab();
+$('.adminMenu .item').tab();

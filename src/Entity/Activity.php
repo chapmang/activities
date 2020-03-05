@@ -102,7 +102,7 @@ class Activity implements ActivityInterface {
     protected $searchableDescription = null;
 
 	/**
-     * Status of the activity
+     * Status of the activity (0 = Open, 1 = Locked by modifedUser)
      * @var integer
      * 
 	 * @ORM\Column(type="integer", nullable=false, options={"default" : 0})
@@ -223,6 +223,8 @@ class Activity implements ActivityInterface {
      * @Groups({"activity"})
      */
     protected $adminNotes = null;
+
+
 
     /*
      * Define type for collection properties
