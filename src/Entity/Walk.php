@@ -28,19 +28,10 @@ class Walk extends Activity {
 	protected $id;
 
 	/**
-     * Short description of the walk
-     * @var string
-     * 
-	 * @ORM\Column(type="text", nullable=true)
-     * @Groups({"activity"})
-	 */
-	protected $shortDescription = null;
-	
-	/**
      * Descriptive location of the walk
      * @var string
      * 
-	 * @ORM\Column(type="text",nullable=true)
+	 * @ORM\Column(type="text", nullable=true)
      * @Groups({"activity"})
 	 */
 	protected $location = null;
@@ -226,16 +217,6 @@ class Walk extends Activity {
     private $suggestedMap;
 
 
-    public function setShortDescription(string $shortDescription = null) :self {
-
-        $this->shortDescription = $shortDescription;
-        return $this;
-    }
-
-    public function getShortDescription() :?string {
-
-        return $this->shortDescription;
-    }
 
     public function setLocation(string $location = null) :self {
 
@@ -474,7 +455,6 @@ class Walk extends Activity {
 
     /**
      * @return string
-     * @Serializer\VirtualProperty()
      * @Groups({"activity"})
      */
     public function getActivityType() :string {

@@ -8,6 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ActivityAdminController extends AbstractController
 {
+
+
     /**
      * @Route("/activity/{id}/edit", name="activity_admin_edit")
      * @param Activity $activity

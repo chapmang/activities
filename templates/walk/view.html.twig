@@ -2,7 +2,7 @@
 {% block body %}
     {{ parent() }}
     <div class="contentWrapper">
-        <div class="flexWrapper">
+        <div class="mcFlexWrapper">
             <div class="col">
                 <h1 class="ui header ">
                     <img src="{{ asset('images/' ~ activity.activityType ~ '_' ~ activity.difficulty ~ '.png') }}" class="ui huge image">
@@ -125,15 +125,15 @@
                 </div>
             </div>
             <div class="col ">
-                <div class="ui two item menu mapMenu">
+                <div class="ui two item menu attached mapMenu">
                     <a class="active item" data-tab="tab-routeMap"><i class="map signs icon"></i>Route</a>
                     <a class="item" data-tab="tab-bookMap"><i class="map icon"></i>Map</a>
                 </div>
-                <div id="routeMap" class="ui segment walkMapping active tab" data-tab="tab-routeMap">
+                <div id="routeMap" class="ui attached segment walkMapping active tab" data-tab="tab-routeMap">
                     <!-- <div class="bookMap tab" data-tab="tab-bookMap"></div>-->
                     <!-- <div id="routeMap" class="routeMap active tab" data-tab="tab-routeMap"></div>-->
                 </div>
-                <div class="ui segment walkMapping tab" data-tab="tab-bookMap"></div>
+                <div class="ui attached segment walkMapping tab" data-tab="tab-bookMap"></div>
             </div>
         </div>
 

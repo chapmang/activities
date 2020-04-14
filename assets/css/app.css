@@ -9,29 +9,42 @@ body {
     overflow: hidden;
     margin: 0;
     box-sizing: border-box;
-    background-color: #f8f8f8;
+    background-color: white;
 }
 
 .logo {
     position:fixed;
 }
+.headerIdentImages {
+    position:fixed;
+    margin-left:10px;
+    transform: scale(0.9) translateY(-5px);
+}
 #masterHead {
     margin:0;
-    background-color: #ffcc00;
-    border-bottom: 5px solid #198ced;
-    height:57px;
-    padding-left: 160px;
+    /*background-color: #ffcc00;*/
+    background-color: rgb(83,130,61);
+    border-bottom: 3px solid rgb(197,209,60);
+    height:65px;
+    padding-left: 210px;
 }
-.ui.secondary.menu a.item {
-    border: solid #ffcc00 2px;
+#masterHead h1.title {
+    font-weight: 100;
+    font-size: 40px;
+    margin-left: -15px;
+    color: white;
 }
-
+.ui.secondary.menu .item {
+    color: white;
+}
+.ui.secondary.menu a.item:hover,
+.ui.secondary.menu .active.item,
+.ui.secondary.menu .dropdown.item:hover{
+    background: rgba(0,0,0,0.5);
+    color: white;
+}
 .ui.secondary.menu .active.item {
     box-shadow: none;
-    background: rgba(0, 0, 0, 0.0);
-    color: rgba(0, 0, 0, 0.95);
-    border-radius: 0.28571429rem;
-    border: solid black 2px;
 }
 .login_container {
     position: fixed;
@@ -52,15 +65,22 @@ body {
     transform: translate(-50%, -50%);
     width: 300px;
     padding: 15px;
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.75);
+    border: solid 3px rgb(83,130,61);
+    /*border-radius: 10px;*/
+    background-color: rgba(255, 255, 255, 0.70);
     box-sizing: border-box;
     -webkit-box-shadow: 3px 3px 5px 6px #ccc;
     -moz-box-shadow: 3px 3px 5px 6px #ccc;
     box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.35);
 }
-.login_form h1 {
 
+.login_form .identImages {
+    width:225px;
+    margin: -50px auto 5px auto;
+}
+.login_form h1.title {
+    font-weight: 100;
+    font-size: 40px;
 }
 .login_form .inputBox {
     position:relative;
@@ -94,35 +114,6 @@ body {
     background-color: #ffcc00;
     border-bottom: 5px solid #198ced;
 }
-.contentWrapper {
-    padding: 12px 12px 20px 12px;
-    height: calc(100% - 107px);
-}
-.contentWrapper,
-.flexWrapper {
-    display: flex;
-}
-.contentWrapper {
-    flex-direction: column;
-}
-.flexWrapper {
-    justify-content: space-around;
-    overflow: hidden;
-    flex: 1;
-}
-.flexWrapper>.col {
-    width: 48%;
-}
-.col:first-child {
-    overflow: auto;
-}
-.walkMapping {
-    height: calc(100% - 65px)
-}
-.routeMap{
-    height:100%;
-    width: 100%
-}
 p {
     font-size: 1.14285714rem;
     line-height: 1.5;
@@ -134,4 +125,12 @@ p {
 }
 .ui.input>input.menuSearch::placeholder {
     color: rgba(0,0,0,.87);
+}
+body div.ui.message {
+    position: absolute;
+    width:75%;
+    z-index: 10;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%)
 }

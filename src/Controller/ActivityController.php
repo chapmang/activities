@@ -51,7 +51,7 @@ class ActivityController extends AbstractController
         // It's the same as doing find($id) on repository
         switch ($activity->getActivityType()) {
             case "walk":
-                return $this->render('walks/view.html.twig',[
+                return $this->render('walk/view.html.twig',[
                     'activity' => $activity
                 ]);
         }

@@ -16,8 +16,20 @@ import '../js/semantic.min.js';
 //     console.log('I was Clicked');
 //     $("ui.test.modal").modal('show');
 // }
-$('.ui.dropdown')
-    .dropdown()
+$('#masterHead .ui.dropdown')
+    .dropdown({
+        action: 'select'
+    })
 ;
 $('.mapMenu .item').tab();
 $('.adminMenu .item').tab();
+
+$("document").ready(function(){
+    setTimeout(function(){
+        $("div.message").fadeOut('slow');
+    }, 5000 ); // 5 secs
+
+});
+$('select.dropdown')
+    .dropdown()
+;

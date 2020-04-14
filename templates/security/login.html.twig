@@ -5,8 +5,14 @@
 {% block body %}
 <div class="login_container" style="background-image: url({{ asset('images/' ~ random(['landscape_1920', 'mountain_1920', 'people_1920', 'sea_1920', 'lake_district_1920']) ~ '.jpg') }})">
     <div class="login_form">
+        <div class="identImages">
+            <img src="{{ asset('images/walk_green.png') }}" alt="">
+            <img src="{{ asset('images/ride_green.png') }}" alt="">
+            <img src="{{ asset('images/drive_green.png') }}" alt="">
+        </div>
+
         <form method="post">
-            <h1 class="ui header center aligned">Map Activities</h1>
+            <h1 class="ui header center aligned title">ACTIVITIES</h1>
             <div class="inputBox">
                 <input type="text" name="username" required autofocus>
                 <label for="username">Username</label>

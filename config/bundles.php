@@ -16,4 +16,6 @@ return [
     Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
     Knp\Bundle\PaginatorBundle\KnpPaginatorBundle::class => ['all' => true],
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
+    Beelab\TagBundle\BeelabTagBundle::class => ['all' => true],
+    CodedMonkey\SemanticUiBundle\SemanticUiBundle::class => ['all' => true],
 ];

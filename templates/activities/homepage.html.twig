@@ -1,36 +1,75 @@
 {% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{  parent() }}
+    {{ encore_entry_link_tags('search') }}
+{% endblock %}
 {% block body %}
     {{ parent() }}
-    <div class="ui container">
-        <h1>Activities Found: ({{ pagination.getTotalItemCount }})</h1>
-        <form>
-            <div class="ui search">
-                <div class="ui icon input">
+    <div class="container">
+        <div class="columnLeft">
+            <form>
+                <div class="ui fluid icon input">
                     <input class="prompt" type="text" name="q" placeholder="Search...">
-                    <i class="search icon"></i>
+                    <i class="search icon"></i><div class="results"></div>
                 </div>
-                <div class="results"></div>
-            </div>
-        </form>
-        <div class="ui divided items">
-            {%  for a in pagination %}
-                <div class="item">
-                    <div class="content">
-                        <a href="{{ path('activity_by_id', {id: a.id}) }}" class="header">{{ a.name }}</a>
-                        {%  for tag in a.tags %}
-                            <a class="ui label"><i class="tag icon"></i>{{  tag.name }}</a>
-                        {% endfor %}
-                        <div class="description">
-                            {{ a.description }}
+                <div class="grouped fields">
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="radio" name="activity">
+                            <label>Walks</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="radio" name="activity">
+                            <label>Bike Rides</label>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
+            </form>
         </div>
-        {% if pagination.totalItemCount / 10 > 1 %}
-            {{ knp_pagination_render(pagination) }}
-        {% endif %}
+        <div class="columnRight">
+            <div class="resultCount">
+                <h3 class="ui center aligned header">{{ pagination.getTotalItemCount }} Activities Found </h3>
+            </div>
+            <div class="scrollWrapper">
+                <div class="ui divided items">
+                    {%  for a in pagination %}
+                        <div class="item">
+                            <div class="content">
+                                <a href="{{ path('activity_by_id', {id: a.id}) }}" class="header">{{ a.name }}</a>
+                                {%  for tag in a.tags %}
+                                    <a class="ui label"><i class="tag icon"></i>{{  tag.name }}</a>
+                                {% endfor %}
+                                <div class="activityNav">
+                                    <a href="{{ path('activity_by_id', {id: a.id}) }}" class="ui button">
+                                        <i class="eye icon"></i>
+                                        View
+                                    </a>
+                                    {% if a.activityType == 'walk' %}
+                                        <a class="ui button" href="{{ path('app_walk_edit', {id: a.id}) }}">
+                                            <i class="edit icon"></i>
+                                            Edit
+                                        </a>
+                                    {% endif %}
+                                </div>
+
+                                <div class="description">
+                                    {{ a.description }}
+                                </div>
+
+                            </div>
+
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="pagination">
+                {% if pagination.totalItemCount / 10 > 1 %}
+                    {{ knp_pagination_render(pagination) }}
+                {% endif %}
+            </div>
+
+        </div>
     </div>
-
-
 {% endblock %}

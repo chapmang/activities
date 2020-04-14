@@ -22,7 +22,7 @@ trait EntityTimeBlameTrait
      * User assigned to creation of the object
      * @var User
      *
-     *
+     * @Gedmo\Blameable(on="create")
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="createdUser", referencedColumnName="id", nullable=false)
      */
@@ -41,7 +41,7 @@ trait EntityTimeBlameTrait
      * User assigned to last modification of the object
      * @var User
      *
-     *
+     * @Gedmo\Blameable(on="update")
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="modifiedUser", referencedColumnName="id", nullable=false)
      */

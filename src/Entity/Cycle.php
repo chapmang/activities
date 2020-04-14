@@ -23,7 +23,6 @@ class Cycle extends Activity {
 
     /**
      * @return string
-     * @Serializer\VirtualProperty()
      * @Groups({"activity"})
      */
     public function getType() {

@@ -1,0 +1,28 @@
+{{ form_start(walkForm) }}
+    {{ form_row(walkForm.name) }}
+    <div class="ui tab active" data-tab="details">
+        {{ form_row(walkForm.location) }}
+        {{ form_row(walkForm.distance) }}
+        <div class="equal width fields">
+            {{ form_row(walkForm.minimumTimeHours) }}
+            {{ form_row(walkForm.minimumTimeMinutes) }}
+        </div>
+        <div class="equal width fields">
+            {{ form_row(walkForm.ascent) }}
+            {{ form_row(walkForm.gradient) }}
+            {{ form_row(walkForm.difficulty) }}
+        </div>
+        {{ form_row(walkForm.paths) }}
+        {{ form_row(walkForm.landscape) }}
+        {{ form_row(walkForm.suggestedMap) }}
+        {{ form_row(walkForm.dogFriendliness) }}
+        {{ form_row(walkForm.parking) }}
+        {{ form_row(walkForm.publicToilet) }}
+    </div>
+    <div class="ui tab" data-tab="description">
+        {{ form_row(walkForm.shortDescription) }}
+        {{ form_row(walkForm.description) }}
+    </div>
+    <button class='ui button' type="submit">{{ button_text }}</button>
+{{ form_end(walkForm) }}
+

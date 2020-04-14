@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
     {{  parent() }}
+    {{ encore_entry_link_tags('walk') }}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/css/ol.css" type="text/css">
 {% endblock %}
 {% block body %}
@@ -40,11 +41,13 @@
                     <div class="item">JSON</div>
                 </div>
             </div>
-            {%  if app.request.pathinfo == path('activity_by_id', {id: activity.id}) %}
-                {% if activity.activityType == 'walk' %}
-                <a class="item" href="{{ path('app_walk_edit', {id: activity.id}) }}">
-                    <i class="edit icon"></i>Edit
-                </a>
+            {%  if activity is defined %}
+                {%  if app.request.pathinfo == path('activity_by_id', {id: activity.id}) %}
+                    {% if activity.activityType == 'walk' %}
+                    <a class="item" href="{{ path('app_walk_edit', {id: activity.id}) }}">
+                        <i class="edit icon"></i>Edit
+                    </a>
+                    {% endif %}
                 {% endif %}
             {% endif %}
         </div>
@@ -54,5 +57,5 @@
 {% block javascripts %}
     {{  parent() }}
     <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/build/ol.js"></script>
-    {{ encore_entry_script_tags('activity') }}
+    {{ encore_entry_script_tags('walk') }}
 {% endblock %}

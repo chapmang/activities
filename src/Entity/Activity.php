@@ -3,6 +3,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Traits\EntityTimeBlameTrait;
+use Beelab\TagBundle\Tag\TaggableInterface;
+use Beelab\TagBundle\Tag\TagInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -23,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ActivityRepository")
  * @UniqueEntity(fields={"name"}, message="This name is already in use")
  */
-class Activity implements ActivityInterface {
+class Activity implements ActivityInterface, TaggableInterface {
 
     use EntityTimeBlameTrait;
 
@@ -83,6 +85,15 @@ class Activity implements ActivityInterface {
      * @Groups({"activity"})
 	 */
 	protected $longitude = null;
+
+    /**
+     * Short description of the walk
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     * @Groups({"activity"})
+     */
+    protected $shortDescription = null;
 
 	/**
      * Description of the activity
@@ -297,6 +308,17 @@ class Activity implements ActivityInterface {
         return $this->longitude;
     }
 
+    public function setShortDescription(string $shortDescription = null) :self {
+
+        $this->shortDescription = $shortDescription;
+        return $this;
+    }
+
+    public function getShortDescription() :?string {
+
+        return $this->shortDescription;
+    }
+
     public function setDescription(string $description = null) :self {
         
         $this->description = $description;
@@ -368,21 +390,30 @@ class Activity implements ActivityInterface {
         return $this->mapRoyalty;
     }
 
-    public function addTag(Tag $tag) :self {
+    public function addTag(TagInterface $tag) :void {
 
-        $tag->addActivity($this);
-        $this->tags[] = $tag;
-        return $this;
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+        }
     }
 
-    public function removeTag(Tag $tag) {
+    public function removeTag(TagInterface $tag): void {
 
         $this->tags->removeElement($tag);
     }
 
-    public function getTags() :?\Doctrine\Common\Collections\Collection {
+    public function hasTag(TagInterface $tag): bool
+    {
+        return $this->tags->contains($tag);
+    }
+
+    public function getTags() :iterable {
 
         return $this->tags;
+    }
+    public function getTagNames(): array
+    {
+        return empty($this->tagsText) ? [] : \array_map('trim', explode(',', $this->tagsText));
     }
 
     public function addDirection(Direction $direction) :self {
@@ -510,8 +541,7 @@ class Activity implements ActivityInterface {
 
     /**
      * @return string
-     * @Serializer\VirtualProperty()
-     * @Serializer\Groups({"activity"})
+     * @Groups({"activity"})
      */
     public function getActivityType() :string {
 

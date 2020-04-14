@@ -2,6 +2,7 @@
 namespace App\Entity;
 
 use App\Traits\EntityTimeBlameTrait;
+use Beelab\TagBundle\Tag\TagInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -18,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity("name")
  */
 
-class Tag {
+class Tag  implements TagInterface {
 
     use EntityTimeBlameTrait;
 
@@ -95,19 +96,18 @@ class Tag {
     /**
      * Set name
      * @param string $name
-     * @return Tag
+     * @return void
      */
-    public function setName($name) {
+    public function setName(?string $name): void {
 
         $this->name = $name;
-        return $this;
     }
 
     /**
      * Get name
      * @return string 
      */
-    public function getName() {
+    public function getName(): ?string {
 
         return $this->name;
     }
@@ -168,6 +168,11 @@ class Tag {
     public function getCollections() {
 
         return $this->collections;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
     }
 
 }
