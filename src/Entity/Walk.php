@@ -206,42 +206,43 @@ class Walk extends Activity {
      * Extension associated to the walk
      * @var string
      *
-     * @ORM\Column(name="extension", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      * @Groups({"activity"})
      */
     protected $extension;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=500, nullable=true)
      */
-    private $suggestedMap;
+    protected $suggestedMap;
 
 
-
-    public function setLocation(string $location = null) :self {
+    public function setLocation(string $location = null): self {
 
         $this->location = $location;
         return $this;
     }
 
-    public function getLocation() :?string {
+    public function getLocation(): ?string {
 
         return $this->location;
     }
 
-    public function setDistance(float $distance = null) :self {
+    public function setDistance(float $distance = null): self {
 
         $this->distance = $distance;
         return $this;
     }
 
-    public function getDistance() :?float {
+    public function getDistance(): ?float {
 
         return $this->distance;
     }
 
 
-    public function getDistanceMiles() :?float {
+    public function getDistanceMiles(): ?float {
 
         $x = $this->getDistance() * 0.621371;
         $x = $x * 4;
@@ -250,193 +251,193 @@ class Walk extends Activity {
         return $x;
     }
 
-    public function setMinimumTimeHours(int $minimumTimeHours = null) :self {
+    public function setMinimumTimeHours(int $minimumTimeHours = null): self {
 
         $this->minimumTimeHours = $minimumTimeHours;
         return $this;
     }
 
-    public function getMinimumTimeHours() :?int {
+    public function getMinimumTimeHours(): ?int {
 
         return $this->minimumTimeHours;
     }
 
-    public function setMinimumTimeMinutes(int $minimumTimeMinutes = null) :self {
+    public function setMinimumTimeMinutes(int $minimumTimeMinutes = null): self {
 
         $this->minimumTimeMinutes = $minimumTimeMinutes;
         return $this;
     }
 
-    public function getMinimumTimeMinutes() :?int {
+    public function getMinimumTimeMinutes(): ?int {
 
         return $this->minimumTimeMinutes;
     }
 
-    public function setAscent(int $ascent = null) :self {
+    public function setAscent(int $ascent = null): self {
 
         $this->ascent = $ascent;
         return $this;
     }
 
-    public function getAscent() :?int {
+    public function getAscent(): ?int {
 
         return $this->ascent;
     }
 
-    public function getAscentFeet() :?float {
+    public function getAscentFeet(): ?float {
 
         return round($this->getAscent() * 3.28084, 0);
     }
 
-    public function setGradient(int $gradient = null) :self{
+    public function setGradient(int $gradient = null): self{
 
         $this->gradient = $gradient;
         return $this;
     }
 
-    public function getGradient() :?int {
+    public function getGradient(): ?int {
 
         return $this->gradient;
     }
 
-    public static function getGradients() :array {
+    public static function getGradients(): array {
 
         return array(0,1,2,3);
     }
 
-    public function setDifficulty(int $difficulty = null) :self {
+    public function setDifficulty(int $difficulty = null): self {
 
         $this->difficulty = $difficulty;
         return $this;
     }
 
-    public function getDifficulty() :?int {
+    public function getDifficulty(): ?int {
         
         return $this->difficulty;
     }
 
-    public static function getDifficulties() :array {
+    public static function getDifficulties(): array {
 
         return array(1,2,3);
     }
 
-    public function setPaths(string $paths = null) :self {
+    public function setPaths(string $paths = null): self {
 
         $this->paths = $paths;
         return $this;
     }
 
-    public function getPaths() :?string {
+    public function getPaths(): ?string {
 
         return $this->paths;
     }
 
-    public function setLandscape(string $landscape = null) :self {
+    public function setLandscape(string $landscape = null): self {
 
         $this->landscape = $landscape;
         return $this;
     }
 
-    public function getLandscape() :?string {
+    public function getLandscape(): ?string {
 
         return $this->landscape;
     }
 
-    public function setFinishGridRef(string $finishGridRef = null) :self {
+    public function setFinishGridRef(string $finishGridRef = null): self {
 
         $this->finishGridRef = $finishGridRef;
         return $this;
     }
 
-    public function getFinishGridRef() :?string {
+    public function getFinishGridRef(): ?string {
 
         return $this->finishGridRef;
     }
 
-    public function setDogFriendliness(string $dogFriendliness = null) :self {
+    public function setDogFriendliness(string $dogFriendliness = null): self {
 
         $this->dogFriendliness = $dogFriendliness;
         return $this;
     }
 
-    public function getDogFriendliness() :?string {
+    public function getDogFriendliness(): ?string {
 
         return $this->dogFriendliness;
     }
 
-    public function setParking(string $parking = null) :self {
+    public function setParking(string $parking = null): self {
 
         $this->parking = $parking;
         return $this;
     }
 
-    public function getParking() :?string {
+    public function getParking(): ?string {
 
         return $this->parking;
     }
 
-    public function setPublicToilet(string $publicToilet = null) :self {
+    public function setPublicToilet(string $publicToilet = null): self {
 
         $this->publicToilet = $publicToilet;
         return $this;
     }
 
-    public function getPublicToilet() :?string {
+    public function getPublicToilet(): ?string {
 
         return $this->publicToilet;
     }
 
-    public function setNotes(string $notes = null) :self {
+    public function setNotes(string $notes = null): self {
 
         $this->notes = $notes;
         return $this;
     }
 
-    public function getNotes() :?string {
+    public function getNotes(): ?string {
 
         return $this->notes;
     }
 
-    public function setWhatToLookOutFor(string $whatToLookOutFor = null) :self {
+    public function setWhatToLookOutFor(string $whatToLookOutFor = null): self {
 
         $this->whatToLookOutFor = $whatToLookOutFor;
         return $this;
     }
 
-    public function getWhatToLookOutFor() :?string {
+    public function getWhatToLookOutFor(): ?string {
 
         return $this->whatToLookOutFor;
     }
 
-    public function setWhereToEatAndDrink(string $whereToEatAndDrink = null) :self {
+    public function setWhereToEatAndDrink(string $whereToEatAndDrink = null): self {
 
         $this->whereToEatAndDrink = $whereToEatAndDrink;
         return $this;
     }
 
-    public function getWhereToEatAndDrink() :?string {
+    public function getWhereToEatAndDrink(): ?string {
 
         return $this->whereToEatAndDrink;
     }
 
-    public function setWhileYouAreThere(string $whileYouAreThere = null) :self {
+    public function setWhileYouAreThere(string $whileYouAreThere = null): self {
 
         $this->whileYouAreThere = $whileYouAreThere;
         return $this;
     }
 
-    public function getWhileYouAreThere() :?string {
+    public function getWhileYouAreThere(): ?string {
 
         return $this->whileYouAreThere;
     }
 
-    public function setExtension(string $extension = null) :self {
+    public function setExtension(string $extension = null): self {
         
         $this->extension = $extension;
         return $this;
     }
 
-    public function getExtension() :?string {
+    public function getExtension(): ?string {
 
         return $this->extension;
     }
@@ -457,7 +458,7 @@ class Walk extends Activity {
      * @return string
      * @Groups({"activity"})
      */
-    public function getActivityType() :string {
+    public function getActivityType(): string {
 
         return $this::TYPE_WALK;
     }

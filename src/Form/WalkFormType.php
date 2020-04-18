@@ -5,6 +5,7 @@ namespace App\Form;
 
 use App\Entity\Tag;
 use App\Entity\Walk;
+use App\Form\Model\WalkModel;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\NumberToLocalizedStringTransformer;
@@ -29,24 +30,25 @@ class WalkFormType extends AbstractType
             ->add('shortDescription', TextType::class, [
                 'required' => false
             ])
+            ->add('description', TextareaType::class, [
+                'required' => false
+            ])
             ->add('location', TextType::class, [
                 'required' => false
             ] )
-            ->add('distance', SemanticNumberType::class, [
+            ->add('distance', NumberType::class, [
                 'required' => false,
-                'semantic_label' => 'km'
+                'scale' => 2,
+                'rounding_mode' => NumberToLocalizedStringTransformer::ROUND_HALF_DOWN
             ])
-            ->add('minimumTimeHours', SemanticIntegerType::class, [
-                'required' => false,
-                'semantic_label' => 'hours'
+            ->add('minimumTimeHours', IntegerType::class, [
+                'required' => false
             ])
-            ->add('minimumTimeMinutes', SemanticIntegerType::class, [
-                'required' => false,
-                'semantic_label' => 'minutes'
+            ->add('minimumTimeMinutes', IntegerType::class, [
+                'required' => false
             ])
-            ->add('ascent', SemanticIntegerType::class, [
-                'required' => false,
-                'semantic_label' => 'metres'
+            ->add('ascent', IntegerType::class, [
+                'required' => false
             ])
             ->add('gradient', ChoiceType::class, [
                 'required' => false,
@@ -83,21 +85,15 @@ class WalkFormType extends AbstractType
             ->add('suggestedMap', TextType::class, [
                 'required' => false
             ])
-            ->add('description', TextareaType::class, [
-                'required' => false
-            ])
-            ->add('tags', EntityType::class, array(
-                'class' => Tag::class,
-                'placeholder' => 'Add Tags'
-            ));
+            ->add('tagsText', TagsTextType::class);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => Walk::class
-        ]);
-    }
+//    public function configureOptions(OptionsResolver $resolver)
+//    {
+//        $resolver->setDefaults([
+//            'data_class' => WalkCreateModel::class
+//        ]);
+//    }
 
 
 }

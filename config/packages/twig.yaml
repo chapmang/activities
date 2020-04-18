@@ -4,5 +4,4 @@ twig:
     strict_variables: '%kernel.debug%'
     exception_controller: null
     form_themes:
-        - 'forms/custom_types.html.twig'
         - '@SemanticUi/form/semantic_2_layout.html.twig'

@@ -42,16 +42,14 @@
                                     <a class="ui label"><i class="tag icon"></i>{{  tag.name }}</a>
                                 {% endfor %}
                                 <div class="activityNav">
-                                    <a href="{{ path('activity_by_id', {id: a.id}) }}" class="ui button">
+                                    <a href="{{ path(a.activityType~'_by_slug', {slug: a.slug}) }}" class="ui button">
                                         <i class="eye icon"></i>
                                         View
                                     </a>
-                                    {% if a.activityType == 'walk' %}
-                                        <a class="ui button" href="{{ path('app_walk_edit', {id: a.id}) }}">
-                                            <i class="edit icon"></i>
-                                            Edit
-                                        </a>
-                                    {% endif %}
+                                    <a class="ui button" href="{{ path(a.activityType~'_update', {id: a.id}) }}">
+                                        <i class="edit icon"></i>
+                                        Edit
+                                    </a>
                                 </div>
 
                                 <div class="description">

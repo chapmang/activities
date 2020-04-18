@@ -26,7 +26,7 @@
             Map Royalties
         </a>
         <a class="item" data-tab="notes">
-            Notes
+            Editorial Notes
         </a>
         <div class="right menu">
             <div class="ui simple dropdown  item">
@@ -42,12 +42,10 @@
                 </div>
             </div>
             {%  if activity is defined %}
-                {%  if app.request.pathinfo == path('activity_by_id', {id: activity.id}) %}
-                    {% if activity.activityType == 'walk' %}
-                    <a class="item" href="{{ path('app_walk_edit', {id: activity.id}) }}">
+                {%  if app.request.pathinfo == path(activity.activityType~'_by_slug', {slug: activity.slug}) %}
+                    <a class="item" href="{{ path(activity.activityType~'_update', {id: activity.id}) }}">
                         <i class="edit icon"></i>Edit
                     </a>
-                    {% endif %}
                 {% endif %}
             {% endif %}
         </div>

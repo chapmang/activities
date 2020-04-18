@@ -162,6 +162,8 @@ class Activity implements ActivityInterface, TaggableInterface {
      */
     protected $tags;
 
+    protected $tagsText;
+
     /**
      * Collection of directions associated to the activity
      * @var ArrayCollection
@@ -259,117 +261,117 @@ class Activity implements ActivityInterface, TaggableInterface {
         $this->adminNotes = new ArrayCollection();
     }
 
-    public function getId() :int {
+    public function getId(): ?int {
 
         return $this->id;
     }
 
-    public function setName(string $name) :self {
+    public function setName(string $name): self {
 
         $this->name = $name;
         return $this;
     }
 
-    public function getName() :string {
+    public function getName(): ?string {
         
         return $this->name;
     }
 
-    public function setStartGridRef(string $startGridRef = null) :self {
+    public function setStartGridRef(string $startGridRef = null): self {
         
         $this->startGridRef = $startGridRef;
         return $this;
     }
 
-    public function getStartGridRef() :?string {
+    public function getStartGridRef(): ?string {
         
         return $this->startGridRef;
     }
 
-    public function setLatitude(float $latitude = null) :self {
+    public function setLatitude(float $latitude = null): self {
         
         $this->latitude = $latitude;
         return $this;
     }
 
-    public function getLatitude() :?string {
+    public function getLatitude(): ?string {
         
         return $this->latitude;
     }
 
-    public function setLongitude(string $longitude = null) :self {
+    public function setLongitude(string $longitude = null): self {
         
         $this->longitude = $longitude;
         return $this;
     }
 
-    public function getLongitude() :?string {
+    public function getLongitude(): ?string {
         
         return $this->longitude;
     }
 
-    public function setShortDescription(string $shortDescription = null) :self {
+    public function setShortDescription(string $shortDescription = null): self {
 
         $this->shortDescription = $shortDescription;
         return $this;
     }
 
-    public function getShortDescription() :?string {
+    public function getShortDescription(): ?string {
 
         return $this->shortDescription;
     }
 
-    public function setDescription(string $description = null) :self {
+    public function setDescription(string $description = null): self {
         
         $this->description = $description;
         return $this;
     }
 
-    public function getDescription() :?string {
+    public function getDescription(): ?string {
         
         return $this->description;
     }
 
-    public function setSearchableDescription(string $searchableDescription = null) :self {
+    public function setSearchableDescription(string $searchableDescription = null): self {
         
         $this->searchableDescription = $searchableDescription;
         return $this;
     }
 
-    public function getSearchableDescription() :?string {
+    public function getSearchableDescription(): ?string {
         
         return $this->searchableDescription;
     }
 
-    public function setStatus(int $status = 0) :self{
+    public function setStatus(int $status = 0): self{
         
         $this->status = $status;
         return $this;
     }
 
-    public function getStatus() :int {
+    public function getStatus(): int {
         
         return $this->status;
     }
 
-    public function setOnlineFriendly(bool $onlineFriendly = false) :self {
+    public function setOnlineFriendly(bool $onlineFriendly = false): self {
 
         $this->onlineFriendly = $onlineFriendly;
         return $this;
     }
 
-    public function getOnlineFriendly() :bool {
+    public function getOnlineFriendly(): bool {
 
         return $this->onlineFriendly;
     }
 
-    public function setSlug(string $slug = null) :self {
+    public function setSlug(string $slug = null): self {
 
         $this->slug = $slug;
         return $this;
     }
 
-    public function getSlug() :string {
+    public function getSlug(): ?string {
 
         return $this->slug;
     }
@@ -378,7 +380,7 @@ class Activity implements ActivityInterface, TaggableInterface {
 
     // Related Entities
 
-    public function setMapRoyalty(MapRoyalty $mapRoyalty = null) :self {
+    public function setMapRoyalty(MapRoyalty $mapRoyalty = null): self {
         
         $this->mapRoyalty = $mapRoyalty;
         $this->mapRoyalty->setActivity($this);
@@ -414,6 +416,18 @@ class Activity implements ActivityInterface, TaggableInterface {
     public function getTagNames(): array
     {
         return empty($this->tagsText) ? [] : \array_map('trim', explode(',', $this->tagsText));
+    }
+
+    public function setTagsText(?string $tagsText): void
+    {
+        $this->tagsText = $tagsText;
+    }
+
+    public function getTagsText(): ?string
+    {
+        $this->tagsText = \implode(', ', $this->tags->toArray());
+
+        return $this->tagsText;
     }
 
     public function addDirection(Direction $direction) :self {

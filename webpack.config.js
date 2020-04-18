@@ -58,7 +58,7 @@ Encore
     })
 
     // enables Sass/SCSS support
-    //.enableSassLoader()
+    .enableSassLoader()
     //.enableLessLoader(options => {
     //    options.modules = true;
     //})

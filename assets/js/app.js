@@ -7,8 +7,10 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import '../css/semantic.min.css';
+import '../js/select2-3.5.4/select2.css'
 import '../css/app.css';
 import '../js/semantic.min.js';
+import '../js/select2-3.5.4/select2.min.js';
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 // import $ from 'jquery';
 

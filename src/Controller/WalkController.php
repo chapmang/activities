@@ -3,10 +3,10 @@
 
 namespace App\Controller;
 
-
-use App\Entity\User;
 use App\Entity\Walk;
 use App\Form\WalkFormType;
+use App\Service\WalkFacade;
+use App\Service\WalkModelFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,26 +19,33 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class WalkController extends AbstractController
 {
+    private $walkFacade;
+
+    public function __construct(WalkFacade $walkFacade)
+    {
+        $this->walkFacade = $walkFacade;
+    }
+
     /**
-     * @Route("/walk/new", name="app_walk_createwalk")
-     * @param EntityManagerInterface $em
+     * @Route("/walk/new", name="walk_create")
      * @param Request $request
      * @return Response
      */
-    public function createWalk(EntityManagerInterface $em, Request $request)
+    public function createWalk( Request $request)
     {
-        $form = $this->createForm(WalkFormType::class);
-
+        $walkModel = WalkModelFactory::build();
+        $form = $this->createForm(WalkFormType::class, $walkModel);
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid()) {
-            /** @var Walk $walk */
-            $walk = $form->getData();
-            $em->persist($walk);
-            $em->flush();
+
+            // WalkFacade creates instance of an Walk,
+            // persists it and flushes the EntityManager.
+            $walk = $this->walkFacade->createWalk($walkModel);
 
             $this->addFlash('success', 'Walk ' .$walk->getName(). ' Created ');
 
-            return $this->redirectToRoute('app_walk_edit', ['id' => $walk->getId()]);
+            return $this->redirectToRoute('walk_update', ['id' => $walk->getId()]);
 
         }
         return $this->render('walk/new.html.twig', [
@@ -47,41 +54,58 @@ class WalkController extends AbstractController
     }
 
     /**
-     * @Route("walk/edit/{id}", name="app_walk_edit")
+     * @Route("/walk/update/{id}", name="walk_update", requirements={"id"="[0-9]*"})
      * @param Walk $walk
      * @param EntityManagerInterface $em
      * @param Request $request
      * @return Response
      */
-    public function editWalk(Walk $walk, EntityManagerInterface $em, Request $request){
+    public function updateWalk(Walk $walk, EntityManagerInterface $em, Request $request){
 
-        $form = $this->createForm(WalkFormType::class, $walk);
+        $walkModel = WalkModelFactory::build($walk);
+        $form = $this->createForm(WalkFormType::class, $walkModel);
 
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid()) {
-            /** @var Walk $walk */
-            $walk = $form->getData();
-            $em->persist($walk);
-            $em->flush();
+
+            // WalkFacade updates instance of an Walk,
+            // persists it and flushes the EntityManager.
+            $this->walkFacade->updateWalk($walk, $walkModel);
 
             $this->addFlash('success', 'Walk ' .$walk->getName(). ' Updated ');
 
-            return $this->redirectToRoute('app_walk_edit', ['id' => $walk->getId()]);
+            return $this->redirectToRoute('walk_update', ['id' => $walk->getId()]);
 
         }
         return $this->render('walk/edit.html.twig', [
             'walkForm' => $form->createView()
         ]);
     }
-
+    
     /**
-     * @Route("/m/{id}", name="activty_by_id", methods={"GET"}, requirements={"id"="[0-9]*"})
+     * @Route("/walk/{id}", name="walk_by_id", methods={"GET"}, requirements={"id"="[0-9]*"})
      * @param Walk $walk
      * @return Response
      */
-    public function activity(Walk $walk)
+    public function showWalk(Walk $walk)
     {
-        // It's the same as doing find($id) on repository
-        return new Response(var_dump($walk));
+        return $this->render('walk/view.html.twig', [
+            'activity' => $walk
+        ]);
     }
+
+    /**
+     * @Route("/walk/{slug}", name="walk_by_slug", methods={"GET"}, requirements={"slug"="[a-zA-Z0-9\-_\/]+"})
+     * @param Walk $walk
+     * @return Response
+     */
+    public function showWalkBySlug(Walk $walk)
+    {
+        return $this->render('walk/view.html.twig', [
+            'activity' => $walk
+        ]);
+    }
+
+
 }
