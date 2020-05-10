@@ -37,7 +37,7 @@
                     {%  for a in pagination %}
                         <div class="item">
                             <div class="content">
-                                <a href="{{ path('activity_by_id', {id: a.id}) }}" class="header">{{ a.name }}</a>
+                                <a href="{{ path(a.activityType~'_by_slug', {slug: a.slug}) }}" class="header">{{ a.name }}</a>
                                 {%  for tag in a.tags %}
                                     <a class="ui label"><i class="tag icon"></i>{{  tag.name }}</a>
                                 {% endfor %}

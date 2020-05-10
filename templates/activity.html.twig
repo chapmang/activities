@@ -28,32 +28,53 @@
         <a class="item" data-tab="notes">
             Editorial Notes
         </a>
-        <div class="right menu">
-            <div class="ui simple dropdown  item">
-                <i class="download icon"></i>
-                <span class="text">Export</span>
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                    <div class="item">PDF</div>
-                    <div class="item">Text</div>
-                    <div class="item">CSV</div>
-                    <div class="item">XML</div>
-                    <div class="item">JSON</div>
+        {%  if activity is defined %}
+            <div class="right menu">
+                <div class="ui simple dropdown item">
+                    <div id="activity_lock"
+                         data-ajax="/activity/lock"
+                         data-activity="{{ activity.id }}"
+                         data-owner="{{ app.user == activity.modifiedUser ? 'true' : 'false' }}"
+                         data-authorised="{{ is_granted('ROLE_USER') ? 'true' : 'false' }}"
+                         data-status = "{{ activity.status }}">
+                        {% if activity.status == 0 %}
+                               <i class="unlock icon"></i>
+                           {% elseif activity.status == 1 %}
+                            <span data-tooltip="{{ 'This activity was locked by '~activity.modifiedUser.username }}"
+                                  data-position="bottom center">
+                                <i class="lock icon"></i>
+                            </span>
+                        {% endif %}
+                    </div>
+
                 </div>
-            </div>
-            {%  if activity is defined %}
-                {%  if app.request.pathinfo == path(activity.activityType~'_by_slug', {slug: activity.slug}) %}
-                    <a class="item" href="{{ path(activity.activityType~'_update', {id: activity.id}) }}">
-                        <i class="edit icon"></i>Edit
-                    </a>
+                <div class="ui simple dropdown  item">
+                    <i class="download icon"></i>
+                    <span class="text">Export</span>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a class="item" href="{{ path(activity.activityType~'_export', { id: activity.id, format: 'pdf' }) }}">PDF</a>
+                        <a class="item" href="{{ path(activity.activityType~'_export', { id: activity.id, format: 'docx' }) }}">Word</a>
+                        <a class="item" href="{{ path(activity.activityType~'_export', { id: activity.id, format: 'csv' }) }}">CSV</a>
+                        <a class="item" href="{{ path(activity.activityType~'_export', { id: activity.id, format: 'xml' }) }}">XML</a>
+                        <a class="item" href="{{ path(activity.activityType~'_export', { id: activity.id, format: 'json' }) }}">JSON</a>
+                    </div>
+                </div>
+                {% if activity.status == 0 or (activity.status == 1 and app.user == activity.modifiedUser) %}
+                    {%  if app.request.pathinfo == path(activity.activityType~'_by_slug', {slug: activity.slug}) %}
+                        <a class="item" href="{{ path(activity.activityType~'_update', {id: activity.id}) }}">
+                            <i class="edit icon"></i>Edit
+                        </a>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
     </div>
 
 {% endblock %}
 {% block javascripts %}
     {{  parent() }}
     <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.2.1/build/ol.js"></script>
+    {{ encore_entry_script_tags('activity') }}
     {{ encore_entry_script_tags('walk') }}
 {% endblock %}

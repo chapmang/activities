@@ -6,12 +6,14 @@ namespace App\Controller;
 use App\Entity\Walk;
 use App\Form\WalkFormType;
 use App\Service\WalkFacade;
-use App\Service\WalkModelFactory;
+use App\Model\ModelFactory\WalkModelFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class WalkController
@@ -33,7 +35,7 @@ class WalkController extends AbstractController
      */
     public function createWalk( Request $request)
     {
-        $walkModel = WalkModelFactory::build();
+        $walkModel = WalkModelFactory::createActivity();
         $form = $this->createForm(WalkFormType::class, $walkModel);
         $form->handleRequest($request);
 
@@ -62,7 +64,7 @@ class WalkController extends AbstractController
      */
     public function updateWalk(Walk $walk, EntityManagerInterface $em, Request $request){
 
-        $walkModel = WalkModelFactory::build($walk);
+        $walkModel = WalkModelFactory::createActivity($walk);
         $form = $this->createForm(WalkFormType::class, $walkModel);
 
         $form->handleRequest($request);
@@ -78,11 +80,32 @@ class WalkController extends AbstractController
             return $this->redirectToRoute('walk_update', ['id' => $walk->getId()]);
 
         }
+
         return $this->render('walk/edit.html.twig', [
+            'activity' => $walk,
             'walkForm' => $form->createView()
         ]);
     }
-    
+
+    /**
+     * @Route("/walk/export/{format}/{id}", name="walk_export", requirements={"id"="[0-9]*"})
+     * @param Walk $walk
+     * @param SerializerInterface $serializer
+     * @param $format
+     * @return string
+     */
+    public function exportWalk(Walk $walk, SerializerInterface $serializer, $format)
+    {
+        $serializedActivity = $serializer->serialize($walk, $format, ['groups' => 'activity', 'xml_root_node_name' => 'activity']);
+        $response = new Response($serializedActivity);
+        $disposition = HeaderUtils::makeDisposition(
+            HeaderUtils::DISPOSITION_ATTACHMENT,
+            $walk->getId().'-'.$walk->getName().'.'.$format
+        );
+        $response->headers->set('Content-Disposition', $disposition);
+        return $response;
+    }
+
     /**
      * @Route("/walk/{id}", name="walk_by_id", methods={"GET"}, requirements={"id"="[0-9]*"})
      * @param Walk $walk

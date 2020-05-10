@@ -1,5 +1,6 @@
 {{ form_start(walkForm) }}
     {{ form_row(walkForm.name) }}
+    <hr>
     <div class="ui tab active" data-tab="details">
         {{ form_row(walkForm.location) }}
         <div class="field">
@@ -44,7 +45,6 @@
                     </div>
                 </div>
             </div>
-            {{ form_row(walkForm.ascent) }}
             {{ form_row(walkForm.gradient) }}
             {{ form_row(walkForm.difficulty) }}
         </div>
@@ -54,12 +54,37 @@
         {{ form_row(walkForm.dogFriendliness) }}
         {{ form_row(walkForm.parking) }}
         {{ form_row(walkForm.publicToilet) }}
+        {{ form_row(walkForm.notes) }}
         {{ form_row(walkForm.tagsText) }}
     </div>
     <div class="ui tab" data-tab="description">
         {{ form_row(walkForm.shortDescription) }}
         {{ form_row(walkForm.description) }}
     </div>
-    <button class='ui button' type="submit">{{ button_text }}</button>
+    <div class="ui tab" data-tab="directions">
+        <div class="directions" data-prototype="{{ form_widget(walkForm.directions.vars.prototype)|e('html_attr')}}" >
+            {% for directionForm in walkForm.directions %}
+                <div class="field">
+                    {{ form_label(directionForm.direction, "Direction: "~directionForm.vars.value.position) }}
+                    {{ form_widget(directionForm.direction) }}
+                    {{ form_widget(directionForm.position) }}
+                </div>
+
+            {% endfor %}
+            {{  form_widget(walkForm.directions) }}
+        </div>
+    </div>
+    <div class="ui tab" data-tab="nearby">
+        {{ form_row(walkForm.whereToEatAndDrink) }}
+        {{ form_row(walkForm.whatToLookOutFor) }}
+        {{ form_row(walkForm.whileYouAreThere) }}
+    </div>
+    <div class="ui tab" data-tab="notes">
+
+    </div>
+<div class="field">
+    <button class='ui primary button' type="submit">{{ button_text }}</button>
+</div>
+
 {{ form_end(walkForm) }}
 

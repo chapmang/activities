@@ -1,19 +1,19 @@
 <?php
 
+namespace App\Model\ModelFactory;
 
-namespace App\Service;
-
-
+use App\Entity\Activity;
 use App\Entity\Walk;
 use App\Model\WalkModel;
 
-class WalkModelFactory extends ModelFactory
+final class WalkModelFactory implements ModelFactoryInterface
 {
-    public static function build(Walk $walk = null): WalkModel
+    public static function createActivity(Walk $walk = null): WalkModel
     {
         $walkModel = new WalkModel();
         if (!is_null($walk)){
             // Base Activity
+            $walkModel->setId($walk->getId());
             $walkModel->setName($walk->getName());
             $walkModel->setStartGridRef($walk->getStartGridRef());
             $walkModel->setShortDescription($walk->getShortDescription());
@@ -43,6 +43,10 @@ class WalkModelFactory extends ModelFactory
             // Related
 //        $walkModel->setMapRoyalty();
 //        $walkModel->setTags();
+            $walkModel->directions = $walk->getDirections();
+            $walkModel->setWhereToEatAndDrink($walk->getWhereToEatAndDrink());
+            $walkModel->setWhatToLookOutFor($walk->getWhatToLookOutFor());
+            $walkModel->setWhileYouAreThere($walk->getWhileYouAreThere());
 
         }
 

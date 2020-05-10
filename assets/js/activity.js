@@ -1,12 +1,39 @@
-var map = new ol.Map({
-    target: 'routeMap',
-    layers: [
-        new ol.layer.Tile({
-            source: new ol.source.OSM()
-        })
-    ],
-    view: new ol.View({
-        center: ol.proj.fromLonLat([-1.058944, 51.281472]),
-        zoom: 15
-    })
+$("#activity_lock").on('click', function(e){
+   e.preventDefault();
+   let authorised = $(this).data('authorised');
+   if (authorised === true) {
+       let status = $(this).data("status");
+       let activity = $(this).data("activity");
+       let owner = $(this).data('owner');
+       let url = $(this).data('ajax');
+
+       if ( status === 0) {
+           lockAjaxCaller(url, status, activity);
+           $(this).data("status",1);
+       } else if (status === 1 && owner === true) {
+           lockAjaxCaller(url, status, activity)
+           $(this).data("status", 0);
+       } else {
+           // @Todo not authorised to change the status of this activity
+       }
+   }
 });
+
+function lockAjaxCaller (url, status, activity) {
+    $.ajax({
+        url: url,
+        data: { "status": status, "activity": activity}
+    })
+        .done(function(data) {
+            if (data.status === 0) {
+                $('#activity_lock').html('<i class="unlock icon"></i>');
+            } else {
+                let tooltip = "This activity was locked by "+ data.user;
+                $('#activity_lock').html('<span data-tooltip="'+tooltip+'" data-position="bottom center">'+
+                    '<i class="lock icon"></i></span>');
+            }
+        })
+        .fail(function(){
+            // @Todo work out graceful way to inform that lock/unlock action failed
+        });
+}

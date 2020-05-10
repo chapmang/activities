@@ -26,7 +26,6 @@ class Direction {
 	 * @ORM\Id
 	 * @ORM\Column(type="integer", nullable=false)
 	 * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"activity"})
 	 */	
 	protected $id;
 

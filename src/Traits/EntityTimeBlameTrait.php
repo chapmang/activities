@@ -6,6 +6,7 @@ use App\Entity\User;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait EntityTimeBlameTrait
 {
@@ -15,6 +16,7 @@ trait EntityTimeBlameTrait
      *
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=false)
+     * @Groups({"activity"})
      */
     protected $createdDate;
 
@@ -34,6 +36,7 @@ trait EntityTimeBlameTrait
      *
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime", nullable=false)
+     * @Groups({"activity"})
      */
     protected $modifiedDate;
 

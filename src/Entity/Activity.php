@@ -42,7 +42,7 @@ class Activity implements ActivityInterface, TaggableInterface {
 	 * @ORM\Id
 	 * @ORM\Column(type="integer", nullable=false)
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"activity", "route"})
+     * @Groups({"activity", "admin", "carto", "route"})
 	 */
 	protected $id;
 
@@ -52,7 +52,7 @@ class Activity implements ActivityInterface, TaggableInterface {
      * 
 	 * @ORM\Column(type="string", length=190, unique=true, nullable=false)
      * @Assert\NotBlank(message = "Name is a required element of all activities")
-     * @Groups({"activity", "route"})
+     * @Groups({"activity", "admin", "carto", "route"})
 	 */
 	protected $name;
 
@@ -62,7 +62,7 @@ class Activity implements ActivityInterface, TaggableInterface {
      *  
 	 * @ORM\Column(type="string", length=45, nullable=true)
      * @Assert\Regex("/^([STNHOstnho][A-Za-z]\s?)(\d{5}\s?\d{5}|\d{4}\s?\d{4}|\d{3}\s?\d{3}|\d{2}\s?\d{2}|\d{1}\s?\d{1})$/", message="This value is not a valid grid reference")
-     * @Groups({"activity"})
+     * @Groups({"activity", "admin", "carto"})
 	 */
 	protected $startGridRef = null;
 
@@ -72,7 +72,7 @@ class Activity implements ActivityInterface, TaggableInterface {
      *  
 	 * @ORM\Column(type="decimal", precision=10, scale=8, nullable=true)
      * @Assert\Regex("/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/", message="This value is not a valid Latitude")
-     * @Groups({"activity"})
+     * @Groups({"activity", "admin", "carto"})
 	 */
 	protected $latitude = null;
 
@@ -82,7 +82,7 @@ class Activity implements ActivityInterface, TaggableInterface {
      * 
 	 * @ORM\Column(type="decimal", precision=11, scale=8, nullable=true)
      * @Assert\Regex("/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/", message="This value is not a valid Longitude")
-     * @Groups({"activity"})
+     * @Groups({"activity", "admin", "carto"})
 	 */
 	protected $longitude = null;
 
@@ -91,7 +91,7 @@ class Activity implements ActivityInterface, TaggableInterface {
      * @var string
      *
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"activity"})
+     * @Groups({"activity", "admin"})
      */
     protected $shortDescription = null;
 
@@ -100,24 +100,25 @@ class Activity implements ActivityInterface, TaggableInterface {
      * @var string
      * 
 	 * @ORM\Column(type="text", nullable=true)
-     * @Groups({"activity"})
+     * @Groups({"activity", "admin"})
 	 */
 	protected $description = null;
 
     /**
      * Searchable description of the activity
      * @var string
-     * 
+
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"activity", "admin"})
      */
     protected $searchableDescription = null;
 
 	/**
      * Status of the activity (0 = Open, 1 = Locked by modifedUser)
      * @var integer
-     * 
+     *
 	 * @ORM\Column(type="integer", nullable=false, options={"default" : 0})
-     * @Groups({"activity"})
+     * @Groups({"admin"})
 	 */
 	protected $status = 0;
 
@@ -126,7 +127,7 @@ class Activity implements ActivityInterface, TaggableInterface {
      * @var boolean
      *
      * @ORM\Column(type="boolean", nullable=false)
-     * @Groups({"activity"})
+     * @Groups({"admin"})
      */
     protected $onlineFriendly = false;
 
@@ -136,6 +137,7 @@ class Activity implements ActivityInterface, TaggableInterface {
      *
      * @ORM\Column(type="string", length=190, nullable=true, unique=true)
      * @Gedmo\Slug(fields={"name"}, updatable=true)
+     * @Groups({"activity", "admin"})
      */
     protected $slug;
 
@@ -147,7 +149,7 @@ class Activity implements ActivityInterface, TaggableInterface {
      * 
      * @ORM\OneToOne(targetEntity="MapRoyalty", cascade={"persist"})
      * @ORM\JoinColumn(name="maproyalty", referencedColumnName="id", onDelete="CASCADE")
-     * @Groups({"activity"})
+     * @Groups({"admin", "carto"})
      */
     protected $mapRoyalty;
 
@@ -158,7 +160,7 @@ class Activity implements ActivityInterface, TaggableInterface {
      * @ORM\ManyToMany(targetEntity="Tag", inversedBy="activities")
      * @ORM\JoinTable(name="activity_tag")
      * @ORM\OrderBy({"name" = "DESC"})
-     * @Groups({"activity"})
+     * @Groups({"activity", "admin"})
      */
     protected $tags;
 
@@ -170,8 +172,8 @@ class Activity implements ActivityInterface, TaggableInterface {
      * 
      * @ORM\OneToMany(targetEntity="Direction", mappedBy="activity", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE")
-     * @ORM\OrderBy({"position" = "DESC"})
-     * @Groups({"activity"})
+     * @ORM\OrderBy({"position" = "ASC"})
+     * @Groups({"activity", "admin"})
      */
     protected $directions;
 

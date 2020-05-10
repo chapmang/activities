@@ -3,9 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Activity;
+use App\Model\ModelFactory\ActivityModelFactory;
+use App\Model\ModelFactory\WalkModelFactory;
+use App\Model\WalkModel;
 use App\Repository\ActivityRepository;
+use App\Service\ActivityFacade;
+use App\Service\ActivityStatusUpdater;
+use App\Service\WalkFacade;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +23,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ActivityController extends AbstractController
 {
+    private $activityFacade;
 
+    public function __construct(ActivityFacade $activityFacade)
+    {
+        $this->activityFacade = $activityFacade;
+    }
     /**
      * @Route("/activity", name="activity_list", methods={"GET"})
      * @param Request $request
@@ -102,12 +114,27 @@ class ActivityController extends AbstractController
     }
 
     /**
-     * @Route("/api/activity/{id}", name="api_activity", methods={"GET"})
+     * @Route("/activity/lock", name="lock_activity", defaults={"_format": "json"})
+     * @param Request $request
+     * @param ActivityRepository $activityRepository
+     * @param ActivityStatusUpdater $activityStatusUpdater
+     * @return Response
      */
-    public function apiFetch(){
+    public function lockActivity(Request $request, ActivityRepository $activityRepository, ActivityStatusUpdater $activityStatusUpdater)
+    {
+        $activity = $activityRepository->find($request->query->get('activity'));
+        $statusRequest = $request->query->get('status');
+        $activityModel = ActivityModelFactory::createActivity($activity);
+        $updatedActivityModel = $activityStatusUpdater->updateStatus($activityModel, $statusRequest);
 
+        $this->activityFacade->updateWalk($activity, $updatedActivityModel);
+        // @TODO insert try catch and find out how to pass by error via javascript
 
+        return new JsonResponse([
+            'status' => $updatedActivityModel->getStatus(),
+            'user' => $this->getUser()->getUsername()]);
     }
+
 
 
 }

@@ -15,6 +15,12 @@
                     <div class="ui large list">
                         <div class="item">
                             <div class="content">
+                                <div class="header">Activity ID</div>
+                                <div class="description">{{ activity.id }}</div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="content">
                                 <div class="header">Distance</div>
                                 <div class="description">{{ activity.distance }} miles ({{ activity.distance }}km)</div>
                             </div>
@@ -45,6 +51,30 @@
                         </div>
                         <div class="item">
                             <div class="content">
+                                <div class="header">Landscape</div>
+                                <div class="description">{{ activity.landscape }}</div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="content">
+                                <div class="header">Suggested Map</div>
+                                <div class="description">{{ activity.suggestedMap }}</div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="content">
+                                <div class="header">Start Point Grid Reference</div>
+                                <div class="description">{{ activity.startGridRef }}</div>
+                            </div>
+                            {% if activity.finishGridRef %}
+                                <div class="content">
+                                    <div class="header">Finish Point Grid Reference</div>
+                                    <div class="description">{{ activity.finishGridRef }}</div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="item">
+                            <div class="content">
                                 <div class="header">Dog Friendliness</div>
                                 <div class="description">{{ activity.dogFriendliness }}</div>
                             </div>
@@ -61,26 +91,6 @@
                                 <div class="description">{{ activity.publicToilet }}</div>
                             </div>
                         </div>
-                        <div class="item">
-                            <div class="content">
-                                <div class="header">Suggested Map</div>
-                                <div class="description">{{ activity.suggestedMap }}</div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="content">
-                                <div class="header">Start Point Grid Reference</div>
-                                <div class="description">{{ activity.startGridRef }}</div>
-                            </div>
-                        </div>
-                        {% if activity.finishGridRef %}
-                            <div class="item">
-                                <div class="content">
-                                    <div class="header">Finish Point Grid Reference</div>
-                                    <div class="description">{{ activity.finishGridRef }}</div>
-                                </div>
-                            </div>
-                        {% endif %}
                         {% if activity.notes %}
                             <div class="item">
                                 <div class="content">
@@ -112,7 +122,12 @@
                     {% endfor %}
                 </div>
                 <div class="ui tab" data-tab="nearby">
-                    <h2 class="ui header">These are the things nearby</h2>
+                    <h2 class="ui header">Where to eat and drink</h2>
+                    <p>{{ activity.whereToEatAndDrink }}</p>
+                    <h2 class="ui header">What to see</h2>
+                    <p>{{ activity.whatToLookOutFor }}</p>
+                    <h2 class="ui header">While you are there</h2>
+                    <p>{{ activity.whileYouAreThere }}</p>
                 </div>
                 <div class="ui tab" data-tab="collections">
                     <h2 class="ui header">This activity appears in the following collections</h2>

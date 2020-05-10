@@ -5,11 +5,12 @@ namespace App\Form;
 
 use App\Entity\Tag;
 use App\Entity\Walk;
-use App\Form\Model\WalkModel;
+use App\Model\WalkModel;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\NumberToLocalizedStringTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -31,7 +32,8 @@ class WalkFormType extends AbstractType
                 'required' => false
             ])
             ->add('description', TextareaType::class, [
-                'required' => false
+                'required' => false,
+                'rows' => 30
             ])
             ->add('location', TextType::class, [
                 'required' => false
@@ -82,10 +84,30 @@ class WalkFormType extends AbstractType
             ->add('publicToilet', TextType::class, [
                 'required' => false
             ])
+            ->add('notes', TextType::class, [
+                'required' => false
+            ])
             ->add('suggestedMap', TextType::class, [
                 'required' => false
             ])
-            ->add('tagsText', TagsTextType::class);
+            ->add('tagsText', TagsTextType::class)
+            ->add('directions', CollectionType::class, [
+                'entry_type' => DirectionEmbeddedForm::class,
+                'entry_options' => ['label' => false],
+                'allow_delete' => true,
+                'allow_add' => true,
+                'by_reference' => false
+            ])
+            ->add('whereToEatAndDrink', TextareaType::class, [
+                'required' => false
+            ])
+            ->add('whatToLookOutFor', TextareaType::class, [
+                'required' => false,
+                'label' => 'What to see'
+            ])
+            ->add('whileYouAreThere', TextareaType::class, [
+                'required' => false
+            ]);
     }
 
 //    public function configureOptions(OptionsResolver $resolver)
