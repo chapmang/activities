@@ -56,7 +56,7 @@ class ActivityModel
     /**
     * @var integer
     */
-    protected $status;
+    protected $status = 0;
 
     /**
      * @var boolean

@@ -55,6 +55,7 @@ class WalkHydrator implements HydratorInterface
         $this->walk->setWhereToEatAndDrink($this->walkModel->getWhereToEatAndDrink());
         $this->walk->setWhatToLookOutFor($this->walkModel->getWhatToLookOutFor());
         $this->walk->setWhileYouAreThere($this->walkModel->getWhileYouAreThere());
+        $this->walk->setTagsText($this->walkModel->getTagsText());
 
 
         return $this->walk;

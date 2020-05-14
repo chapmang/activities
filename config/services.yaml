@@ -25,3 +25,15 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\Export\CsvExportStrategy:
+        tags: ['export_strategy']
+
+    App\Service\Export\JsonExportStrategy:
+        tags: ['export_strategy']
+
+    App\Service\Export\XmlExportStrategy:
+        tags: ['export_strategy']
+
+    App\Service\Export\WordExportStrategy:
+        tags: ['export_strategy']

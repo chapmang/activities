@@ -42,7 +42,7 @@ final class WalkModelFactory implements ModelFactoryInterface
 
             // Related
 //        $walkModel->setMapRoyalty();
-//        $walkModel->setTags();
+            $walkModel->setTagsText($walk->getTagsText());
             $walkModel->directions = $walk->getDirections();
             $walkModel->setWhereToEatAndDrink($walk->getWhereToEatAndDrink());
             $walkModel->setWhatToLookOutFor($walk->getWhatToLookOutFor());

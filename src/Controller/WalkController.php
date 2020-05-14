@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Walk;
 use App\Form\WalkFormType;
+use App\Service\Export\ActivityExport;
 use App\Service\WalkFacade;
 use App\Model\ModelFactory\WalkModelFactory;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,7 +14,6 @@ use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class WalkController
@@ -22,10 +22,15 @@ use Symfony\Component\Serializer\SerializerInterface;
 class WalkController extends AbstractController
 {
     private $walkFacade;
+    /**
+     * @var ActivityExport
+     */
+    private $export;
 
-    public function __construct(WalkFacade $walkFacade)
+    public function __construct(WalkFacade $walkFacade, ActivityExport $export)
     {
         $this->walkFacade = $walkFacade;
+        $this->export = $export;
     }
 
     /**
@@ -63,7 +68,7 @@ class WalkController extends AbstractController
      * @return Response
      */
     public function updateWalk(Walk $walk, EntityManagerInterface $em, Request $request){
-
+        //dd($request);
         $walkModel = WalkModelFactory::createActivity($walk);
         $form = $this->createForm(WalkFormType::class, $walkModel);
 
@@ -90,20 +95,22 @@ class WalkController extends AbstractController
     /**
      * @Route("/walk/export/{format}/{id}", name="walk_export", requirements={"id"="[0-9]*"})
      * @param Walk $walk
-     * @param SerializerInterface $serializer
      * @param $format
      * @return string
      */
-    public function exportWalk(Walk $walk, SerializerInterface $serializer, $format)
+    public function exportWalk(Walk $walk, $format)
     {
-        $serializedActivity = $serializer->serialize($walk, $format, ['groups' => 'activity', 'xml_root_node_name' => 'activity']);
-        $response = new Response($serializedActivity);
+        $walkModel = WalkModelFactory::createActivity($walk);
+        // @TODO Make sure Models (DTOs) support serializer groups
+
+        $download = $this->export->download($format, $walk, 'activity');
+
         $disposition = HeaderUtils::makeDisposition(
             HeaderUtils::DISPOSITION_ATTACHMENT,
             $walk->getId().'-'.$walk->getName().'.'.$format
         );
-        $response->headers->set('Content-Disposition', $disposition);
-        return $response;
+        $download->headers->set('Content-Disposition', $disposition);
+        return $download;
     }
 
     /**

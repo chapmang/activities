@@ -29,7 +29,7 @@ class WalkFacade
     public function updateWalk(Walk $walk, WalkModel $walkModel)
     {
         $walk = $this->hydrate($walk, $walkModel);
-
+        //dd($walk);
         $this->em->persist($walk);
         $this->em->flush();
         return;

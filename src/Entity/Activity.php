@@ -149,7 +149,7 @@ class Activity implements ActivityInterface, TaggableInterface {
      * 
      * @ORM\OneToOne(targetEntity="MapRoyalty", cascade={"persist"})
      * @ORM\JoinColumn(name="maproyalty", referencedColumnName="id", onDelete="CASCADE")
-     * @Groups({"admin", "carto"})
+     * @Groups({"admin"})
      */
     protected $mapRoyalty;
 
@@ -216,7 +216,6 @@ class Activity implements ActivityInterface, TaggableInterface {
      *     joinColumns={@ORM\JoinColumn(name="activity_a_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="associated_b_id", referencedColumnName="id")}
      * )
-     * @Groups({"activity"})
      */
     protected $associatedActivities;
 
@@ -423,6 +422,7 @@ class Activity implements ActivityInterface, TaggableInterface {
     public function setTagsText(?string $tagsText): void
     {
         $this->tagsText = $tagsText;
+        $this->modifiedDate = new \DateTimeImmutable();
     }
 
     public function getTagsText(): ?string
