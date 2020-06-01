@@ -13,67 +13,6 @@ var map = new ol.Map({
     })
 });
 
-$(document).ready(function () {
-    (function () {
-        var $tagInput = $('input[name$="[tagsText]"]');
-        function tags($input) {
-            $input.attr('type', 'hidden').select2({
-                tags: true,
-                tokenSeparators: [","],
-                createSearchChoice: function(term, data) {
-                    if ($(data).filter(function () {
-                        return this.text.localeCompare(term) === 0;
-                    }).length === 0) {
-                        return {
-                            id: term,
-                            text: term
-                        };
-                    }
-                },
-                multiple: true,
-                ajax: {
-                    url: $input.data('ajax'),
-                    dataType: "json",
-                    data: function (term, page) {
-                        return {
-                            q: term
-                        };
-                    },
-                    results: function (data, page) {
-                        return {
-                            results: data
-                        };
-                    }
-                },
-                initSelection: function (element, callback) {
-                    var data = [];
-                    function splitVal(string, separator) {
-                        var val, i, l;
-                        if (string === null || string.length < 1) {
-                            return [];
-                        }
-                        val = string.split(separator);
-                        for (i = 0, l = val.length; i < l; i = i + 1) {
-                            val[i] = $.trim(val[i]);
-                        }
-                        return val;
-                    }
-                    $(splitVal(element.val(), ",")).each(function () {
-                        data.push({
-                            id: this,
-                            text: this
-                        });
-                    });
-                    callback(data);
-                }
-            });
-        }
-        if ($tagInput.length > 0) {
-            tags($tagInput);
-        }
-    }());
-});
-
 var $collectionHolder;
 
 // setup an "add a tag" link
@@ -107,13 +46,10 @@ function addDirectionForm($collectionHolder, $newLinkLi) {
 
     // get the new index
     let index;
-    if ($collectionHolder.data('index') == 0) {
-        index = 1;
-    } else {
-        index = $collectionHolder.data('index');
-    }
+    index = $collectionHolder.data('index');
 
-    var newForm = prototype;
+
+    let newForm = prototype;
     // You need this only if you didn't set 'label' => false in your tags field in TaskType
     // Replace '__name__label__' in the prototype's HTML to
     // instead be a number based on how many items we have
@@ -122,7 +58,6 @@ function addDirectionForm($collectionHolder, $newLinkLi) {
     // Replace '__name__' in the prototype's HTML to
     // instead be a number based on how many items we have
     newForm = newForm.replace(/__name__/g, index);
-    console.log(newForm);
     //newForm = newForm(".field").prepend("<label for=\"walk_form_directions_3_direction\">Direction: 5</label>")
 //<label for="walk_form_directions_3_direction">Direction: 5</label>
 
@@ -133,6 +68,7 @@ function addDirectionForm($collectionHolder, $newLinkLi) {
 
     //var $newFormLi = $('<div class="field"></div>').append(newForm);
     $newLinkLi.before(newForm);
-    $("#walk_form_directions_"+index+"_direction").before("<label>Direction: "+index+"</label>");
-    $("#walk_form_directions_"+index+"_position").val(index);
+    let dirNumber = index+1;
+    $("#walk_form_directions_"+index+"_direction").before("<label>Direction: "+dirNumber+"</label>");
+    $("#walk_form_directions_"+index+"_position").val(dirNumber);
 }

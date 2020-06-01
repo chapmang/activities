@@ -8,7 +8,6 @@ use App\Form\WalkFormType;
 use App\Service\Export\ActivityExport;
 use App\Service\WalkFacade;
 use App\Model\ModelFactory\WalkModelFactory;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,9 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class WalkController extends AbstractController
 {
     private $walkFacade;
-    /**
-     * @var ActivityExport
-     */
+
     private $export;
 
     public function __construct(WalkFacade $walkFacade, ActivityExport $export)
@@ -38,19 +35,19 @@ class WalkController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function createWalk( Request $request)
+    public function createWalk(Request $request)
     {
+        $walk = new Walk();
         $walkModel = WalkModelFactory::createActivity();
-        $form = $this->createForm(WalkFormType::class, $walkModel);
+        $form = $this->createForm(WalkFormType::class, $walk);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
 
-            // WalkFacade creates instance of an Walk,
-            // persists it and flushes the EntityManager.
-            $walk = $this->walkFacade->createWalk($walkModel);
+            // WalkFacade persists the walks and flushes the EntityManager.
+            $this->walkFacade->createWalk($walk);
 
-            $this->addFlash('success', 'Walk ' .$walk->getName(). ' Created ');
+            $this->addFlash('success', 'Walk ' .$walk->getName(). ' Created');
 
             return $this->redirectToRoute('walk_update', ['id' => $walk->getId()]);
 
@@ -63,14 +60,17 @@ class WalkController extends AbstractController
     /**
      * @Route("/walk/update/{id}", name="walk_update", requirements={"id"="[0-9]*"})
      * @param Walk $walk
-     * @param EntityManagerInterface $em
      * @param Request $request
      * @return Response
      */
-    public function updateWalk(Walk $walk, EntityManagerInterface $em, Request $request){
-        //dd($request);
+    public function updateWalk(Walk $walk, Request $request)
+    {
+        // Uses custom voter to check if it the users own account
+        // or SysAdmin to allow access
+        $this->denyAccessUnlessGranted('LOCKED', $walk);
+
         $walkModel = WalkModelFactory::createActivity($walk);
-        $form = $this->createForm(WalkFormType::class, $walkModel);
+        $form = $this->createForm(WalkFormType::class, $walk);
 
         $form->handleRequest($request);
 
@@ -78,7 +78,7 @@ class WalkController extends AbstractController
 
             // WalkFacade updates instance of an Walk,
             // persists it and flushes the EntityManager.
-            $this->walkFacade->updateWalk($walk, $walkModel);
+            $this->walkFacade->updateWalk($walk);
 
             $this->addFlash('success', 'Walk ' .$walk->getName(). ' Updated ');
 

@@ -18,4 +18,5 @@ return [
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
     Beelab\TagBundle\BeelabTagBundle::class => ['all' => true],
     CodedMonkey\SemanticUiBundle\SemanticUiBundle::class => ['all' => true],
+    Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle::class => ['all' => true],
 ];

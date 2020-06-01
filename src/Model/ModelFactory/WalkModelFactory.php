@@ -10,6 +10,7 @@ final class WalkModelFactory implements ModelFactoryInterface
 {
     public static function createActivity(Walk $walk = null): WalkModel
     {
+
         $walkModel = new WalkModel();
         if (!is_null($walk)){
             // Base Activity
@@ -18,6 +19,7 @@ final class WalkModelFactory implements ModelFactoryInterface
             $walkModel->setStartGridRef($walk->getStartGridRef());
             $walkModel->setShortDescription($walk->getShortDescription());
             $walkModel->setDescription($walk->getDescription());
+            $walkModel->setStatus($walk->getStatus());
 
             // Walk
             $walkModel->setLocation($walk->getLocation());
@@ -42,7 +44,7 @@ final class WalkModelFactory implements ModelFactoryInterface
 
             // Related
 //        $walkModel->setMapRoyalty();
-            $walkModel->setTagsText($walk->getTagsText());
+            $walkModel->tags = $walk->getTags();
             $walkModel->directions = $walk->getDirections();
             $walkModel->setWhereToEatAndDrink($walk->getWhereToEatAndDrink());
             $walkModel->setWhatToLookOutFor($walk->getWhatToLookOutFor());

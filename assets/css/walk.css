@@ -1,29 +1,3 @@
-.contentWrapper {
-    padding: 12px 12px 20px 12px;
-    height: calc(100% - 109px);
-}
-.contentWrapper,
-.mcFlexWrapper {
-    display: flex;
-}
-.contentWrapper {
-    flex-direction: column;
-}
-.mcFlexWrapper {
-    justify-content: space-around;
-    flex: 1;
-    overflow: hidden;
-}
-.mcFlexWrapper>.col {
-    width: 48%;
-}
-.col:first-child {
-    overflow: auto;
-    padding-right: 10px;
-}
-.walkMapping {
-    height: calc(100% - 65px)
-}
 .routeMap{
     height:100%;
     width: 100%

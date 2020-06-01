@@ -25,6 +25,7 @@ Encore
      */
     .addEntry('walk', './assets/js/walk.js')
     .addEntry('activity', './assets/js/activity.js')
+    .addEntry('collection', './assets/js/collection.js')
     .addEntry('admin', './assets/js/admin.js')
     .addEntry('search', './assets/js/search.js')
     .addEntry('app', './assets/js/app.js')

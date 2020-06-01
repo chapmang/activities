@@ -3,10 +3,6 @@
 
 namespace App\Form;
 
-use App\Entity\Tag;
-use App\Entity\Walk;
-use App\Model\WalkModel;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\NumberToLocalizedStringTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -16,12 +12,16 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
+use Symfony\Component\Routing\RouterInterface;
 
 class WalkFormType extends AbstractType
 {
-    public function __construct()
+    private $router;
+
+    public function __construct(RouterInterface $router)
     {
+        $this->router = $router;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -90,7 +90,17 @@ class WalkFormType extends AbstractType
             ->add('suggestedMap', TextType::class, [
                 'required' => false
             ])
-            ->add('tagsText', TagsTextType::class)
+            ->add('tags', Select2EntityType::class, [
+                'multiple' => true,
+                'remote_route' => 'ajax_autocomplete',
+                'class' => 'App\Entity\Tag',
+                'primary_key' => 'id',
+                'text_property' => 'name',
+                'allow_clear' => true,
+                'placeholder' => 'Select Tags to describe this activity',
+                'cache' => true,
+                'cache_timeout' => 60000,
+            ])
             ->add('directions', CollectionType::class, [
                 'entry_type' => DirectionEmbeddedForm::class,
                 'entry_options' => ['label' => false],

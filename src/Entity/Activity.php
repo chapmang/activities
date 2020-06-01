@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\ActivityRepository")
  * @UniqueEntity(fields={"name"}, message="This name is already in use")
  */
-class Activity implements ActivityInterface, TaggableInterface {
+class Activity implements ActivityInterface {
 
     use EntityTimeBlameTrait;
 
@@ -37,7 +37,6 @@ class Activity implements ActivityInterface, TaggableInterface {
 
 	/**
      * Unique activity identifier
-     * @var integer
      *  
 	 * @ORM\Id
 	 * @ORM\Column(type="integer", nullable=false)
@@ -48,7 +47,6 @@ class Activity implements ActivityInterface, TaggableInterface {
 
 	/**
      * Name of the activity
-     * @var string
      * 
 	 * @ORM\Column(type="string", length=190, unique=true, nullable=false)
      * @Assert\NotBlank(message = "Name is a required element of all activities")
@@ -58,7 +56,6 @@ class Activity implements ActivityInterface, TaggableInterface {
 
 	/**
      * Grid reference of the activity start location
-     * @var string
      *  
 	 * @ORM\Column(type="string", length=45, nullable=true)
      * @Assert\Regex("/^([STNHOstnho][A-Za-z]\s?)(\d{5}\s?\d{5}|\d{4}\s?\d{4}|\d{3}\s?\d{3}|\d{2}\s?\d{2}|\d{1}\s?\d{1})$/", message="This value is not a valid grid reference")
@@ -68,7 +65,6 @@ class Activity implements ActivityInterface, TaggableInterface {
 
 	/**
      * Latitude of the activity start location
-     * @var string
      *  
 	 * @ORM\Column(type="decimal", precision=10, scale=8, nullable=true)
      * @Assert\Regex("/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/", message="This value is not a valid Latitude")
@@ -78,7 +74,6 @@ class Activity implements ActivityInterface, TaggableInterface {
 
 	/**
      * Longitude of the activity start location
-     * @var string
      * 
 	 * @ORM\Column(type="decimal", precision=11, scale=8, nullable=true)
      * @Assert\Regex("/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/", message="This value is not a valid Longitude")
@@ -88,7 +83,6 @@ class Activity implements ActivityInterface, TaggableInterface {
 
     /**
      * Short description of the walk
-     * @var string
      *
      * @ORM\Column(type="text", nullable=true)
      * @Groups({"activity", "admin"})
@@ -97,7 +91,6 @@ class Activity implements ActivityInterface, TaggableInterface {
 
 	/**
      * Description of the activity
-     * @var string
      * 
 	 * @ORM\Column(type="text", nullable=true)
      * @Groups({"activity", "admin"})
@@ -106,8 +99,7 @@ class Activity implements ActivityInterface, TaggableInterface {
 
     /**
      * Searchable description of the activity
-     * @var string
-
+     *
      * @ORM\Column(type="text", nullable=true)
      * @Groups({"activity", "admin"})
      */
@@ -115,7 +107,6 @@ class Activity implements ActivityInterface, TaggableInterface {
 
 	/**
      * Status of the activity (0 = Open, 1 = Locked by modifedUser)
-     * @var integer
      *
 	 * @ORM\Column(type="integer", nullable=false, options={"default" : 0})
      * @Groups({"admin"})
@@ -124,7 +115,6 @@ class Activity implements ActivityInterface, TaggableInterface {
 
     /**
      * Is the Activity suitable for online
-     * @var boolean
      *
      * @ORM\Column(type="boolean", nullable=false)
      * @Groups({"admin"})
@@ -133,7 +123,6 @@ class Activity implements ActivityInterface, TaggableInterface {
 
     /**
      * Url friendly activity name
-     * @var string
      *
      * @ORM\Column(type="string", length=190, nullable=true, unique=true)
      * @Gedmo\Slug(fields={"name"}, updatable=true)
@@ -145,7 +134,6 @@ class Activity implements ActivityInterface, TaggableInterface {
 
     /**
      * Map Royalty details of activity
-     * @var MapRoyalty
      * 
      * @ORM\OneToOne(targetEntity="MapRoyalty", cascade={"persist"})
      * @ORM\JoinColumn(name="maproyalty", referencedColumnName="id", onDelete="CASCADE")
@@ -155,7 +143,6 @@ class Activity implements ActivityInterface, TaggableInterface {
 
     /**
      * Collection of tags associated to the activity
-     * @var ArrayCollection
      * 
      * @ORM\ManyToMany(targetEntity="Tag", inversedBy="activities")
      * @ORM\JoinTable(name="activity_tag")
@@ -164,11 +151,8 @@ class Activity implements ActivityInterface, TaggableInterface {
      */
     protected $tags;
 
-    protected $tagsText;
-
     /**
      * Collection of directions associated to the activity
-     * @var ArrayCollection
      * 
      * @ORM\OneToMany(targetEntity="Direction", mappedBy="activity", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE")
@@ -178,8 +162,7 @@ class Activity implements ActivityInterface, TaggableInterface {
     protected $directions;
 
     /**
-     * Collection of user flags against the activity 
-     * @var ArrayCollection
+     * Collection of user flags against the activity
      * 
      * @ORM\OneToMany(targetEntity="UserFlag", mappedBy="activity", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE")
@@ -189,7 +172,6 @@ class Activity implements ActivityInterface, TaggableInterface {
 
     /**
      * Collection of images associated to the activity
-     * @var ArrayCollection
      * 
      * @ORM\OneToMany(targetEntity="Image", mappedBy="activity", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE")
@@ -199,7 +181,6 @@ class Activity implements ActivityInterface, TaggableInterface {
 
     /**
      * Collection of route points associated to the activity
-     * @var ArrayCollection
      * 
      * @ORM\OneToMany(targetEntity="RoutePoint", mappedBy="activity", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE")
@@ -209,7 +190,6 @@ class Activity implements ActivityInterface, TaggableInterface {
 
     /**
      * Collection of activities associated to the activity
-     * @var ArrayCollection
      * 
      * @ORM\ManyToMany(targetEntity="Activity")
      * @ORM\JoinTable(name="associated_activity",
@@ -221,7 +201,6 @@ class Activity implements ActivityInterface, TaggableInterface {
 
     /**
      * Collection of collections containing the activity
-     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="CollectionContents", mappedBy="activity")
      * @Groups({"activity"})
@@ -230,7 +209,6 @@ class Activity implements ActivityInterface, TaggableInterface {
 
     /**
      * Collection of adminNotes associated to the activity
-     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="AdminNote", mappedBy="activity", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE")
@@ -243,243 +221,207 @@ class Activity implements ActivityInterface, TaggableInterface {
     /*
      * Define type for collection properties
      */ 
-    public function __construct() {
-
-        $this->tags = new ArrayCollection(); 
-
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
         $this->directions = new ArrayCollection();
-
         $this->flags = new ArrayCollection();
-
         $this->images = new ArrayCollection();
-        
         $this->routePoints = new ArrayCollection();
-
         $this->associatedActivities = new ArrayCollection();
-
         $this->collections = new ArrayCollection();
-
         $this->adminNotes = new ArrayCollection();
     }
 
-    public function getId(): ?int {
-
+    public function getId(): int
+    {
         return $this->id;
     }
 
-    public function setName(string $name): self {
-
+    public function setName(string $name)
+    {
         $this->name = $name;
-        return $this;
     }
 
-    public function getName(): ?string {
-        
+    public function getName(): ?string
+    {
         return $this->name;
     }
 
-    public function setStartGridRef(string $startGridRef = null): self {
-        
+    public function setStartGridRef(string $startGridRef = null)
+    {
         $this->startGridRef = $startGridRef;
-        return $this;
+
     }
 
-    public function getStartGridRef(): ?string {
-        
+    public function getStartGridRef(): ?string
+    {
         return $this->startGridRef;
     }
 
-    public function setLatitude(float $latitude = null): self {
-        
+    public function setLatitude(float $latitude = null)
+    {
         $this->latitude = $latitude;
-        return $this;
     }
 
-    public function getLatitude(): ?string {
-        
+    public function getLatitude(): ?string
+    {
         return $this->latitude;
     }
 
-    public function setLongitude(string $longitude = null): self {
-        
+    public function setLongitude(float $longitude = null)
+    {
         $this->longitude = $longitude;
-        return $this;
     }
 
-    public function getLongitude(): ?string {
-        
+    public function getLongitude(): ?string
+    {
         return $this->longitude;
     }
 
-    public function setShortDescription(string $shortDescription = null): self {
-
+    public function setShortDescription(string $shortDescription = null)
+    {
         $this->shortDescription = $shortDescription;
-        return $this;
     }
 
-    public function getShortDescription(): ?string {
-
+    public function getShortDescription(): ?string
+    {
         return $this->shortDescription;
     }
 
-    public function setDescription(string $description = null): self {
-        
+    public function setDescription(string $description = null)
+    {
         $this->description = $description;
-        return $this;
     }
 
-    public function getDescription(): ?string {
-        
+    public function getDescription(): ?string
+    {
         return $this->description;
     }
 
-    public function setSearchableDescription(string $searchableDescription = null): self {
-        
+    public function setSearchableDescription(string $searchableDescription = null)
+    {
         $this->searchableDescription = $searchableDescription;
-        return $this;
     }
 
-    public function getSearchableDescription(): ?string {
-        
+    public function getSearchableDescription(): ?string
+    {
         return $this->searchableDescription;
     }
 
-    public function setStatus(int $status = 0): self{
-        
+    public function setStatus(int $status = 0)
+    {
         $this->status = $status;
-        return $this;
     }
 
-    public function getStatus(): int {
-        
+    public function getStatus(): int
+    {
         return $this->status;
     }
 
-    public function setOnlineFriendly(bool $onlineFriendly = false): self {
-
+    public function setOnlineFriendly(bool $onlineFriendly = false)
+    {
         $this->onlineFriendly = $onlineFriendly;
-        return $this;
     }
 
-    public function getOnlineFriendly(): bool {
-
+    public function getOnlineFriendly(): bool
+    {
         return $this->onlineFriendly;
     }
 
-    public function setSlug(string $slug = null): self {
-
+    public function setSlug(string $slug = null)
+    {
         $this->slug = $slug;
-        return $this;
     }
 
-    public function getSlug(): ?string {
-
+    public function getSlug(): ?string
+    {
         return $this->slug;
     }
 
-
-
     // Related Entities
 
-    public function setMapRoyalty(MapRoyalty $mapRoyalty = null): self {
-        
+    public function setMapRoyalty(MapRoyalty $mapRoyalty = null)
+    {
         $this->mapRoyalty = $mapRoyalty;
         $this->mapRoyalty->setActivity($this);
-        return $this;
     }
 
-    public function getMapRoyalty() :?MapRoyalty {
-
+    public function getMapRoyalty() :?MapRoyalty
+    {
         return $this->mapRoyalty;
     }
 
-    public function addTag(TagInterface $tag) :void {
-
+    public function addTag(Tag $tag)
+    {
         if (!$this->tags->contains($tag)) {
             $this->tags->add($tag);
         }
     }
 
-    public function removeTag(TagInterface $tag): void {
-
-        $this->tags->removeElement($tag);
+    public function removeTag(Tag $tag)
+    {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+        }
     }
 
-    public function hasTag(TagInterface $tag): bool
+    public function hasTag(Tag $tag): bool
     {
         return $this->tags->contains($tag);
     }
 
-    public function getTags() :iterable {
-
+    public function getTags() :iterable
+    {
         return $this->tags;
     }
-    public function getTagNames(): array
+
+    public function addDirection(Direction $direction)
     {
-        return empty($this->tagsText) ? [] : \array_map('trim', explode(',', $this->tagsText));
-    }
-
-    public function setTagsText(?string $tagsText): void
-    {
-        $this->tagsText = $tagsText;
-        $this->modifiedDate = new \DateTimeImmutable();
-    }
-
-    public function getTagsText(): ?string
-    {
-        $this->tagsText = \implode(', ', $this->tags->toArray());
-
-        return $this->tagsText;
-    }
-
-    public function addDirection(Direction $direction) :self {
-
         $this->directions[] = $direction;
         $direction->setActivity($this);
-        return $this;
+
     }
 
-    public function removeDirection(Direction $direction) {
-
+    public function removeDirection(Direction $direction)
+    {
         $this->directions->removeElement($direction);
     }
 
-    public function getDirections() :?\Doctrine\Common\Collections\Collection {
-
+    public function getDirections() :iterable
+    {
         return $this->directions;
     }
 
-    public function addFlag(UserFlag $flag) :self {
-
+    public function addFlag(UserFlag $flag)
+    {
         $this->flags[] = $flag;
         $flag->setActivity($this);
-        return $this;
     }
 
-    public function removeFlag(UserFlag $flag) {
-
+    public function removeFlag(UserFlag $flag)
+    {
         $this->flags->removeElement($flag);
     }
 
-    public function getFlags() :?\Doctrine\Common\Collections\Collection {
-
+    public function getFlags() :iterable
+    {
         return $this->flags;
     }
 
-    public function addImage(Image $image) :self {
-
+    public function addImage(Image $image)
+    {
         $this->images[] = $image;
         $image->setActivity($this);
-        return $this;
     }
 
-    public function removeImage(Image $image) {
-
+    public function removeImage(Image $image)
+    {
         $this->images->removeElement($image);
     }
 
-    public function getImages() :?\Doctrine\Common\Collections\Collection {
-
+    public function getImages() :iterable
+    {
         return $this->images;
     }
 
@@ -522,17 +464,29 @@ class Activity implements ActivityInterface, TaggableInterface {
         return $this->associatedActivities;
     }
 
-    public function addCollection(CollectionContents $collections)  :self {
-        
-        $this->collections[] = $collections;
-        return $this;
+    public function addCollection(Collection $collection) {
+
+        if ($this->collections->contains($collection)) {
+            return;
+        }
+
+        $this->collections[] = $collection;
+        $collection->addCollectionContent($this);
     }
 
-    public function removeCollection(CollectionContents $collections) {
+    public function removeCollection(Collection $collection) {
 
-        $this->collections->removeElement($collections);
+        if (!$this->collections->contains($collection)) {
+            return;
+        }
+
+        $this->collections->removeElement($collection);
+        $collection->removeCollectionContent($this);
     }
 
+    /**
+     * @return ArrayCollection|CollectionContents[]
+     */
     public function getCollections(){
 
         return $this->collections;

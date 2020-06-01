@@ -49,11 +49,12 @@ class AccountController extends BaseController
     public function edit(User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
 
-        // Check if users account or sysAdmin
+        // Uses custom voter to check if it the users own account
+        // or SysAdmin to allow access
         $this->denyAccessUnlessGranted('MANAGE', $user);
 
         // This page is reachable for two different purposes
-        // Admin and User, so sho slightly different option
+        // Admin and User, so show slightly different option
         $referer = $request->headers->get('referer');
         if ($referer == $this->generateUrl('app_admin_list_users', [], UrlGeneratorInterface::ABSOLUTE_URL)) {
             $parentTemplate = "admin.html.twig";

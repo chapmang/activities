@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
@@ -26,7 +27,6 @@ class Collection {
 
 	/**
      * Unique collection identifier
-     * @var integer
      *  
 	 * @ORM\Id
 	 * @ORM\Column(type="integer", nullable=false)
@@ -36,35 +36,35 @@ class Collection {
 
 	/**
      * Name of the collection
-     * @var string
      * 
 	 * @ORM\Column(type="string", length=190, unique=true, nullable=false)
      * @Assert\NotBlank(message = "Name is a required element of all collections")
+     * @Groups({"details"})
 	 */
 	protected $name;
 
 	/**
      * Description of the activity
-     * @var string
      * 
 	 * @ORM\Column(type="text", nullable=true)
+     * @Groups({"details"})
 	 */
 	protected $description = null;
 
 	/**
      * Status of the activity
-     * @var string
      * 
 	 * @ORM\Column(type="string", length=45, nullable=false, options={"default": "public"})
+     * @Groups({"details"})
 	 */
 	protected $status = 'public';
 
     /**
      * Url friendly activity name
-     * @var string
      *
      * @ORM\Column(type="string", nullable=false)
      * @Gedmo\Slug(fields={"name"}, updatable=true)
+     * @Groups({"details"})
      */
     protected $slug;
 
@@ -73,17 +73,16 @@ class Collection {
     
     /**
      * Collection of contents associated to the collection
-     * @var \Doctrine\Common\Collections\Collection
      * 
      * @ORM\OneToMany(targetEntity="CollectionContents", mappedBy="collection", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(onDelete="CASCADE")
      * @ORM\OrderBy({"position" = "DESC"})
+     * @Groups({"details"})
      */
-    protected $contents;
+    protected $collectionContents;
 
     /**
      * Collection of adminNotes associated to the collection
-     * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="AdminNote", mappedBy="collection", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE")
@@ -93,7 +92,6 @@ class Collection {
 
     /**
      * Collection of tags associated to the collection
-     * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="Tag", inversedBy="collections")
      * @ORM\JoinTable(name="collection_tag")
@@ -103,78 +101,84 @@ class Collection {
     /**
      * Constructor
      */
-    public function __construct() {
-        
-        $this->contents = new ArrayCollection();
-
+    public function __construct()
+    {
+        $this->collectionContents = new ArrayCollection();
         $this->adminNotes = new ArrayCollection();
-
         $this->tags = new ArrayCollection();
     }
 
-    public function getId() :int {
-
+    public function getId() :int
+    {
         return $this->id;
     }
 
-    public function setName(string $name) :self {
-
+    public function setName(string $name)
+    {
         $this->name = $name;
-        return $this;
     }
 
-    public function getName() :string {
-
+    public function getName() :?string
+    {
         return $this->name;
     }
 
-    public function setDescription(string $description) :self {
-
+    public function setDescription(string $description)
+    {
         $this->description = $description;
-        return $this;
     }
 
-    public function getDescription() :?string {
-
+    public function getDescription() :?string
+    {
         return $this->description;
     }
 
-    public function setStatus(string $status) :self {
-
+    public function setStatus(string $status)
+    {
         $this->status = ($status === null || $status === '') ? 'public' : $status;
-        return $this;
     }
 
-    public function getStatus() :string {
-
+    public function getStatus() :?string
+    {
         return $this->status;
     }
 
-    public function setSlug($slug) :self {
-
+    public function setSlug($slug)
+    {
         $this->slug = $slug;
-        return $this;
     }
 
-    public function getSlug() :string {
-
+    public function getSlug() :string
+    {
         return $this->slug;
     }
 
-    public function addContent(CollectionContents $contents) :self {
+    public function addCollectionContent(Activity $activity)
+    {
+        if ($this->collectionContents->contains($activity)) {
+            return;
+        }
 
-        $this->contents[] = $contents;
-        return $this;
+        $this->collectionContents[] = $activity;
+        $activity->addCollection($this);
     }
 
-    public function removeContent(CollectionContents $contents) {
+    public function removeCollectionContent(Activity $activity)
+    {
+        if (!$this->collectionContents->contains($activity)) {
+            return;
+        }
 
-        $this->contents->removeElement($contents);
+        $this->collectionContents->removeElement($activity);
+        $activity->removeCollection($this);
     }
 
-    public function getContents() :\Doctrine\Common\Collections\Collection {
-
-        return $this->contents;
+    /**
+     * @return ArrayCollection|CollectionContents[]
+     */
+    public function getCollectionContents()
+    {
+        return $this->collectionContents;
     }
 
     public function addAdminNote(AdminNote $adminNote) :self {

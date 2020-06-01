@@ -3,6 +3,7 @@
 
 namespace App\Model;
 
+use App\Entity\Tag;
 use App\Validator\UniqueActivity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -56,14 +57,14 @@ class ActivityModel
     /**
     * @var integer
     */
-    protected $status = 0;
+    protected $status;
 
     /**
      * @var boolean
      */
     protected $onlineFriendly;
 
-    protected $tagsText;
+    public $tags;
 
     public $directions;
 
@@ -150,21 +151,6 @@ class ActivityModel
         $this->description = $description;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getTagsText()
-    {
-        return $this->tagsText;
-    }
-
-    /**
-     * @param mixed $tagsText
-     */
-    public function setTagsText($tagsText): void
-    {
-        $this->tagsText = $tagsText;
-    }
 
     /**
      * @return string
@@ -229,6 +215,28 @@ class ActivityModel
     {
         $this->onlineFriendly = $onlineFriendly;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param mixed $tags
+     */
+    public function setTags($tags): void
+    {
+        $this->tags = $tags;
+    }
+
+    public function hasTag($tag): bool
+    {
+        return $this->tags->contains($tag);
+    }
+
 
     /**
      * @return mixed

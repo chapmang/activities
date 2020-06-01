@@ -1,27 +1,31 @@
-{% extends 'activity.html.twig' %}
-
+{% extends 'activities/activityMenu.html.twig' %}
+{% block stylesheets %}
+    {{  parent() }}
+    {{ encore_entry_link_tags('walk') }}
+{% endblock %}
 {% block body %}
     {{ parent() }}
-    <div class="contentWrapper">
-        <div class="mcFlexWrapper">
-            <div class="col">
-                {{ include('walk/_form.html.twig', {
-                    button_text: 'Save Walk'
-                }) }}
-            </div>
-            <div class="col ">
-                <div class="ui two item menu attached mapMenu">
-                    <a class="active item" data-tab="tab-routeMap"><i class="map signs icon"></i>Route</a>
-                    <a class="item" data-tab="tab-bookMap"><i class="map icon"></i>Map</a>
-                </div>
-                <div id="routeMap" class="ui attached segment walkMapping active tab" data-tab="tab-routeMap">
-                    <!-- <div class="bookMap tab" data-tab="tab-bookMap"></div>-->
-                    <!-- <div id="routeMap" class="routeMap active tab" data-tab="tab-routeMap"></div>-->
-                </div>
-                <div class="ui attached segment walkMapping tab" data-tab="tab-bookMap"></div>
-            </div>
+    <div class="activityContent">
+        <div class="details">
+            {{ include('walk/_form.html.twig', {
+                button_text: 'Save Walk'
+            }) }}
         </div>
-
+        <div class="mapping">
+            {#        <div class="ui two item menu attached mapMenu">#}
+            {#            <a class="active item" data-tab="tab-routeMap"><i class="map signs icon"></i>Route</a>#}
+            {#            <a class="item" data-tab="tab-bookMap"><i class="map icon"></i>Map</a>#}
+            {#        </div>#}
+            <div id="routeMap" class="routeMap">
+                <!-- <div class="bookMap tab" data-tab="tab-bookMap"></div>-->
+                <!-- <div id="routeMap" class="routeMap active tab" data-tab="tab-routeMap"></div>-->
+            </div>
+            {#        <div class="ui attached segment walkMapping tab" data-tab="tab-bookMap"></div>#}
+        </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{  parent() }}
+    {{ encore_entry_script_tags('walk') }}
 {% endblock %}
 

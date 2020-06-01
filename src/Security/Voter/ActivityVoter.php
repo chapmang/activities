@@ -41,13 +41,19 @@ class ActivityVoter extends Voter
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case 'LOCKED':
-                // This is person who initiated the lock
+
+                // The activity isn't locked
+                if ($subject->getStatus() == 0) {
+                    return true;
+                }
+
+                // This is user is person who initiated the lock
                 if ($subject->getStatus() == 1 && $subject->getModifiedUser() == $user) {
                     return true;
                 }
 
                 // SysAdmin can override
-                if ($this->security->isGranted('ROLE_ADMIN')){
+                if ($subject->getStatus() == 1 && $this->security->isGranted('ROLE_ADMIN')){
                     return true;
                 }
 

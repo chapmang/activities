@@ -2,14 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Activity;
 use App\Model\ModelFactory\ActivityModelFactory;
-use App\Model\ModelFactory\WalkModelFactory;
-use App\Model\WalkModel;
 use App\Repository\ActivityRepository;
 use App\Service\ActivityFacade;
 use App\Service\ActivityStatusUpdater;
-use App\Service\WalkFacade;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,21 +21,25 @@ class ActivityController extends AbstractController
 {
     private $activityFacade;
 
-    public function __construct(ActivityFacade $activityFacade)
+    private $repository;
+
+    public function __construct(ActivityRepository $repository, ActivityFacade $activityFacade)
     {
         $this->activityFacade = $activityFacade;
+        $this->repository = $repository;
     }
+
     /**
      * @Route("/activity", name="activity_list", methods={"GET"})
      * @param Request $request
-     * @param ActivityRepository $repository
      * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function index(Request $request, ActivityRepository $repository, PaginatorInterface $paginator)
+    public function index(Request $request, PaginatorInterface $paginator)
     {
+
         $q = $request->query->get('q');
-        $queryBuilder = $repository->getWithSearchQueryBuilder($q);
+        $queryBuilder = $this->repository->getWithSearchQueryBuilder($q);
 
         $pagination = $paginator->paginate(
             $queryBuilder, /* query NOT result */
@@ -49,67 +49,6 @@ class ActivityController extends AbstractController
 
         return $this->render('activities/homepage.html.twig', [
             'pagination' => $pagination
-        ]);
-    }
-
-    /**
-     * @Route("/activity/{id}", name="activity_by_id", methods={"GET"}, requirements={"id"="[0-9]*"})
-     * @param Activity $activity
-     * @return Response
-     */
-    public function activity(Activity $activity)
-    {
-
-        // It's the same as doing find($id) on repository
-        switch ($activity->getActivityType()) {
-            case "walk":
-                return $this->render('walk/view.html.twig',[
-                    'activity' => $activity
-                ]);
-        }
-
-
-
-        //return new Response(var_dump($activity));
-    }
-
-    /**
-     * @Route("/activity/slugged/{slug}", name="activity_by_slug", methods={"GET"}, requirements={"slug"="[a-zA-Z1-9\-_\/]+"})
-     * @param Activity $activity
-     * @return Response
-     */
-    public function activityBySlug(Activity $activity)
-    {
-        // It's the same as doing findOneBy(['slug' => contents of {slug}]) on repository
-        return $this->render('base.html.twig',[
-            'activity' => $activity
-        ]);
-        //return new Response('Activity' . $activity);
-    }
-
-    /**
-     * @Route("/{page}", name="list", methods={"GET"}, requirements={"page"="[0-9]*"})
-     * @Route("/page/{page}", name="index_paginated")
-     * @param int $page
-     * @param Request $request
-     * @return Response
-     */
-    public function list($page = 1, Request $request)
-    {
-        $limit = $request->get('limit', 20);
-        return new Response($request);
-    }
-
-    /**
-     * @Route("/open", name="open")
-     * @param ActivityRepository $repository
-     * @return Response
-     */
-    public function open(ActivityRepository $repository) {
-
-        $activities = $repository->findAllOpenOrderedByRecentUpdate();
-        return $this->render('activities/homepage.html.twig', [
-            'activities' => $activities
         ]);
     }
 
@@ -132,9 +71,9 @@ class ActivityController extends AbstractController
 
         return new JsonResponse([
             'status' => $updatedActivityModel->getStatus(),
-            'user' => $this->getUser()->getUsername()]);
+            'user' => $this->getUser()->getUsername()
+        ]);
     }
-
 
 
 }

@@ -14,4 +14,14 @@ class TagRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Tag::class);
     }
+
+    public function select2Find(): array
+    {
+        $em = $this->getEntityManager();
+
+        $query = $em->createQuery(
+            'SELECT t.id, t.name FROM App\Entity\Tag t ORDER BY t.name DESC '
+        );
+        return $query->getResult();
+    }
 }

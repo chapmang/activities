@@ -1,5 +1,5 @@
 [
     {%- for tag in tags -%}
-    {"id": "{{ tag }}", "text": "{{ tag }}"}{% if not loop.last %},{% endif %}
+    {"id": "{{ tag.id }}", "text": "{{ tag.name }}"}{% if not loop.last %},{% endif %}
     {%- endfor -%}
 ]

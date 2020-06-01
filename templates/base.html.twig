@@ -41,13 +41,14 @@
                                 <a class="disabled item">Bike Ride</a>
                                 <a class="disabled item">Drive</a>
                                 <a class="disabled item">Place of Interest</a>
+                                <a href="{{ path('collection_create') }}" class="item">Collection</a>
                             </div>
                         </div>
                     {% endif %}
                         <a id="mapViewSelector" class="ui item">
                             <i class="globe large icon"></i>Map
                         </a>
-                        <a id="collectionViewSelector" class="ui item">
+                        <a href="{{ path('collection_list') }}" class="ui item">
                             <i class="list large icon"></i>Collections
                         </a>
 

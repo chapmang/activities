@@ -1,0 +1,12 @@
+<div class="ui simple dropdown item">
+    <div id="activity_lock"
+         data-ajax="/activity/lock"
+         data-activity="{{ activity.id }}"
+         data-authorised="false"
+         data-status = "{{ activity.status }}">
+        <span class="ui icon" data-content="{{ 'This activity was locked by '~activity.modifiedUser.username }}"
+              data-position="bottom right">
+            <i class="lock disabled icon"></i>
+        </span>
+    </div>
+</div>

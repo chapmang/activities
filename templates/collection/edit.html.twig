@@ -1,0 +1,51 @@
+{% extends 'collection/collectionMenu.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('collection') }}
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="collectionContent" data-collection="{{ collection.id }}">
+        <<div class="details">
+            <div class="ui tab active" data-tab="details">
+                {{ include('collection/_form.html.twig', {
+                    button_text: 'Update'
+                }) }}
+            </div>
+            <div class="ui tab" data-tab="contents">
+                <div class="ui search collection-contents-search">
+                    <div class="ui fluid icon input">
+                        <i class="inverted circular search icon"></i>
+                        <input class="prompt" type="text" placeholder="Search Activities...">
+                        <div hidden class="activity-id"></div>
+                    </div>
+                </div>
+                <button style="display: none" class="fluid ui button primary addCollection">Add to Collection</button>
+                <div class="ui divided items collection-contents">
+                    {% for contents in collection.collectionContents %}
+                        <div class='item'>
+                            <div class='content'>
+                                {{ contents.activity.name}}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="mapping">
+            {#        <div class="ui two item menu attached mapMenu">#}
+            {#            <a class="active item" data-tab="tab-routeMap"><i class="map signs icon"></i>Route</a>#}
+            {#            <a class="item" data-tab="tab-bookMap"><i class="map icon"></i>Map</a>#}
+            {#        </div>#}
+            <div id="collectionMap" class="collectionMap">
+                <!-- <div class="bookMap tab" data-tab="tab-bookMap"></div>-->
+                <!-- <div id="routeMap" class="routeMap active tab" data-tab="tab-routeMap"></div>-->
+            </div>
+            {#        <div class="ui attached segment walkMapping tab" data-tab="tab-bookMap"></div>#}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('collection') }}
+{% endblock %}

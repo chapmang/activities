@@ -10,13 +10,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @version 1.0
  * 
  * @ORM\Table(name="collection_contents")
- * @ORM\Entity(repositoryClass="App\Repository\CollectionContentsRepository")
+ * @ORM\Entity(repositoryClass="Gedmo\Sortable\Entity\Repository\SortableRepository")
  */
 class CollectionContents {
 
 	/**
      * Unique identifier
-     * @var integer
      *  
 	 * @ORM\Id
 	 * @ORM\Column(type="integer", nullable=false)
@@ -27,17 +26,16 @@ class CollectionContents {
 
 	/**
 	 * Collection content belongs to
-	 * @var Collection
-	 *
-	 * @ORM\ManyToOne(targetEntity="Collection", inversedBy="contents")
+     *
+     * @Gedmo\SortableGroup()
+	 * @ORM\ManyToOne(targetEntity="Collection", inversedBy="collectionContents")
 	 * @ORM\JoinColumn(name="collection", referencedColumnName="id", nullable=false)
 	 */
 	protected $collection;
 
 	/**
 	 * Activity in collection
-	 * @var Collection
-	 *
+
 	 * @ORM\ManyToOne(targetEntity="Activity", inversedBy="collections")
 	 * @ORM\JoinColumn(name="activity", referencedColumnName="id", nullable=false)
 	 */
@@ -45,82 +43,51 @@ class CollectionContents {
 
 	/**
 	 * Position of activity in collection
-	 * @var integer
 	 *
+     * @Gedmo\SortablePosition()
 	 * @ORM\Column(type="integer", nullable=false)
 	 */
 	protected $position;
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId() {
-        
+
+    public function getId()
+    {
         return $this->id;
     }
 
-    /**
-     * Set position
-     *
-     * @param integer $position
-     * @return CollectionContents
-     */
-    public function setPosition($position) {
 
+    public function setPosition($position)
+    {
         $this->position = $position;
-        return $this;
     }
 
-    /**
-     * Get position
-     *
-     * @return integer 
-     */
-    public function getPosition() {
 
+    public function getPosition(): int
+    {
         return $this->position;
     }
 
-    /**
-     * Set collection
-     *
-     * @param Collection $collection
-     * @return CollectionContents
-     */
-    public function setCollection(Collection $collection) {
-        
+
+    public function setCollection(Collection $collection)
+    {
         $this->collection = $collection;
-        return $this;
     }
 
-    /**
-     * Get collection
-     *
-     * @return Collection
-     */
-    public function getCollection() {
 
+    public function getCollection(): Collection
+    {
         return $this->collection;
     }
 
-    /**
-     * Set activity
-     *
-     * @param Activity $activity
-     * @return CollectionContents
-     */
-    public function setActivity(Activity $activity) {
 
+    public function setActivity(Activity $activity)
+    {
         $this->activity = $activity;
-        return $this;
     }
 
-    /**
-     * @return Collection
-     */
-    public function getActivity() {
+
+    public function getActivity(): Activity
+    {
         return $this->activity;
     }
 

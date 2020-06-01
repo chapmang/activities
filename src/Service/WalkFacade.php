@@ -15,21 +15,27 @@ class WalkFacade
         $this->em = $em;
     }
 
-    public function createWalk(WalkModel $walkModel)
+    public function createWalk(Walk $walk)
     {
-        $walk = new Walk();
 
-        $walk = $this->hydrate($walk, $walkModel);
+        //$walk = $this->hydrate($walk, $walkModel);
 
         $this->em->persist($walk);
         $this->em->flush();
         return $walk;
     }
 
-    public function updateWalk(Walk $walk, WalkModel $walkModel)
+    public function updateWalk(Walk $walk)
     {
-        $walk = $this->hydrate($walk, $walkModel);
-        //dd($walk);
+        //$walk = $this->hydrate($walk, $walkModel);
+
+        // Prevent against any unfilled direction text areas
+        foreach ($walk->getDirections() as $dir) {
+            if (is_null($dir->getDirection())) {
+                $walk->removeDirection($dir);
+            }
+        }
+
         $this->em->persist($walk);
         $this->em->flush();
         return;

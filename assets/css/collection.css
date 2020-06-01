@@ -1,0 +1,18 @@
+.collections__search {
+    padding:1em;
+}
+.collection-nav {
+    float: right;
+    /*height: 100%;*/
+}
+.collection-nav a{
+    margin-left:15px;
+    color: rgba(0,0,0,.87);
+}
+.collectionMap{
+    height:100%;
+    width: 100%
+}
+.collection-contents-search {
+    padding-bottom: 1em;
+}

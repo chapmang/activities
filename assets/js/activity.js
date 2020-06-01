@@ -1,16 +1,19 @@
+$('#activity_lock .icon')
+    .popup()
+;
+
 $("#activity_lock").on('click', function(e){
    e.preventDefault();
    let authorised = $(this).data('authorised');
    if (authorised === true) {
        let status = $(this).data("status");
        let activity = $(this).data("activity");
-       let owner = $(this).data('owner');
        let url = $(this).data('ajax');
 
        if ( status === 0) {
            lockAjaxCaller(url, status, activity);
-           $(this).data("status",1);
-       } else if (status === 1 && owner === true) {
+           $(this).data("status", 1);
+       } else if (status === 1) {
            lockAjaxCaller(url, status, activity)
            $(this).data("status", 0);
        } else {

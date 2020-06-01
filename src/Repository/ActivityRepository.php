@@ -27,6 +27,16 @@ class ActivityRepository extends ServiceEntityRepository {
             ->orderBy('a.name', 'DESC');
     }
 
+    public function getWithSearch(?string $term)
+    {
+        return $this->getOrCreateQueryBuilder()
+            ->andWhere('a.name LIKE :term')
+            ->setParameter('term', '%'.$term.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+
     public function findAllOpenOrderedByRecentUpdate()
     {
 
