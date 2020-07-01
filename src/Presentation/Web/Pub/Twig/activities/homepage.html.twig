@@ -1,0 +1,89 @@
+{% extends '@Pub/base.html.twig' %}
+{% block stylesheets %}
+    {{  parent() }}
+    {{ encore_entry_link_tags('search') }}
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="container">
+        <div class="columnLeft">
+            <form>
+                <div class="ui fluid icon input">
+                    <input class="prompt" type="text" name="q" placeholder="Search...">
+                    <i class="search icon"></i>
+                </div>
+                <div class="grouped fields">
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="radio" name="activity">
+                            <label>Walks</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="radio" name="activity">
+                            <label>Bike Rides</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="columnRight">
+            <div class="resultCount">
+                <h3 class="ui center aligned header">{{ pagination.getTotalItemCount }} Activities Found </h3>
+            </div>
+            <div class="scrollWrapper">
+                <div class="ui divided items">
+                    {%  for a in pagination %}
+                        <div class="item">
+                            <div class="ui tiny image">
+                                <img src="{{ asset('images/activity/' ~ a.activityType ~ '_' ~ a.difficulty~'.svg') }}">
+                            </div>
+                            <div class="content">
+                                <a href="{{ path(a.activityType~'_by_slug', {slug: a.slug}) }}" class="header">{{ a.name }}</a>
+                                <div class="activityNav">
+                                    {%  if a.status == 0 %}
+                                        <i class="unlock icon" ></i>
+                                    {% elseif a.status == 1 %}
+                                        <i class="lock icon" data-content="{{ 'This activity was locked by '~a.modifiedUser.username }}" data-position="bottom center"></i>
+                                    {% endif %}
+                                    <a class="ui icon" data-content="View Activity" data-position="bottom center" href="{{ path(a.activityType~'_by_slug', {slug: a.slug}) }}">
+                                        <i class="eye icon"></i>
+                                    </a>
+                                    {% if a.status == 0 or (a.status == 1 and app.user == a.modifiedUser) or is_granted('ROLE_ADMIN')%}
+                                        <a class="ui icon" data-content="Edit Activity" data-position="bottom center" href="{{ path(a.activityType~'_update', {id: a.id}) }}">
+                                            <i class="pencil alternate icon"></i>
+                                        </a>
+                                    {%  else %}
+                                        <a class="ui icon" data-content="Edit Activity" data-position="bottom center" href="#">
+                                            <i class="disabled pencil alternate icon"></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                                <div class="description">
+                                    {{ a.shortDescription }}
+                                </div>
+                                <div class="extra">
+                                    {%  for tag in a.tags %}
+                                        <div class="ui small label">{{  tag.name }}</div>
+                                    {% endfor %}
+                                </div>
+
+                            </div>
+
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="pagination">
+                    {% if pagination.totalItemCount / 10 > 1 %}
+                        {{ knp_pagination_render(pagination) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{  parent() }}
+    {{ encore_entry_script_tags('search') }}
+{% endblock %}

@@ -3,8 +3,8 @@
 
 namespace App\Model;
 
-use App\Entity\Tag;
-use App\Validator\UniqueActivity;
+use App\Domain\Entity\Tag;
+use App\Application\Validator\UniqueActivity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

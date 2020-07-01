@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\Activity;
+use App\Domain\Entity\Activity;
 use App\Model\ActivityModel;
 
 

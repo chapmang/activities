@@ -4,7 +4,7 @@
 namespace App\Model\ModelFactory;
 
 
-use App\Entity\Activity;
+use App\Domain\Entity\Activity;
 use App\Model\ActivityModel;
 
 final class ActivityModelFactory implements ModelFactoryInterface

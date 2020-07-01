@@ -4,7 +4,7 @@
 namespace App\Service;
 
 
-use App\Entity\Collection;
+use App\Domain\Entity\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CollectionFacade

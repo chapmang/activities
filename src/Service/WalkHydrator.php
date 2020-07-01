@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\Walk;
+use App\Domain\Entity\Walk;
 use App\Model\WalkModel;
 
 class WalkHydrator implements HydratorInterface

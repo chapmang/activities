@@ -1,2 +1,2 @@
 beelab_tag:
-    tag_class: App\Entity\Tag
+    tag_class: App\Domain\Entity\Tag

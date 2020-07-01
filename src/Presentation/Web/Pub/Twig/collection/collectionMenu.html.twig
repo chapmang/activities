@@ -1,0 +1,31 @@
+{% extends '@Pub/base.html.twig' %}
+{% block stylesheets %}
+    {{  parent() }}
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="ui attached large menu adminMenu">
+        <a class="item active" data-tab="details">
+            Details
+        </a>
+        <a class="item" data-tab="contents">
+            Contents
+        </a>
+        <a class="item" data-tab="notes">
+            Admin Notes
+        </a>
+        {% if collection is defined %}
+            {% if collection.status == 'public' %}
+                {{ include('@Pub/collection/_public.html.twig') }}
+            {% elseif (collection.status == 'protected' and app.user == collection.modifiedUser) or is_granted('ROLE_ADMIN') %}
+                {{ include('@Pub/collection/_protected.html.twig') }}
+            {%  else %}
+                {{ include('@Pub/collection/_private.html.twig') }}
+            {% endif %}
+        {% endif %}
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{  parent() }}
+{% endblock %}

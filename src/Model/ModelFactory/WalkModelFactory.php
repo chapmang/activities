@@ -2,8 +2,8 @@
 
 namespace App\Model\ModelFactory;
 
-use App\Entity\Activity;
-use App\Entity\Walk;
+use App\Domain\Entity\Activity;
+use App\Domain\Entity\Walk;
 use App\Model\WalkModel;
 
 final class WalkModelFactory implements ModelFactoryInterface

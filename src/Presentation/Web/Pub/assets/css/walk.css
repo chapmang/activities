@@ -1,0 +1,13 @@
+.mapping .apierror {
+    display: none;
+    width: 100%;
+    position: absolute;
+    top:25%;
+    text-align: center;
+}
+.save-geometry {
+    background-image: url("../../../../../../public/images/save-geography.svg");
+    background-size: 70%;
+    background-position: center;
+    background-repeat: no-repeat;
+}

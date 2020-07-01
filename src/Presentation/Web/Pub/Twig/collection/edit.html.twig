@@ -1,0 +1,59 @@
+{% extends '@Pub/collection/collectionMenu.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('collection') }}
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="collectionContent" data-collection="{{ collection.id }}">
+        <div class="details">
+            <div class="ui tab active" data-tab="details">
+                {{ include('@Pub/collection/_form.html.twig', {
+                    button_text: 'Update'
+                }) }}
+            </div>
+            <div class="ui tab" data-tab="contents">
+                <div class="ui fluid search collection-contents-search">
+                    <div class="ui fluid icon input">
+                        <i class="inverted circular search icon"></i>
+                        <input class="prompt" type="text" placeholder="Search Activities...">
+                        <div hidden class="activity-id"></div>
+                    </div>
+                </div>
+                <button style="display: none" class="fluid ui button primary addCollection">Add to Collection</button>
+                <div class="ui divided items collection-contents">
+                    {% for contents in collection.collectionContents %}
+                        <div class='item'>
+                            <div class="ui tiny image">
+                                <img src="{{ asset("/images/activity/default_"~contents.activity.type~".jpg") }}" alt="">
+                            </div>
+                            <div class='content'>
+                                {{ contents.activity.name}}
+                                {%  if contents.activity.status == 0 %}
+                                    <i class="unlock icon" ></i>
+                                {% elseif contents.activity.status == 1 %}
+                                    <i class="lock icon" data-content="{{ 'This activity was locked by '~contents.activity.modifiedUser.username }}" data-position="bottom center"></i>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="mapping">
+            {#        <div class="ui two item menu attached mapMenu">#}
+            {#            <a class="active item" data-tab="tab-routeMap"><i class="map signs icon"></i>Route</a>#}
+            {#            <a class="item" data-tab="tab-bookMap"><i class="map icon"></i>Map</a>#}
+            {#        </div>#}
+            <div id="collectionMap" class="collectionMap">
+                <!-- <div class="bookMap tab" data-tab="tab-bookMap"></div>-->
+                <!-- <div id="routeMap" class="routeMap active tab" data-tab="tab-routeMap"></div>-->
+            </div>
+            {#        <div class="ui attached segment walkMapping tab" data-tab="tab-bookMap"></div>#}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('collection') }}
+{% endblock %}

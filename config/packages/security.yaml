@@ -1,6 +1,6 @@
 security:
     encoders:
-        App\Entity\User:
+        App\Domain\Entity\User:
             algorithm: auto
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-provider
@@ -8,7 +8,7 @@ security:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
-                class: App\Entity\User
+                class: App\Domain\Entity\User
                 property: username
 
     firewalls:
@@ -19,7 +19,7 @@ security:
             anonymous: lazy
             guard:
                 authenticators:
-                    - App\Security\LoginFormAuthenticator
+                    - App\Application\Security\LoginFormAuthenticator
             logout:
                 path: app_logout
                 target: app_login

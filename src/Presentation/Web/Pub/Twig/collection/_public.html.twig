@@ -1,0 +1,66 @@
+<div class="ui mini modal export-modal">
+    <div class="ui center aligned header">
+        Export Collection
+    </div>
+    <div class="content">
+        <div class="description">
+            <p>Export options for <strong>{{ collection.name }}</strong></p>
+        </div>
+        <form id="exportForm" action="{{ path('collection_export', {id: collection.id}) }}">
+            <div class="ui selection dropdown">
+                <input type="hidden" name="format">
+                <i class="dropdown icon"></i>
+                <div class="default text">Format</div>
+                <div class="menu">
+                    <div class="item" data-value="docx">Word</div>
+                    <div class="item" data-value="csv">CSV</div>
+                    <div class="item" data-value="xml">XML</div>
+                    <div class="item" data-value="json">JSON</div>
+                </div>
+            </div>
+            <br>
+            <div class="ui toggle disabled checkbox">
+                <input type="checkbox" name="route">
+                <label>Include Route Geometry</label>
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui black deny button">
+            Cancel
+        </div>
+        <button form="exportForm" class="ui disabled positive right labeled icon button">
+            Export
+            <i class="download icon"></i>
+        </button>
+    </div>
+</div>
+
+<div class="right menu">
+    {#<div class="ui simple dropdown item">#}
+{#    <div id="activity_lock"#}
+{#         data-ajax="/activity/lock"#}
+{#         data-activity="{{ activity.id }}"#}
+{#         data-authorised="true"#}
+{#         data-status = "{{ activity.status }}">#}
+{#        <i class="unlock icon"></i>#}
+{#    </div>#}
+{#</div>#}
+<a id='export' class="item">
+    <i class="download icon"></i>
+    <span class="text">Export</span>
+{#    <i class="dropdown icon"></i>#}
+{#    <div class="menu">#}
+{#        <a class="item" href="{{ path('collection_export', { id: activity.id, format: 'docx' }) }}">Word</a>#}
+{#        <a class="item" href="{{ path(activity.activityType~'_export', { id: activity.id, format: 'csv' }) }}">CSV</a>#}
+{#        <a class="item" href="{{ path(activity.activityType~'_export', { id: activity.id, format: 'xml' }) }}">XML</a>#}
+{#        <a class="item" href="{{ path(activity.activityType~'_export', { id: activity.id, format: 'json' }) }}">JSON</a>#}
+{#        <a class="item" href="#">PDF <span style="color: grey; font-size: smaller">(coming soon)</span> </a>#}
+{#    </div>#}
+</a>
+{%  if app.request.pathinfo == path('collection_by_slug', {slug: collection.slug}) %}
+    <a class="item" href="{{ path('collection_update', {id: collection.id}) }}">
+        <i class="edit icon"></i>Edit
+    </a>
+{% endif %}
+</div>

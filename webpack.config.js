@@ -23,12 +23,12 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('walk', './assets/js/walk.js')
-    .addEntry('activity', './assets/js/activity.js')
-    .addEntry('collection', './assets/js/collection.js')
-    .addEntry('admin', './assets/js/admin.js')
-    .addEntry('search', './assets/js/search.js')
-    .addEntry('app', './assets/js/app.js')
+    .addEntry('walk', './src/Presentation/Web/Pub/assets/js/walk.js')
+    .addEntry('activity', './src/Presentation/Web/Pub/assets/js/activity.js')
+    .addEntry('collection', './src/Presentation/Web/Pub/assets/js/collection.js')
+    .addEntry('admin', './src/Presentation/Web/Pub/assets/js/admin.js')
+    .addEntry('search', './src/Presentation/Web/Pub/assets/js/search.js')
+    .addEntry('app', './src/Presentation/Web/Pub/assets/js/app.js')
 
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')

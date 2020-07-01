@@ -1,0 +1,59 @@
+{#<div class="ui page dimmer">#}
+{#    <div class="ui indeterminate text loader">Preparing Files</div>#}
+{#</div>#}
+<div class="ui tiny modal export-modal">
+    <div class="ui inverted dimmer">
+        <div class="ui indeterminate text loader">Preparing Files</div>
+    </div>
+    <div class="ui center aligned header">
+        Export Activity
+    </div>
+    <div class="content">
+        <div class="description">
+            <p>Export options for <strong>{{ activity.name }}</strong></p>
+        </div>
+        <div class="ui segment">
+            <form id="exportForm" data-ajax="{{ path(activity.activityType~'_export', {id: activity.id}) }}" action="#">
+                <div class="ui two column very relaxed grid">
+                    <div class="column">
+                        <p>Details Format</p>
+                        <div class="ui selection dropdown">
+                            <input type="hidden" name="text_format">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">Details Format</div>
+                            <div class="menu">
+                                <div class="item" data-value="docx">Word</div>
+                                <div class="item" data-value="csv">CSV</div>
+                                <div class="item" data-value="xml">XML</div>
+                                <div class="item" data-value="json">JSON</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <p>Route Geometry Format</p>
+                        <div class="ui selection dropdown routeFormat">
+                            <input type="hidden" name="route_format">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">Route Format</div>
+                            <div class="menu">
+                                <div class="item" data-value="geojson">JSON</div>
+                                <div class="item" data-value="gpx">GPX</div>
+                                <div class="item" data-value="KML">KML</div>
+                                <div class="item" data-value="wkt">WKT</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui black deny button">
+            Cancel
+        </div>
+        <button id="exportFormSubmit" class="ui disabled positive right labeled icon button">
+            Export
+            <i class="download icon"></i>
+        </button>
+    </div>
+</div>

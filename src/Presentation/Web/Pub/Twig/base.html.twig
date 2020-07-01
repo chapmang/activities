@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
+        <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
+        <title>{% block title %}Activites{% endblock %}</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+    {% for message in app.flashes('success') %}
+        <div class="ui positive message">
+            <p>{{ message }}</p>
+        </div>
+    {% endfor %}
+        {% block body %}
+            <div class="headerIdentImages">
+                <img src="{{ asset('images/walk_green.png') }}" alt="">
+                <img src="{{ asset('images/ride_green.png') }}" alt="">
+                <img src="{{ asset('images/drive_green.png') }}" alt="">
+            </div>
+            <div id="masterHead" class="ui secondary menu" >
+                <h1 class="item title">
+                    ACTIVITIES
+                </h1>
+                <div class="right icon menu">
+                    {% if app.request.get('_route') != 'activity_list' %}
+                        <a href="{{ path('activity_list')}}" class="ui item">
+                            <i class="search large icon"></i>Search
+                        </a>
+                    {% endif %}
+                    {% if app.request.get('_route') not in ['walk_create'] %}
+                        <div class="ui pointing dropdown item">
+                            <i class="plus large circle icon"></i>
+                            <span class="text">Create</span>
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <a  href="{{ path('walk_create') }}" class="item">Walk</a>
+                                <a class="disabled item">Bike Ride</a>
+                                <a class="disabled item">Drive</a>
+                                <a class="disabled item">Place of Interest</a>
+                                <a href="{{ path('collection_create') }}" class="item">Collection</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                        <a id="mapViewSelector" class="ui item">
+                            <i class="globe large icon"></i>Map
+                        </a>
+                        <a href="{{ path('collection_list') }}" class="ui item">
+                            <i class="list large icon"></i>Collections
+                        </a>
+
+                    {% if is_granted('ROLE_USER') %}
+                        <div class="ui pointing dropdown item">
+                            <i class="user large circle icon"></i>
+                            <span class="text">{{ app.user.firstName }} {{ app.user.surname }}</span>
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                {% if app.request.get('_route') != 'app_admin_list_users' and is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('app_admin_list_users') }}" class="item">Admin</a>
+                                {%  endif %}
+                                {% if app.request.get('_route') != 'app_edit_account' %}
+                                    <a href="{{ path('app_edit_account', {id: app.user.id}) }}" class="item">Account</a>
+                                {% endif %}
+                                <a href="{{ path('app_logout') }}"class="item">Logout</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endblock %}
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </body>
+</html>

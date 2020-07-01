@@ -1,0 +1,181 @@
+{% extends '@Pub/activities/activityMenu.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('walk') }}
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css" rel="stylesheet" />
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.css' type='text/css' />
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet" />
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="activityContent" data-activity="{{ activity.id }}">
+        <div class="details">
+            <h1 class="ui header ">
+                <img src="{{ asset('images/activity/' ~ activity.activityType ~ '_' ~ activity.difficulty ~ '.svg') }}" class="ui image">
+                <div class="content">
+                    {{ activity.name }}
+                    <div class="sub header">{{ activity.shortDescription }}</div>
+                </div>
+            </h1>
+            <div class="ui tab active" data-tab="details">
+                <div class="ui large list">
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">Distance</div>
+                            <div class="description">{{ activity.distance }} miles ({{ activity.distance }}km)</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">Minimum Time</div>
+                            <div class="description">{{ activity.minimumTimeHours }}hrs {{ activity.minimumTimeMinutes }}min</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">Ascent</div>
+                            <div class="description">{{ activity.ascentFeet }}ft ({{ activity.ascent }}m)</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">Gradient</div>
+                            <div class="description">{{ activity.gradient }}</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">Paths</div>
+                            <div class="description">{{ activity.paths }}</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">Landscape</div>
+                            <div class="description">{{ activity.landscape }}</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">Suggested Map</div>
+                            <div class="description">{{ activity.suggestedMap }}</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">Start Point Grid Reference</div>
+                            <div class="description">{{ activity.startGridRef }}</div>
+                        </div>
+                        {% if activity.finishGridRef %}
+                            <div class="content">
+                                <div class="header">Finish Point Grid Reference</div>
+                                <div class="description">{{ activity.finishGridRef }}</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">Dog Friendliness</div>
+                            <div class="description">{{ activity.dogFriendliness }}</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">Parking</div>
+                            <div class="description">{{ activity.parking }}</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">Public Toilets</div>
+                            <div class="description">{{ activity.publicToilet }}</div>
+                        </div>
+                    </div>
+                    {% if activity.notes %}
+                        <div class="item">
+                            <div class="content">
+                                <div class="header">Notes</div>
+                                <div class="description">{{ activity.notes}}</div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <h4 class="ui horizontal divider header">
+                    <i class="tag icon"></i>
+                    Tags
+                </h4>
+                <div class="ui large grey labels">
+                    {% for tag in activity.tags %}
+                        <div class="ui label">{{ tag.name }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="ui tab" data-tab="description">
+                <p>
+                    {{ activity.description }}
+                </p>
+            </div>
+            <div class="ui tab" data-tab="directions">
+                <h2 class="ui header">Here will be some directions</h2>
+                {% for direction in activity.directions %}
+                    <p><img src="{{ asset('images/dir_' ~ activity.difficulty ~ '_' ~ direction.position ~'.png') }}" class="ui mini right spaced image">{{ direction.direction }}</p>
+                {% endfor %}
+            </div>
+            <div class="ui tab" data-tab="nearby">
+                <h2 class="ui header">Where to eat and drink</h2>
+                <p>{{ activity.whereToEatAndDrink }}</p>
+                <h2 class="ui header">What to see</h2>
+                <p>{{ activity.whatToLookOutFor }}</p>
+                <h2 class="ui header">While you are there</h2>
+                <p>{{ activity.whileYouAreThere }}</p>
+            </div>
+            <div class="ui tab" data-tab="collections">
+                <h3>This activity appears in the following collections</h3>
+                {% for collection in activity.collections %}
+                    {{ collection.collection.name }}
+                    {{ collection.position }}
+                {% endfor %}
+            </div>
+            <div class="ui tab" data-tab="royalties">
+                <h2 class="ui header">We might have some info on royalties</h2>
+            </div>
+            <div class="ui tab" data-tab="admin">
+                <div class="ui medium list">
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">Activity ID</div>
+                            <div class="description">{{ activity.id }}</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">Created:</div>
+                            <div class="description">{{ activity.createdDate|format_datetime() }} by {{ activity.createdUser.firstName|title }} {{ activity.createdUser.surname|title }}</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">Last Modified:</div>
+                            <div class="description">{{ activity.modifiedDate|format_datetime() }} by {{ activity.modifiedUser.firstName|title }} {{ activity.modifiedUser.surname|title }}</div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="content">
+                            <div class="header">Editorial Notes</div>
+                            <div class="description"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mapping">
+            <div id="map" style='width: 100%; height: 100%;'></div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{  parent() }}
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.js'></script>
+    {{ encore_entry_script_tags('walk') }}
+{% endblock %}

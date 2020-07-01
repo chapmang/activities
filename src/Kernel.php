@@ -2,7 +2,9 @@
 
 namespace App;
 
-use App\Service\Export\ExportCompilerPass;
+use App\Application\Export\ExportCompilerPass;
+use App\Application\GeoConversion\GeoEncodeCompilerPass;
+use App\Application\GeoConversion\GeoDecodeCompilerPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -56,5 +58,7 @@ class Kernel extends BaseKernel
     protected function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new ExportCompilerPass());
+        $container->addCompilerPass(new GeoEncodeCompilerPass());
+        $container->addCompilerPass(new GeoDecodeCompilerPass());
     }
 }

@@ -19,21 +19,45 @@ services:
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
-    App\Controller\:
-        resource: '../src/Controller'
+    App\Presentation\Web\Pub\Controller\:
+        resource: '../src/Presentation/Web/Pub/Controller'
         tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Service\Export\CsvExportStrategy:
+    App\Application\Export\CsvExportStrategy:
         tags: ['export_strategy']
 
-    App\Service\Export\JsonExportStrategy:
+    App\Application\Export\JsonExportStrategy:
         tags: ['export_strategy']
 
-    App\Service\Export\XmlExportStrategy:
+    App\Application\Export\XmlExportStrategy:
         tags: ['export_strategy']
 
-    App\Service\Export\WordExportStrategy:
+    App\Application\Export\WordExportStrategy:
         tags: ['export_strategy']
+
+    App\Application\GeoConversion\Encoder\GeoJSONEncodeStrategy:
+        tags: ['geoencoder_strategy']
+
+    App\Application\GeoConversion\Encoder\WKTEncodeStrategy:
+        tags: ['geoencoder_strategy']
+
+    App\Application\GeoConversion\Encoder\KMLEncodeStrategy:
+        tags: ['geoencoder_strategy']
+
+    App\Application\GeoConversion\Encoder\GPXEncodeStrategy:
+        tags: ['geoencoder_strategy']
+
+    App\Application\GeoConversion\Decoder\GeoJSONDecoderStrategy:
+        tags: ['geodecoder_strategy']
+
+    App\Application\GeoConversion\Decoder\WKTDecoderStrategy:
+        tags: ['geodecoder_strategy']
+
+    App\Application\GeoConversion\Decoder\KMLDecoderStrategy:
+        tags: ['geodecoder_strategy']
+
+    App\Application\GeoConversion\Decoder\GPXDecoderStrategy:
+        tags: ['geodecoder_strategy']

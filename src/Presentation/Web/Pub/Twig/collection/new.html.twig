@@ -1,0 +1,45 @@
+{% extends '@Pub/collection/collectionMenu.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('collection') }}
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="collectionContent">
+        <div class="details">
+            <div class="ui tab active" data-tab="details">
+                {{ include('@Pub/collection/_form.html.twig', {
+                    button_text: 'Save Collection'
+                }) }}
+            </div>
+            <div class="ui tab" data-tab="contents">
+                <div class="ui search collection-contents-search">
+                    <div class="ui fluid icon input">
+                        <i class="inverted circular search icon"></i>
+                        <input class="prompt" type="text" placeholder="Search Activities...">
+                        <div hidden class="activity-id"></div>
+                    </div>
+                </div>
+                <button style="display: none" class="fluid ui button primary addCollection">Add to Collection</button>
+                <div class="ui divided items collection-contents">
+                    {% if contents is defined %}
+                        {% for contents in collection.collectionContents %}
+                            <div class='item'>
+                                <div class='content'>
+                                    {{ contents.activity.name}}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="mapping">
+            {# Mapping is not shown as there is no content to plot on a new collection #}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('collection') }}
+{% endblock %}

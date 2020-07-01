@@ -1,0 +1,102 @@
+{% extends '@Pub/admin.html.twig' %}
+
+{% block title %}Create User{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+    <div class="ui test inverted modal">
+        <h2 class="header modalHeader">
+            <i class="user plus icon"></i>Add New User
+        </h2>
+        <div class="content">
+            <form class="ui form" method="post" action="{{ path('app_create_user') }}">
+                <div class="two fields">
+                    <div class="field">
+                        <label>First Name</label>
+                        <input type="text" name="firstname" placeholder="First Name" required autofocus>
+                    </div>
+                    <div class="field">
+                        <label>Surname</label>
+                        <input type="text" name="surname" placeholder="Surname" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Email address</label>
+                    <input type="email" name="email" placeholder="Email address" required >
+                </div>
+                <div class="two fields">
+                    <div class="field">
+                        <label>Username</label>
+                        <input type="text" name="username" placeholder="Username" required>
+                    </div>
+                    <div class="field">
+                        <label>Password</label>
+                        <input type="password" name="password" placeholder="Password" required>
+                    </div>
+                </div>
+                <div class="inline field" id="adminUserAuth">
+                    <div class="ui toggle checkbox">
+                        <input name="adminUser" type="checkbox">
+                        <label>Admin User</label>
+                    </div>
+                </div>
+                <button class="ui positive button" type="submit">
+                    Save
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="ui container">
+        <table class="ui celled padded table">
+            <thead>
+            <tr><th class="single line">Username</th>
+                <th>First Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Edit</th>
+            </tr></thead>
+            <tbody>
+            <tr>
+                {%  for u in pagination %}
+                <td>
+                    <a href="{{ path('app_account', {id: u.id}) }}">{{ u.username }}</a>
+                </td>
+                <td class="single line">
+                    {{ u.firstName }}
+                </td>
+                <td class="single line">
+                    {{ u.surname }}
+                </td>
+                <td class="single line">
+                    {{ u.email }}
+                </td>
+                <td class="single line">
+                    {% for r in u.roles %}
+                        {% if loop.last %}
+                            {{ r }}
+                        {% else %}
+                            {{ r }},
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    <a class="ui large teal label" href="{{ path('app_edit_account', {id: u.id}) }}">
+                        <i class="pencil alternate icon"></i>
+                        Update
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            {% if pagination.totalItemCount / 10 > 1 %}
+            <tfoot>
+            <tr><th colspan="5">
+                    {{ knp_pagination_render(pagination) }}
+                </th>
+            </tr></tfoot>
+            {% endif %}
+        </table>
+    </div>
+
+{% endblock %}
