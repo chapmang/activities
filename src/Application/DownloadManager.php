@@ -51,7 +51,7 @@ class DownloadManager
         }
     }
 
-    public function downloadActivity(Activity $activity, string $text_format = null, string $route_format = null)
+    public function downloadActivity(Activity $activity, string $text_format = null, string $route_format = null, bool $ajax = false)
     {
         $textFile = null;
         $routeFile = null;
@@ -67,10 +67,29 @@ class DownloadManager
         }
 
         $files = array($textFile,$routeFile);
-        $response = $this->buildZipResponse($files);
 
+        $this->buildZipResponse($files);
+
+        if ($ajax) {
+            return $this->fileName;
+        } else {
+            $response = $this->downloadZipFile($this->fileName);
+            return $response;
+        }
+
+
+    }
+
+    public function downloadZipFile($fileName)
+    {
+        $zipFile = '../temp/'.$fileName.'.zip';
+
+        $response = new Response(file_get_contents($zipFile));
+        $response->headers->set('Content-Type', 'application/zip');
+        $response->headers->set('Content-Disposition', 'attachment;filename="' .$fileName .'.zip"');
+        $response->headers->set('Content-length', filesize($zipFile));
+        @unlink($zipFile);
         return $response;
-
     }
 
     private function buildTextFile(Activity $activity, string $text_format)
@@ -123,7 +142,6 @@ class DownloadManager
 
     private function buildZipResponse(array $files)
     {
-           dd(getcwd());
         $zipName = '../temp/'.$this->fileName.'.zip';
 
         $this->zipper->open($zipName, $this->zipper::CREATE);
@@ -135,14 +153,7 @@ class DownloadManager
         }
         $this->zipper->close();
 
-        $response = new Response(file_get_contents($zipName));
-        $response->headers->set('Content-Type', 'application/zip');
-        $response->headers->set('Content-Disposition', 'attachment;filename="' .$this->fileName .'.zip"');
-        $response->headers->set('Content-length', filesize($zipName));
-
-        @unlink($zipName);
-
-        return $response;
+        return $zipName;
     }
 
 

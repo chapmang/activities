@@ -10,9 +10,8 @@ use App\Domain\Services\GeographyFactory;
 use App\Domain\Services\WalkServices;
 use App\Presentation\Web\Pub\Form\WalkFormType;
 use App\Application\Export\Export;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\HeaderUtils;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -152,40 +151,38 @@ class WalkController extends AbstractController
 
 
     /**
-     * @Route("/walk/export/{id}", name="walk_export", requirements={"id"="^[0-9]+$"})
+     * @Route("/walk/export/{id}", name="walk_export", methods={"POST"}, requirements={"id"="^[0-9]+$"})
      * @param Request $request
      * @return string
      */
     public function exportWalk(Request $request)
     {
+        $data = json_decode(
+            $request->getContent(),
+            true
+        );
         $walk_id = (int) $request->get('id');
-        $text_format = $request->get('text_format');
-        $route_format = $request->get('route_format');
+        $text_format = $data['text_format'];
+        $route_format = $data['route_format'];
 
         $walk = $this->walkService->getWalk($walk_id);
 
+        $fileName = $this->downloadManager->downloadActivity($walk, $text_format, $route_format, true);
+        $url = $this->generateUrl('zip_route', ['file' => $fileName]);
+        return new JsonResponse(['url' => $url]);
 
-        dd($this->downloadManager->downloadActivity($walk, $text_format, $route_format));
-        return $this->downloadManager->downloadActivity($walk, $text_format, $route_format);
+    }
 
-
-
-        //dd($walk);
-        //$test = $this->geoConverter->geojson_to_wkt('{"type":"LineString","coordinates":[[-1.058944,51.281472],[-1.058944,51.281472],[-1.058944,51.281472]]}');
-        $this->geoConverter->geojson_to_wkt("<gpx version=\"1.1\" creator=\"Activities-AA Media\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd\"><metadata><name>rte</name></metadata><rte><name>rte</name><rtept lon=\"-1.058944\" lat=\"51.281472\"></rtept><rtept lon=\"-1.058944\" lat=\"51.281472\"></rtept><rtept lon=\"-1.058944\" lat=\"51.281472\"></rtept></rte> </gpx> ");
-
-
-        $walk->setRoute();
-
-        $download = $this->exporter->exportActivity($format, $walk, 'activity');
-
-        $disposition = HeaderUtils::makeDisposition(
-            HeaderUtils::DISPOSITION_ATTACHMENT,
-            $walk_id.'-'.$walk->getName().'.'.$format
-        );
-
-        $download->headers->set('Content-Disposition', $disposition);
-        return $download;
+    /**
+     * @Route ("/zip", name="zip_route", methods={"GET"})
+     * @param Request $request
+     * @return Response
+     */
+    public function downloadZip(Request $request)
+    {
+        $fileName = $request->query->get('file');
+        $response = $this->downloadManager->downloadZipFile($fileName);
+        return $response;
     }
 
     /**

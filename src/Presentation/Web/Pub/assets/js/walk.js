@@ -3,7 +3,10 @@ import '../css/walk.css';
 (function(){
     $('#export').click(function(){
         $(".ui.modal").modal({
-            detachable: false
+            detachable: false,
+            onApprove: function(){
+                return false;
+            }
         }).modal('show');
     });
     $('.ui.dropdown')
@@ -29,15 +32,19 @@ import '../css/walk.css';
         let url = $('#exportForm').data('ajax');
         console.log(url);
 
-        $.ajax({
-            url: url,
-            data: {"text_format": text_format, "route_format": route_format},
-            type: 'post'
-        })
-            .done(function(data){
-                $('.export-modal').dimmer('hide');
-                $(".ui.modal").modal('hide');
+        fetch (url, {
+            method: 'POST',
+            body: JSON.stringify({
+                text_format: text_format,
+                route_format: route_format
             })
+        }).then((response) =>{
+            return response.json()
+        }).then((data) =>{
+            window.open(data.url);
+            $('.export-modal').dimmer('hide');
+            $(".ui.modal").modal('hide');
+        });
     })
 })();
 
