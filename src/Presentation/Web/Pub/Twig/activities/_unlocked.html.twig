@@ -14,14 +14,6 @@
 <div id="export" class="item">
     <i class="download icon"></i>
     <span class="text">Export</span>
-{#    <i class="dropdown icon"></i>#}
-{#    <div class="menu">#}
-{#        <a class="item" href="{{ path(activity.activityType~'_export', { id: activity.id, format: 'docx' }) }}">Word</a>#}
-{#        <a class="item" href="{{ path(activity.activityType~'_export', { id: activity.id, format: 'csv' }) }}">CSV</a>#}
-{#        <a class="item" href="{{ path(activity.activityType~'_export', { id: activity.id, format: 'xml' }) }}">XML</a>#}
-{#        <a class="item" href="{{ path(activity.activityType~'_export', { id: activity.id, format: 'json' }) }}">JSON</a>#}
-{#        <a class="item" href="#">PDF <span style="color: grey; font-size: smaller">(coming soon)</span> </a>#}
-{#    </div>#}
 </div>
 {%  if app.request.pathinfo == path(activity.activityType~'_by_slug', {slug: activity.slug}) %}
     <a class="item" href="{{ path(activity.activityType~'_update', {id: activity.id}) }}">

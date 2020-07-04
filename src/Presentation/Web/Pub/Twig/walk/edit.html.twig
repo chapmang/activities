@@ -8,7 +8,7 @@
 {% endblock %}
 {% block body %}
     {{ parent() }}
-    <div class="activityContent">
+    <div id="activityContent" data-activity="{{ activity.id }}">
         <div class="details">
             {{ include('@Pub/walk/_form.html.twig', {
                 button_text: 'Update'

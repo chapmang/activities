@@ -156,5 +156,4 @@ class DownloadManager
         return $zipName;
     }
 
-
 }

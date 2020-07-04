@@ -6,7 +6,6 @@ use App\Application\DownloadManager;
 use App\Application\GeoConversion\GeoConverter;
 use App\Domain\Entity\Walk;
 use App\Domain\Repository\WalkRepository;
-use App\Domain\Services\GeographyFactory;
 use App\Domain\Services\WalkServices;
 use App\Presentation\Web\Pub\Form\WalkFormType;
 use App\Application\Export\Export;
@@ -42,10 +41,7 @@ class WalkController extends AbstractController
      * @var GeoConverter
      */
     private $geoConverter;
-    /**
-     * @var GeographyFactory
-     */
-    private $geographyFactory;
+
     /**
      * @var DownloadManager
      */
@@ -55,14 +51,12 @@ class WalkController extends AbstractController
                                 WalkServices $walkServices,
                                 Export $exporter,
                                 GeoConverter $geoconverter,
-                                GeographyFactory $geographyFactory,
                                 DownloadManager $downloadManager)
     {
         $this->repository = $repository;
         $this->walkService = $walkServices;
         $this->exporter = $exporter;
         $this->geoConverter = $geoconverter;
-        $this->geographyFactory = $geographyFactory;
         $this->downloadManager = $downloadManager;
     }
 
@@ -129,10 +123,24 @@ class WalkController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/walk/route/view/{id}", name="walk_view_route")
+     * @param Request $request
+     * @return Response
+     */
+    public function fetchRoute(Request $request)
+    {
+        $walk_id = (int) $request->get('id');
+        $walk = $this->walkService->getWalk($walk_id);
+
+        $walkRoute = $this->geoConverter->geom_to_geojson($walk->getRoute());
+        return new Response($walkRoute);
+    }
 
     /**
-     * @Route("/walk/route/{id}", name="walk_route", methods={"POST"}, requirements={"id"="^[0-9]+$"})
+     * @Route("/walk/route/update/{id}", name="walk_update_route", methods={"POST"}, requirements={"id"="^[0-9]+$"})
      * @param Request $request
+     * @return JsonResponse
      */
     public function updateRoute(Request $request)
     {
@@ -141,11 +149,10 @@ class WalkController extends AbstractController
 
         $walk = $this->walkService->getWalk($walk_id);
 
-        $walkRouteText = $this->geoConverter->geojson_to_wkt($drawnGeometry);
-
-        $walkRoute = $this->geographyFactory->createGeographyLineString($walkRouteText->components);
+        $walkRoute = $this->geoConverter->geojson_to_geom($drawnGeometry);
         $walk->setRoute($walkRoute);
-        dd($walk);
+        $this->walkService->updateWalk($walk);
+        return new JsonResponse([]);
     }
 
 
