@@ -29,8 +29,10 @@ final class GeoJSONEncodeStrategy implements GeoEncoderStrategyInterface
      * @param null $name
      * @param null $mode
      * @return string
+     * @TODO Need to finnish support for feature collections
      */
     public function encode($geom, $name = null, $mode = null) {
+
         $recursiveJSON = function ($geom) use (&$recursiveJSON) {
             if ($geom instanceof Point) {
                 return array($geom->getLongitude(), $geom->getLatitude());
@@ -38,10 +40,24 @@ final class GeoJSONEncodeStrategy implements GeoEncoderStrategyInterface
                 return array_map($recursiveJSON, $geom->getPoints());
             }
         };
-        $value = (object)array ('type' => $geom::name, 'coordinates' => call_user_func($recursiveJSON, $geom));
+        if(is_array($geom)) {
+            $value = (object)array ('type' => 'FeatureCollection', 'features' =>
+                array_map(function ($geom) use (&$recursiveJSON) {
+                    return array ('type' => 'Feature', 'geometry' =>
+                        array ('type' => $geom::name, 'coordinates' => call_user_func($recursiveJSON, $geom['point']))
+
+                    );
+                }, $geom)
+            );
+        } else {
+            $value = (object)array ('type' => $geom::name, 'coordinates' => call_user_func($recursiveJSON, $geom));
+        }
+
 
         return $this->serializer->serialize($value, $this->key);
     }
+
+
 
 
 }

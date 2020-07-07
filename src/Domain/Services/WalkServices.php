@@ -62,4 +62,14 @@ final class WalkServices
             return $this->walkRepository->findBySlug($term);
         }
     }
+
+    public function updateRoute(Walk $walk, $json)
+    {
+        return $walk;
+    }
+
+    public function updatePoint(Walk $walk, $json)
+    {
+        return $walk;
+    }
 }

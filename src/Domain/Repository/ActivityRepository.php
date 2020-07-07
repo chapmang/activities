@@ -34,6 +34,21 @@ final class ActivityRepository extends ServiceEntityRepository implements Activi
         return $this->find($id);
     }
 
+    public function findAllMapActivities()
+    {
+        $conn = $this->_em->getConnection();
+        $sql = 'SELECT id, name, type as activityType, slug, point.ToString() AS point FROM activity';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+
+//       $query = $this->_em->createQueryBuilder()
+//           ->select('a.name', 'a.type')
+//           ->from(Activity::class, 'a')
+//           ->getQuery();
+//        return $query->getResult();
+    }
+
     public function size(): int
     {
         $query = $this->_em->createQueryBuilder()

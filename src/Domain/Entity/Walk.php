@@ -221,11 +221,10 @@ class Walk extends Activity {
 
     /**
      * @ORM\Column(type="linestring", nullable=true)
-     * @Assert\Regex("/\s*(\w+)\s*\(\s*(.*)\s*\)\s*$/", message="This value is not a valid Geometry")
      * @Groups({"activity", "carto"})
      * @var LineString
      */
-    protected $route;
+    protected $route = null;
 
 
     public function setLocation(string $location = null): self {

@@ -1,4 +1,4 @@
-{{ form_start(walkForm) }}
+{{ form_start(walkForm, {'attr': {'id': 'walkForm'}}) }}
     {{ form_row(walkForm.name) }}
     <hr>
     <div class="ui tab active" data-tab="details">
@@ -82,9 +82,10 @@
     <div class="ui tab" data-tab="notes">
 
     </div>
-<div class="field">
-    <button class='ui primary button' type="submit">{{ button_text }}</button>
-</div>
+{{ form_row(walkForm.json_route) }}
+{#<div class="field">#}
+{#    <button class='ui primary button' type="submit">{{ button_text }}</button>#}
+{#</div>#}
 
 {{ form_end(walkForm) }}
 

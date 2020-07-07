@@ -94,6 +94,7 @@ class WalkController extends AbstractController
      */
     public function updateWalk(Request $request)
     {
+
         $walk_id = (int) $request->get('id');
         $walk = $this->walkService->getWalk($walk_id);
 
@@ -102,10 +103,13 @@ class WalkController extends AbstractController
         $this->denyAccessUnlessGranted('LOCKED', $walk);
 
         $form = $this->createForm(WalkFormType::class, $walk);
+        $form->get('json_route')->setData($this->geoConverter->geom_to_geojson($walk->getRoute()));
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+            $walk->setRoute($this->geoConverter->geojson_to_geom($form['json_route']->getData()));
+            //$walk->setPoint($this->geoConverter->geojson_to_geom($form['json_point']->getData()));
 
             // WalkService updates instance of an Walk,
             // persists it and flushes the EntityManager.
@@ -226,7 +230,8 @@ class WalkController extends AbstractController
         }
 
         return $this->render('@Pub/walk/view.html.twig', [
-            'activity' => $walk
+            'activity' => $walk,
+            'route' => $this->geoConverter->geom_to_geojson($walk->getRoute())
         ]);
     }
 

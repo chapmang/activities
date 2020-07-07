@@ -82,11 +82,10 @@ class Activity implements ActivityInterface {
 
     /**
      * @ORM\Column(type="point", nullable=true)
-     * @Assert\Regex("/\s*(\w+)\s*\(\s*(.*)\s*\)\s*$/", message="This value is not a valid Point Geometry")
      * @Groups({"activity", "admin", "carto"})
      * @var Point
      */
-	protected $point;
+	protected $point = null;
 
     /**
      * Short description of the walk

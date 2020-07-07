@@ -1,0 +1,38 @@
+{% extends '@Pub/base.html.twig' %}
+{% block stylesheets %}
+    {{  parent() }}
+    {{ encore_entry_link_tags('map') }}
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css" rel="stylesheet" />
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.css' type='text/css' />
+    <link
+            rel="stylesheet"
+            href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
+            type="text/css"
+    />
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet" />
+{% endblock %}
+{%  block body %}
+    {{ parent() }}
+    <div id="mapContent">
+        <div class="mapping">
+            <div class="apierror">
+                <h4>
+                    <i class="exclamation triangle icon"></i>
+                    We're sorry there appears to be an issue with the mapping API
+                </h4>
+                <p>
+                    Please contact the administrator for assistance
+                </p>
+            </div>
+            <div id="map" style='width: 100%; height: 100%;'></div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    {{  parent() }}
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.js'></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+    {{ encore_entry_script_tags('map') }}
+{% endblock %}

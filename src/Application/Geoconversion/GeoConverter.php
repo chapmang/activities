@@ -18,12 +18,21 @@ class GeoConverter
         $this->geoDecoder = $geoDecoder;
     }
 
+    public function geojson_to_geom($text)
+    {
+        return $this->geoDecoder->decodeGeometry('json', $text);
+    }
 
     public function geom_to_geojson($text)
     {
         return $this->geoEncoder->encodeGeometry('json', $text);
     }
 
+    public function wkt_to_json($text)
+    {
+        $geom = $this->geoDecoder->decodeGeometry('wkt', $text);
+        return $this->geoEncoder->encodeGeometry('json', $geom);
+    }
     public function geom_to_gpx($text)
     {
         return $this->geoEncoder->encodeGeometry('gpx', $text);

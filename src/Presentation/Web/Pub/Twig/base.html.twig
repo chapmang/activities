@@ -31,23 +31,27 @@
                             <i class="search large icon"></i>Search
                         </a>
                     {% endif %}
-                    {% if app.request.get('_route') not in ['walk_create'] %}
-                        <div class="ui pointing dropdown item">
-                            <i class="plus large circle icon"></i>
-                            <span class="text">Create</span>
-                            <i class="dropdown icon"></i>
-                            <div class="menu">
-                                <a  href="{{ path('walk_create') }}" class="item">Walk</a>
-                                <a class="disabled item">Bike Ride</a>
-                                <a class="disabled item">Drive</a>
-                                <a class="disabled item">Place of Interest</a>
-                                <a href="{{ path('collection_create') }}" class="item">Collection</a>
+                    {% if is_granted('ROLE_USER') %}
+                        {% if app.request.get('_route') not in ['walk_create'] %}
+                            <div class="ui pointing dropdown item">
+                                <i class="plus large circle icon"></i>
+                                <span class="text">Create</span>
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
+                                    <a  href="{{ path('walk_create') }}" class="item">Walk</a>
+                                    <a class="disabled item">Bike Ride</a>
+                                    <a class="disabled item">Drive</a>
+                                    <a class="disabled item">Place of Interest</a>
+                                    <a href="{{ path('collection_create') }}" class="item">Collection</a>
+                                </div>
                             </div>
-                        </div>
+                        {% endif %}
                     {% endif %}
-                        <a id="mapViewSelector" class="ui item">
+                    {% if app.request.get('_route') != 'map' %}
+                        <a href="{{ path('map') }}" class="ui item">
                             <i class="globe large icon"></i>Map
                         </a>
+                    {% endif %}
                         <a href="{{ path('collection_list') }}" class="ui item">
                             <i class="list large icon"></i>Collections
                         </a>
@@ -65,6 +69,14 @@
                                     <a href="{{ path('app_edit_account', {id: app.user.id}) }}" class="item">Account</a>
                                 {% endif %}
                                 <a href="{{ path('app_logout') }}"class="item">Logout</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="ui pointing dropdown item">
+                            <i class="user large circle icon"></i>Guest
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <a href="{{ path('app_login') }}"class="item">Login</a>
                             </div>
                         </div>
                     {% endif %}

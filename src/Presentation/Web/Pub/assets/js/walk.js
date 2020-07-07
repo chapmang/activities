@@ -1,5 +1,6 @@
 import '../css/walk.css';
 
+// Dropdown Control
 (function(){
     $('#export').click(function(){
         $(".ui.modal").modal({
@@ -23,6 +24,7 @@ import '../css/walk.css';
     })
 })();
 
+// Modal Box Control
 (function(){
     $('#exportFormSubmit').click(function(e){
         e.preventDefault();
@@ -30,7 +32,6 @@ import '../css/walk.css';
         let text_format = $('input[name="text_format"]').val()
         let route_format = $('input[name="route_format"]').val();
         let url = $('#exportForm').data('ajax');
-        console.log(url);
 
         fetch (url, {
             method: 'POST',
@@ -49,9 +50,8 @@ import '../css/walk.css';
 })();
 
 
+// Mapping Control
 let map, draw;
-
-
 
 (function () {
     if(map) {
@@ -91,7 +91,7 @@ let map, draw;
     }));
 
     // Create a Draw control
-    var draw = new MapboxDraw({
+    draw = new MapboxDraw({
         styles: [
             // ACTIVE (being drawn)
             // line stroke
@@ -172,14 +172,6 @@ let map, draw;
             trash: true
         }
     });
-    let routeUrl = "/walk/route/view/"+activity;
-    fetch (routeUrl, {
-        method: 'POST',
-    }).then((response) =>{
-        return response.json()
-    }).then((data) =>{
-        draw.add(data)
-    });
 
     class saveGeographyControl {
 
@@ -198,12 +190,12 @@ let map, draw;
 
                 if (data.features.length === 1) {
                     let route = JSON.stringify(data.features[0].geometry);
-                    console.log(route);
-                    $.ajax({
-                        url: '/walk/route/update/'+activity,
-                        type: 'POST',
-                        data: {route: route}
-                    })
+                    document.getElementById('walk_form_json_route').value = route;
+                    // $.ajax({
+                    //     url: '/walk/route/update/'+activity,
+                    //     type: 'POST',
+                    //     data: {route: route}
+                    // })
                 } else {
                     console.log(data);
                     // @TODO formalise error
@@ -224,110 +216,54 @@ let map, draw;
         }
     }
 
-
     let editEle = document.getElementById("editMapping");
     if(editEle){
         map.addControl(draw, 'top-left');
-        const myCustomControl = new saveGeographyControl();
-        map.addControl(myCustomControl, 'top-left');
+        // const myCustomControl = new saveGeographyControl();
+        // map.addControl(myCustomControl, 'top-left');
+        let routeEditData = JSON.parse(document.getElementById("walk_form_json_route").value);
+        draw.add(routeEditData);
+    } else {
+        let routeViewData = JSON.parse(document.getElementById("walk_json_route").dataset.json);
+        map.on('load', function() {
+            map.addSource("route", {
+                'type': 'geojson',
+                'data': routeViewData
+            });
+            map.addLayer({
+                "id": "route",
+                "type": "line",
+                "source": "route",
+                "layout": {
+                    "line-cap": "round",
+                    "line-join": "round"
+                },
+                "paint": {
+                    "line-color": "#000",
+                    "line-width": 4
+                }
+            });
+        });
     }
+
     map.on('error', error => {
         $('.apierror').show();
     });
 })();
 
-
-// Load line edit tools only on the edit page of a given walk
-// $(document).ready(function () {
-//     let editEle = document.getElementById("editMapping");
-//     if(editEle){
-//         draw = new MapboxDraw({
-//             styles: [
-//                 // ACTIVE (being drawn)
-//                 // line stroke
-//                 {
-//                     "id": "gl-draw-line",
-//                     "type": "line",
-//                     "filter": ["all", ["==", "$type", "LineString"]],
-//                     "layout": {
-//                         "line-cap": "round",
-//                         "line-join": "round"
-//                     },
-//                     "paint": {
-//                         "line-color": "#D20C0C",
-//                         "line-dasharray": [0.5, 2],
-//                         "line-width": 4
-//                     }
-//                 },
-//                 // vertex point halos
-//                 {
-//                     "id": "gl-draw-polygon-and-line-vertex-halo-active",
-//                     "type": "circle",
-//                     "filter": ["all", ["==", "meta", "vertex"], ["==", "$type", "Point"]],
-//                     "paint": {
-//                         "circle-radius": 7,
-//                         "circle-color": "#FFF"
-//                     }
-//                 },
-//                 // vertex points
-//                 {
-//                     "id": "gl-draw-polygon-and-line-vertex-active",
-//                     "type": "circle",
-//                     "filter": ["all", ["==", "meta", "vertex"], ["==", "$type", "Point"]],
-//                     "paint": {
-//                         "circle-radius": 5,
-//                         "circle-color": "#D20C0C",
-//                     }
-//                 },
-//                 // vertex point halos
-//                 {
-//                     "id": "gl-draw-polygon-and-line-midpoint-halo-active",
-//                     "type": "circle",
-//                     "filter": ["all", ["==", "meta", "midpoint"], ["==", "$type", "Point"]],
-//                     "paint": {
-//                         "circle-radius": 5,
-//                         "circle-color": "#FFF"
-//                     }
-//                 },
-//                 // vertex points
-//                 {
-//                     "id": "gl-draw-polygon-and-line-midpoint-active",
-//                     "type": "circle",
-//                     "filter": ["all", ["==", "meta", "midpoint"], ["==", "$type", "Point"]],
-//                     "paint": {
-//                         "circle-radius": 3,
-//                         "circle-color": "#D20C0C",
-//                     }
-//                 },
-//
-//                 // INACTIVE (static, already drawn)
-//                 // line stroke
-//                 {
-//                     "id": "gl-draw-line-static",
-//                     "type": "line",
-//                     "filter": ["all", ["==", "$type", "LineString"], ["==", "active", "false"]],
-//                     "layout": {
-//                         "line-cap": "round",
-//                         "line-join": "round"
-//                     },
-//                     "paint": {
-//                         "line-color": "#000",
-//                         "line-width": 4
-//                     }
-//                 }
-//             ],
-//             displayControlsDefault: false,
-//             controls: {
-//                 line_string: true,
-//                 trash: true
-//             }
-//         })
-//         draw.add
-//         map.addControl(draw, 'top-left');
-//         const myCustomControl = new saveGeographyControl();
-//         map.addControl(myCustomControl, 'top-left');
-//     }
-// });
-
+$('#saveAll').on('click', function(e){
+    e.preventDefault();
+    let data = draw.getAll()
+    console.log(data);
+    if (data.features.length === 1) {
+        let route = JSON.stringify(data.features[0].geometry);
+        document.getElementById('walk_form_json_route').value = route;
+        document.getElementById("walkForm").submit();
+    } else {
+        console.log(data);
+        // @TODO formalise error
+        alert('there is something wrong with the route');
+    }
+})
 
 

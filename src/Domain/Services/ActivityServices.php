@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace App\Domain\Services;
 
 
+use App\Application\GeoConversion\GeoConverter;
 use App\Domain\Entity\Activity;
 use App\Domain\Entity\Walk;
 use App\Domain\Repository\ActivityRepositoryInterface;
@@ -26,6 +27,10 @@ class ActivityServices
      * @var PaginatorInterface
      */
     private $paginator;
+    /**
+     * @var GeoConverter
+     */
+    private $geoConverter;
 
     /**
      * ActivityServices constructor.
@@ -35,11 +40,14 @@ class ActivityServices
      */
     public function __construct(ActivityRepositoryInterface $activityRepository,
                                 EntityManagerInterface $entityManager,
-                                PaginatorInterface $paginator)
+                                PaginatorInterface $paginator,
+                                GeoConverter $geoconverter)
     {
         $this->activityRepository = $activityRepository;
         $this->entityManager = $entityManager;
         $this->paginator = $paginator;
+        $this->geoConverter = $geoconverter;
+
     }
 
 
@@ -96,5 +104,27 @@ class ActivityServices
     {
         return $this->activityRepository->findById($id);
 
+    }
+
+    public function getMapActivities()
+    {
+        $activityArray['features'] = [];
+        $activities = $this->activityRepository->findAllMapActivities();
+        $i = 0;
+        foreach ($activities as $activity)
+        {
+            foreach ($activity as $key => $value)
+            {
+                $activityArray['features'][$i]['type'] = 'Feature';
+                if ($key == 'point') {
+                    $b = $this->geoConverter->wkt_to_json($value);
+                    $activityArray['features'][$i]['geometry'] = json_decode($b);
+                } else {
+                    $activityArray['features'][$i]['properties'][$key] = $value;
+                }
+            }
+            $i++;
+        }
+        return $activityArray;
     }
 }

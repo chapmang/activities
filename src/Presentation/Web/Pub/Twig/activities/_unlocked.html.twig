@@ -1,4 +1,5 @@
 {{ include('@Pub/'~activity.activityType~'/_export.html.twig') }}
+{% if is_granted('ROLE_USER') %}
 <div class="ui simple dropdown item">
     <div id="activity_lock"
          data-ajax="/activity/lock"
@@ -9,14 +10,25 @@
     </div>
 </div>
 <a class="item">
+    <i class="icons">
+        <i class="list icon"></i>
+        <i class="bottom right corner add icon"></i>
+    </i>
     Add to collection
 </a>
+{% endif %}
 <div id="export" class="item">
     <i class="download icon"></i>
     <span class="text">Export</span>
 </div>
-{%  if app.request.pathinfo == path(activity.activityType~'_by_slug', {slug: activity.slug}) %}
-    <a class="item" href="{{ path(activity.activityType~'_update', {id: activity.id}) }}">
-        <i class="edit icon"></i>Edit
-    </a>
+{% if is_granted('ROLE_USER') %}
+    {%  if app.request.pathinfo == path(activity.activityType~'_by_slug', {slug: activity.slug}) %}
+        <a class="item" href="{{ path(activity.activityType~'_update', {id: activity.id}) }}">
+            <i class="edit icon"></i>Edit
+        </a>
+    {% else %}
+        <a id="saveAll" class="item">
+            <i class="save icon"></i>Save
+        </a>
+    {% endif %}
 {% endif %}
