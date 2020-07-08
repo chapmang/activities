@@ -29,6 +29,7 @@ Encore
     .addEntry('admin', './src/Presentation/Web/Pub/assets/js/admin.js')
     .addEntry('search', './src/Presentation/Web/Pub/assets/js/search.js')
     .addEntry('map', './src/Presentation/Web/Pub/assets/js/map.js')
+    .addEntry('dashboard', './src/Presentation/Web/Pub/assets/js/dashboard.js')
     .addEntry('app', './src/Presentation/Web/Pub/assets/js/app.js')
 
     //.addEntry('page1', './assets/js/page1.js')

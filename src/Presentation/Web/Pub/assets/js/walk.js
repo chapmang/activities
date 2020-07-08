@@ -10,9 +10,9 @@ import '../css/walk.css';
             }
         }).modal('show');
     });
-    $('.ui.dropdown')
-        .dropdown({ showOnFocus:false, clearable:true })
-    ;
+    // $('.ui.dropdown')
+    //     .dropdown({ showOnFocus:false, clearable:true })
+    // ;
     $('input[name="text_format"],input[name="route_format"]').on('change', function(){
         let text_format = $('input[name="text_format"]').val();
         let route_format = $('input[name="route_format"]').val();
@@ -258,6 +258,22 @@ $('#saveAll').on('click', function(e){
     if (data.features.length === 1) {
         let route = JSON.stringify(data.features[0].geometry);
         document.getElementById('walk_form_json_route').value = route;
+        document.getElementById('walk_form_save_type').value = 'save';
+        document.getElementById("walkForm").submit();
+    } else {
+        console.log(data);
+        // @TODO formalise error
+        alert('there is something wrong with the route');
+    }
+})
+$('#saveClose').on('click', function(e){
+    e.preventDefault();
+    let data = draw.getAll()
+    console.log(data);
+    if (data.features.length === 1) {
+        let route = JSON.stringify(data.features[0].geometry);
+        document.getElementById('walk_form_json_route').value = route;
+        document.getElementById('walk_form_save_type').value = 'save-close';
         document.getElementById("walkForm").submit();
     } else {
         console.log(data);

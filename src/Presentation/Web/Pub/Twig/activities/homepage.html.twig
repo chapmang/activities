@@ -50,14 +50,16 @@
                                     <a class="ui icon" data-content="View Activity" data-position="bottom center" href="{{ path(a.activityType~'_by_slug', {slug: a.slug}) }}">
                                         <i class="eye icon"></i>
                                     </a>
-                                    {% if a.status == 0 or (a.status == 1 and app.user == a.modifiedUser) or is_granted('ROLE_ADMIN')%}
-                                        <a class="ui icon" data-content="Edit Activity" data-position="bottom center" href="{{ path(a.activityType~'_update', {id: a.id}) }}">
-                                            <i class="pencil alternate icon"></i>
-                                        </a>
-                                    {%  else %}
-                                        <a class="ui icon" data-content="Edit Activity" data-position="bottom center" href="#">
-                                            <i class="disabled pencil alternate icon"></i>
-                                        </a>
+                                    {% if is_granted('ROLE_USER') %}
+                                        {% if a.status == 0 or (a.status == 1 and app.user == a.modifiedUser) or is_granted('ROLE_ADMIN')%}
+                                            <a class="ui icon" data-content="Edit Activity" data-position="bottom center" href="{{ path(a.activityType~'_update', {id: a.id}) }}">
+                                                <i class="pencil alternate icon"></i>
+                                            </a>
+                                        {%  else %}
+                                            <a class="ui icon" data-content="Edit Activity" data-position="bottom center" href="#">
+                                                <i class="disabled pencil alternate icon"></i>
+                                            </a>
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                                 <div class="description">

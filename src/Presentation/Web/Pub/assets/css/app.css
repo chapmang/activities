@@ -16,6 +16,7 @@ p {
     line-height: 1.5;
 }
 
+
 .logo {
     position:fixed;
 }
@@ -32,6 +33,7 @@ p {
     border-bottom: 3px solid rgb(197,209,60);
     height:65px;
     padding-left: 210px;
+    z-index: 20;
 }
 #masterHead h1.title {
     font-weight: 100;

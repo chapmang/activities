@@ -106,7 +106,6 @@ class WalkController extends AbstractController
         $form->get('json_route')->setData($this->geoConverter->geom_to_geojson($walk->getRoute()));
 
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid()) {
             $walk->setRoute($this->geoConverter->geojson_to_geom($form['json_route']->getData()));
             //$walk->setPoint($this->geoConverter->geojson_to_geom($form['json_point']->getData()));
@@ -117,10 +116,10 @@ class WalkController extends AbstractController
 
             $this->addFlash('success', 'Walk ' .$walk->getName(). ' Updated ');
 
-            return $this->redirectToRoute('walk_update', ['id' => $walk->getId()]);
-
+            if ($form['save_type']->getData() == 'save-close') {
+                return $this->redirectToRoute('walk_by_slug', ['slug' => $walk->getSlug()]);
+            }
         }
-
         return $this->render('@Pub/walk/edit.html.twig', [
             'activity' => $walk,
             'walkForm' => $form->createView()

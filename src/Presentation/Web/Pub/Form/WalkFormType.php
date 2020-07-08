@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -120,6 +121,9 @@ class WalkFormType extends AbstractType
                 'required' => false
             ])
             ->add('json_route', HiddenType::class, [
+                'mapped' => false
+            ])
+            ->add('save_type', HiddenType::class, [
                 'mapped' => false
             ]);
     }

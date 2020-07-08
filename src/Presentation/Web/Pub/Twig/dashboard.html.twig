@@ -1,0 +1,176 @@
+{% extends '@Pub/base.html.twig' %}
+{% block stylesheets %}
+    {{  parent() }}
+    {{ encore_entry_link_tags('dashboard') }}
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="mainSidebar">
+    </div>
+    <div class="mainContent">
+        <div class="ui grid">
+            <div class="five column row">
+                <div class="column">
+                    <div class="ui fluid card bg-aqua">
+                        <div class="desktopCardWalk content">
+                            <div class="ui large header">{{ walks.count }}</div>
+                            <div class="description">Walks</div>
+                        </div>
+                        <div class="desktopCardExtra extra content">
+                            <div class="center aligned">
+                                <a>View More <i class="arrow alternate circle right icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="ui fluid card bg-red">
+                        <div class="desktopCardDrive content">
+                            <div class="ui large header">{{ drives.count }}</div>
+                            <div class="description">Drives</div>
+                        </div>
+                        <div class="desktopCardExtra extra content">
+                            <div class="center aligned">
+                                <a>View More <i class="arrow alternate circle right icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="ui fluid card bg-green">
+                        <div class="desktopCardRide content">
+                            <div class="ui large header">{{ rides.count }}</div>
+                            <div class="description">Rides</div>
+                        </div>
+                        <div class="desktopCardExtra extra content">
+                            <div class="center aligned">
+                                <a>View More <i class="arrow alternate circle right icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="ui fluid card bg-yellow">
+                        <div class="desktopCardPoi content">
+                            <div class="ui large header">{{ pois.count }}</div>
+                            <div class="description">Places of Interest</div>
+                        </div>
+                        <div class="desktopCardExtra extra content">
+                            <div class="center aligned">
+                                <a>View More <i class="arrow alternate circle right icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="ui fluid teal card">
+                        <div class="desktopCardCollection content">
+                            <div class="header">{{ collections.count }}</div>
+                            <div class="description">Collections</div>
+                        </div>
+                        <div class="desktopCardExtra extra content">
+                            <div class="center aligned">
+                                <a>View More <i class="arrow alternate circle right icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="two column row">
+                <div class="column">
+                    <div class="ui segments">
+                        <div class="ui segment">
+                            <div class="ui header">Recent Walks</div>
+                        </div>
+                        <div class="ui segment">
+                            <div class="ui top attached segment">
+                                <p>This segment is on top</p>
+                            </div>
+                            <div class="ui attached segment">
+                                <p>This segment is attached on both sides</p>
+                            </div>
+                            <div class="ui attached segment">
+                                <p>This segment is attached on both sides</p>
+                            </div>
+                            <div class="ui bottom attached segment">
+                                <p>This segment is on bottom</p>
+                            </div>
+                        </div>
+                        <div class="ui segment">
+                            <button class="fluid ui blue button">View all walks</button>
+                        </div>
+                    </div>
+                    <div class="ui segments">
+                        <div class="ui segment">
+                            <div class="ui header">Recent Drives</div>
+                        </div>
+                        <div class="ui segment">
+                            <div class="ui top attached segment">
+                                <p>This segment is on top</p>
+                            </div>
+                            <div class="ui attached segment">
+                                <p>This segment is attached on both sides</p>
+                            </div>
+                            <div class="ui attached segment">
+                                <p>This segment is attached on both sides</p>
+                            </div>
+                            <div class="ui attached segment">
+                                <p>This segment is attached on both sides</p>
+                            </div>
+                            <div class="ui bottom attached segment">
+                                <p>This segment is on bottom</p>
+                            </div>
+                        </div>
+                        <div class="ui segment">
+                            <button class="fluid ui blue button">View all drives</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="ui segments">
+                        <div class="ui segment">
+                            <div class="ui header">Recent Rides</div>
+                        </div>
+                        <div class="ui segment">
+                            <div class="ui top attached segment">
+                                <p>This segment is on top</p>
+                            </div>
+                            <div class="ui attached segment">
+                                <p>This segment is attached on both sides</p>
+                            </div>
+                            <div class="ui bottom attached segment">
+                                <p>This segment is on bottom</p>
+                            </div>
+                        </div>
+                        <div class="ui segment">
+                            <button class="fluid ui blue button">View all rides</button>
+                        </div>
+                    </div>
+                    <div class="ui segments">
+                        <div class="ui segment">
+                            <div class="ui header">Recent POIs</div>
+                        </div>
+                        <div class="ui segment">
+                            <div class="ui top attached segment">
+                                <p>This segment is on top</p>
+                            </div>
+                            <div class="ui attached segment">
+                                <p>This segment is attached on both sides</p>
+                            </div>
+                            <div class="ui bottom attached segment">
+                                <p>This segment is on bottom</p>
+                            </div>
+                        </div>
+                        <div class="ui segment">
+                            <button class="fluid ui blue button">View all pois</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{  parent() }}
+    {{ encore_entry_script_tags('dashboard') }}
+{% endblock %}

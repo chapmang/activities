@@ -38,7 +38,7 @@
                                 <span class="text">Create</span>
                                 <i class="dropdown icon"></i>
                                 <div class="menu">
-                                    <a  href="{{ path('walk_create') }}" class="item">Walk</a>
+                                    <a href="{{ path('walk_create') }}" class="item">Walk</a>
                                     <a class="disabled item">Bike Ride</a>
                                     <a class="disabled item">Drive</a>
                                     <a class="disabled item">Place of Interest</a>
@@ -52,10 +52,11 @@
                             <i class="globe large icon"></i>Map
                         </a>
                     {% endif %}
-                        <a href="{{ path('collection_list') }}" class="ui item">
-                            <i class="list large icon"></i>Collections
+                    {% if app.request.get('_route') != 'dashboard' %}
+                        <a href="{{ path('dashboard') }}" class="ui item">
+                            <i class="home large icon"></i>Home
                         </a>
-
+                    {% endif %}
                     {% if is_granted('ROLE_USER') %}
                         <div class="ui pointing dropdown item">
                             <i class="user large circle icon"></i>

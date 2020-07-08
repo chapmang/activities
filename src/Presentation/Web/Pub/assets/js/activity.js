@@ -1,15 +1,22 @@
 $('#activity_lock .icon')
     .popup()
 ;
+$('#activityMenu .ui.dropdown')
+    .dropdown({
+        action: 'select'
+    })
+;
+$('#exportModal .ui.dropdown')
+    .dropdown({ showOnFocus:false, clearable:true })
+;
+
 (function(){
     $('#export').click(function(){
         $(".ui.mini.modal").modal({
             detachable: false
         }).modal('show');
     });
-    $('.ui.dropdown')
-        .dropdown({ showOnFocus:false, clearable:true })
-    ;
+
     $('input[name="format"]').on('change', function(){
         let selectedFormat = $(this).val();
         let geoFormats = ['xml','json']

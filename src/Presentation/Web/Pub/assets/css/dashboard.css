@@ -1,0 +1,87 @@
+.container {
+    display: flex;
+    height: calc(100% - 65px);
+}
+.mainSidebar {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    margin-top: 65px;
+    background-color: #f8f8f8;
+    border-right: 1px solid #6e6e6e;
+    width: 300px;
+    min-height: 100%;
+    position: fixed;
+}
+.mainContent {
+    height: calc(100% - 65px);
+    padding: 20px;
+    width: calc(100% - 300px);
+    margin-left: 300px;
+    overflow-y: scroll;
+    bottom: 0;
+    position: absolute;
+    top: 65px;
+    background-color: #ecf0f5;
+}
+.bg-aqua {
+    background-color: #00c0ef !important;
+    color: white !important;
+}
+.bg-red {
+    background-color: #dd4b39 !important;
+    color: white !important;
+}
+.bg-green {
+    background-color: #00a65a !important;
+    color: white !important;
+}
+.bg-yellow {
+    background-color: #f39c12 !important;
+}
+.ui.card>.desktopCardExtra {
+    border-top: 0px !important;
+    background-color: rgba(0,0,0,0.1);
+}
+.ui.card>.desktopCardWalk {
+    background-image: url('../../../../../../public/images/activity/Walk_white.svg');
+    background-repeat: no-repeat;
+    background-size: 75px 75px;
+    background-position: right 10px top 10px;
+}
+.ui.card>.desktopCardDrive {
+    background-image: url('../../../../../../public/images/activity/Drive_white.svg');
+    background-repeat: no-repeat;
+    background-size: 75px 75px;
+    background-position: right 10px top 10px;
+}
+.ui.card>.desktopCardRide {
+    background-image: url('../../../../../../public/images/activity/Ride_white.svg');
+    background-repeat: no-repeat;
+    background-size: 75px 75px;
+    background-position: right 10px top 10px;
+}
+.ui.card>.desktopCardPoi {
+    background-image: url('../../../../../../public/images/activity/POI_white.svg');
+    background-repeat: no-repeat;
+    background-size: 75px 75px;
+    background-position: right 10px top 10px;
+}
+.bg-aqua .header,
+.bg-aqua .description,
+.bg-aqua .extra a,
+.bg-red .header,
+.bg-red .description,
+.bg-red .extra a,
+.bg-green .header,
+.bg-green .description,
+.bg-green .extra a,
+.bg-yellow .header,
+.bg-yellow .description,
+.bg-yellow .extra a {
+    color: white !important;
+}
+.mainContent .segments:nth-child(2),
+.mainContent .segments:nth-child(1) {
+    border-top: 2px solid rgb(83,130,61)!important;
+}

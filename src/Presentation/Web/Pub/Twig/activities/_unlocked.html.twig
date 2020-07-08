@@ -12,7 +12,6 @@
 <a class="item">
     <i class="icons">
         <i class="list icon"></i>
-        <i class="bottom right corner add icon"></i>
     </i>
     Add to collection
 </a>
@@ -27,8 +26,25 @@
             <i class="edit icon"></i>Edit
         </a>
     {% else %}
-        <a id="saveAll" class="item">
-            <i class="save icon"></i>Save
-        </a>
+        <div class="ui pointing dropdown item">
+            <i class="save icon"></i>
+            <span class="text">Save</span>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+                <a id="saveAll" class="item">
+                    Save
+                </a>
+                <a id="saveClose" class="item">
+                    Save & Close
+                </a>
+            </div>
+        </div>
+
+{#        <a id="saveAll" class="item">#}
+{#            <i class="save icon"></i>Save#}
+{#        </a>#}
+{#        <a id="saveClose" class="item">#}
+{#            <i class="save icon"></i>Save And Close#}
+{#        </a>#}
     {% endif %}
 {% endif %}
