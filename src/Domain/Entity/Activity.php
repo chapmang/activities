@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="activity")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="type", type="string", length=45)
- * @ORM\DiscriminatorMap( {Activity::TYPE_ACTIVITY="Activity", Activity::TYPE_WALK="Walk", Activity::TYPE_DRIVE="Drive", Activity::TYPE_CYCLE="Cycle", Activity::TYPE_POI="Poi"})
+ * @ORM\DiscriminatorMap( {Activity::TYPE_ACTIVITY="Activity", Activity::TYPE_WALK="Walk", Activity::TYPE_DRIVE="Drive", Activity::TYPE_RIDE="Ride", Activity::TYPE_POI="Poi"})
  * @ORM\Entity(repositoryClass="App\Domain\Repository\ActivityRepository")
  * @UniqueEntity(fields={"name"}, message="This name is already in use")
  */
@@ -31,7 +31,7 @@ class Activity implements ActivityInterface {
     const TYPE_ACTIVITY = 'activity';
     const TYPE_WALK = 'walk';
     const TYPE_DRIVE = 'drive';
-    const TYPE_CYCLE = 'cycle';
+    const TYPE_RIDE = 'ride';
     const TYPE_POI = 'poi';
 
 	/**
@@ -62,23 +62,6 @@ class Activity implements ActivityInterface {
 	 */
 	protected $startGridRef = null;
 
-	/**
-     * Latitude of the activity start location
-     *  
-	 * @ORM\Column(type="decimal", precision=10, scale=8, nullable=true)
-     * @Assert\Regex("/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/", message="This value is not a valid Latitude")
-     * @Groups({"activity", "admin", "carto"})
-	 */
-//	protected $latitude = null;
-
-	/**
-     * Longitude of the activity start location
-     * 
-	 * @ORM\Column(type="decimal", precision=11, scale=8, nullable=true)
-     * @Assert\Regex("/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/", message="This value is not a valid Longitude")
-     * @Groups({"activity", "admin", "carto"})
-	 */
-//	protected $longitude = null;
 
     /**
      * @ORM\Column(type="point", nullable=true)
@@ -263,26 +246,6 @@ class Activity implements ActivityInterface {
     public function getStartGridRef(): ?string
     {
         return $this->startGridRef;
-    }
-
-    public function setLatitude(float $latitude = null)
-    {
-        $this->latitude = $latitude;
-    }
-
-    public function getLatitude(): ?string
-    {
-        return $this->latitude;
-    }
-
-    public function setLongitude(float $longitude = null)
-    {
-        $this->longitude = $longitude;
-    }
-
-    public function getLongitude(): ?string
-    {
-        return $this->longitude;
     }
 
     public function setShortDescription(string $shortDescription = null)

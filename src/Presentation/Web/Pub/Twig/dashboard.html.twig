@@ -18,7 +18,7 @@
                         </div>
                         <div class="desktopCardExtra extra content">
                             <div class="center aligned">
-                                <a>View More <i class="arrow alternate circle right icon"></i></a>
+                                <a href="{{ path('walk_list') }}">View More <i class="arrow alternate circle right icon"></i></a>
                             </div>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                         </div>
                         <div class="desktopCardExtra extra content">
                             <div class="center aligned">
-                                <a>View More <i class="arrow alternate circle right icon"></i></a>
+                                <a href="{{ path('drive_list') }}">View More <i class="arrow alternate circle right icon"></i></a>
                             </div>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                         </div>
                         <div class="desktopCardExtra extra content">
                             <div class="center aligned">
-                                <a>View More <i class="arrow alternate circle right icon"></i></a>
+                                <a href="{{ path('ride_list') }}">View More <i class="arrow alternate circle right icon"></i></a>
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                         </div>
                         <div class="desktopCardExtra extra content">
                             <div class="center aligned">
-                                <a>View More <i class="arrow alternate circle right icon"></i></a>
+                                <a href="{{ path('poi_list') }}">View More <i class="arrow alternate circle right icon"></i></a>
                             </div>
                         </div>
                     </div>
@@ -78,93 +78,132 @@
             </div>
             <div class="two column row">
                 <div class="column">
+                    {% if walks.recent|length > 0 %}
                     <div class="ui segments">
                         <div class="ui segment">
                             <div class="ui header">Recent Walks</div>
                         </div>
                         <div class="ui segment">
-                            <div class="ui top attached segment">
-                                <p>This segment is on top</p>
-                            </div>
-                            <div class="ui attached segment">
-                                <p>This segment is attached on both sides</p>
-                            </div>
-                            <div class="ui attached segment">
-                                <p>This segment is attached on both sides</p>
-                            </div>
-                            <div class="ui bottom attached segment">
-                                <p>This segment is on bottom</p>
-                            </div>
+                            <table class="ui basic table">
+                                <tbody>
+                                    {% for walk in walks.recent %}
+                                        <tr><td class="selectable">
+                                            <a href="{{ path('walk_by_slug', {slug: walk.slug }) }}">
+                                                {{ walk.name }}
+                                                <div class="dashBoardLock">
+                                                    {%  if walk.status == 0 %}
+                                                        <i class="unlock icon" ></i>
+                                                    {% elseif walk.status == 1 %}
+                                                        <i class="lock icon"></i>
+                                                    {% endif %}
+                                                </div>
+                                            </a>
+                                        </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                         <div class="ui segment">
-                            <button class="fluid ui blue button">View all walks</button>
+                            <a href="{{ path('walk_list') }}" class="fluid ui blue button"><i class="list icon"></i>View all walks</a>
                         </div>
                     </div>
+                    {% endif %}
+                    {% if drives.recent|length > 0 %}
                     <div class="ui segments">
                         <div class="ui segment">
                             <div class="ui header">Recent Drives</div>
                         </div>
                         <div class="ui segment">
-                            <div class="ui top attached segment">
-                                <p>This segment is on top</p>
-                            </div>
-                            <div class="ui attached segment">
-                                <p>This segment is attached on both sides</p>
-                            </div>
-                            <div class="ui attached segment">
-                                <p>This segment is attached on both sides</p>
-                            </div>
-                            <div class="ui attached segment">
-                                <p>This segment is attached on both sides</p>
-                            </div>
-                            <div class="ui bottom attached segment">
-                                <p>This segment is on bottom</p>
-                            </div>
+                            <table class="ui basic table">
+                                <tbody>
+                                {% for drive in drives.recent %}
+                                    <tr><td class="selectable">
+                                            <a href="{{ path('drive_by_slug', {slug: drive.slug }) }}">
+                                                {{ drive.name }}
+                                                <div class="dashBoardLock">
+                                                    {%  if drive.status == 0 %}
+                                                        <i class="unlock icon" ></i>
+                                                    {% elseif drive.status == 1 %}
+                                                        <i class="lock icon"></i>
+                                                    {% endif %}
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                         <div class="ui segment">
-                            <button class="fluid ui blue button">View all drives</button>
+                            <a href="{{ path('drive_list') }}" class="fluid ui blue button"><i class="list icon"></i>View all drives</a>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
                 <div class="column">
+                    {% if rides.recent|length > 0 %}
                     <div class="ui segments">
                         <div class="ui segment">
                             <div class="ui header">Recent Rides</div>
                         </div>
                         <div class="ui segment">
-                            <div class="ui top attached segment">
-                                <p>This segment is on top</p>
-                            </div>
-                            <div class="ui attached segment">
-                                <p>This segment is attached on both sides</p>
-                            </div>
-                            <div class="ui bottom attached segment">
-                                <p>This segment is on bottom</p>
-                            </div>
+                            <table class="ui basic table">
+                                <tbody>
+                                {% for ride in rides.recent %}
+                                    <tr><td class="selectable">
+                                            <a href="{{ path('ride_by_slug', {slug: ride.slug }) }}">
+                                                {{ ride.name }}
+                                                <div class="dashBoardLock">
+                                                    {%  if ride.status == 0 %}
+                                                        <i class="unlock icon" ></i>
+                                                    {% elseif ride.status == 1 %}
+                                                        <i class="lock icon"></i>
+                                                    {% endif %}
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                         <div class="ui segment">
-                            <button class="fluid ui blue button">View all rides</button>
+                            <a href="{{ path('ride_list') }}" class="fluid ui blue button"><i class="list icon"></i>View all rides</a>
                         </div>
                     </div>
+                    {% endif %}
+                    {% if pois.recent|length > 0 %}
                     <div class="ui segments">
                         <div class="ui segment">
                             <div class="ui header">Recent POIs</div>
                         </div>
                         <div class="ui segment">
-                            <div class="ui top attached segment">
-                                <p>This segment is on top</p>
-                            </div>
-                            <div class="ui attached segment">
-                                <p>This segment is attached on both sides</p>
-                            </div>
-                            <div class="ui bottom attached segment">
-                                <p>This segment is on bottom</p>
-                            </div>
+                            <table class="ui basic table">
+                                <tbody>
+                                {% for poi in pois.recent %}
+                                    <tr><td class="selectable">
+                                            <a href="{{ path('poi_by_slug', {slug: poi.slug }) }}">
+                                                {{ poi.name }}
+                                                <div class="dashBoardLock">
+                                                    {%  if poi.status == 0 %}
+                                                        <i class="unlock icon" ></i>
+                                                    {% elseif poi.status == 1 %}
+                                                        <i class="lock icon"></i>
+                                                    {% endif %}
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                         <div class="ui segment">
-                            <button class="fluid ui blue button">View all pois</button>
+                            <a href="{{ path('poi_list') }}" class="fluid ui blue button"><i class="list icon"></i>View all pois</a>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

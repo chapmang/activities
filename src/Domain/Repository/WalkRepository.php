@@ -36,9 +36,8 @@ final class WalkRepository extends ServiceEntityRepository implements WalkReposi
 
     public function size(): int
     {
-        $query = $this->_em->createQueryBuilder()
+        $query = $this->getOrCreateQueryBuilder()
             ->select('count(w.id)')
-            ->from(Walk::class, 'w')
             ->getQuery();
 
         return $query->getSingleScalarResult();
@@ -49,10 +48,34 @@ final class WalkRepository extends ServiceEntityRepository implements WalkReposi
          return $this->findOneBy(['slug' => $slug]);
     }
 
+    public function recentModifiedWalk()
+    {
+        $qb = $this->getOrCreateQueryBuilder();
+        return $qb->orderBy('w.modifiedDate', 'DESC')
+            ->select('w.id, w.name, w.slug, w.status')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+
+    }
+
+    public function getWithSearch(?string $term): QueryBuilder
+    {
+        $qb = $this->getOrCreateQueryBuilder()
+            ->select('w');
+
+        if ($term) {
+            $qb->andWhere('w.name LIKE :term OR w.description LIKE :term')
+                ->setParameter('term', '%'.$term.'%');
+        }
+
+        return $qb
+            ->orderBy('w.name', 'DESC');
+    }
+
     private function getOrCreateQueryBuilder(QueryBuilder $qb = null)
     {
         return $qb ?: $this->_em->createQueryBuilder()
-            ->select('w')
             ->from(Walk::class, 'w');
     }
 

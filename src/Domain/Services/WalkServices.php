@@ -5,6 +5,8 @@ namespace App\Domain\Services;
 use App\Domain\Entity\Walk;
 use App\Domain\Repository\WalkRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 final class WalkServices
 {
@@ -16,16 +18,23 @@ final class WalkServices
      * @var EntityManagerInterface
      */
     private $entityManager;
+    /**
+     * @var PaginatorInterface
+     */
+    private $paginator;
 
     /**
      * WalkServices constructor.
      * @param WalkRepositoryInterface $walkRepository
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(WalkRepositoryInterface $walkRepository, EntityManagerInterface $entityManager)
+    public function __construct(WalkRepositoryInterface $walkRepository,
+                                EntityManagerInterface $entityManager,
+                                PaginatorInterface $paginator)
     {
         $this->walkRepository = $walkRepository;
         $this->entityManager = $entityManager;
+        $this->paginator = $paginator;
     }
 
     public function createWalk(Walk $walk): Walk
@@ -61,6 +70,24 @@ final class WalkServices
         } elseif (preg_match($slug_pattern, $term)) {
             return $this->walkRepository->findBySlug($term);
         }
+    }
+
+    /**
+     * @param $term
+     * @param $pageNumber
+     * @return PaginationInterface
+     */
+    public function getPaginatedSearchResults($term, $pageNumber)
+    {
+        $queryBuilder = $this->walkRepository->getWithSearch($term);
+
+        $pagination = $this->paginator->paginate(
+            $queryBuilder, /* query NOT result */
+            $pageNumber/*page number*/,
+            10/*limit per page*/
+        );
+
+        return $pagination;
     }
 
     public function updateRoute(Walk $walk, $json)

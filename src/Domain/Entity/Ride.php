@@ -7,13 +7,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
- * Class Cycle
+ * Class Ride
  *
- * @ORM\Table(name="cycle")
- * @ORM\Entity(repositoryClass="App\Domain\Repository\CycleRepository")
+ * @ORM\Table(name="ride")
+ * @ORM\Entity(repositoryClass="App\Domain\Repository\RideRepository")
  *
  */
-class Cycle extends Activity {
+class Ride extends Activity {
 
 	/**
 	 * @ORM\Id
@@ -27,6 +27,6 @@ class Cycle extends Activity {
      */
     public function getType() {
 
-        return $this::TYPE_CYCLE;
+        return $this::TYPE_RIDE;
     }
 }

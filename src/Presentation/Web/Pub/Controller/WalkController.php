@@ -9,6 +9,7 @@ use App\Domain\Repository\WalkRepository;
 use App\Domain\Services\WalkServices;
 use App\Presentation\Web\Pub\Form\WalkFormType;
 use App\Application\Export\Export;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -231,6 +232,23 @@ class WalkController extends AbstractController
         return $this->render('@Pub/walk/view.html.twig', [
             'activity' => $walk,
             'route' => $this->geoConverter->geom_to_geojson($walk->getRoute())
+        ]);
+    }
+
+    /**
+     * @Route("/walk", name="walk_list", methods={"GET"})
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     * @return Response
+     */
+    public function listWalks(Request $request, PaginatorInterface $paginator)
+    {
+        $searchTerm = $request->query->get('q');
+        $pageNumber = $request->query->getInt('page', 1);
+        $pagination = $this->walkService->getPaginatedSearchResults($searchTerm, $pageNumber);
+
+        return $this->render('@Pub/walk/list.html.twig', [
+            'pagination' => $pagination
         ]);
     }
 

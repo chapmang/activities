@@ -1,16 +1,14 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Domain\Entity;
 
-
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="poi")
- * @ORM\Entity(repositoryClass="App\Domian\Repository\PoiRepository")
+ * @ORM\Entity(repositoryClass="App\Domain\Repository\PoiRepository")
  */
 class Poi extends Activity {
 
@@ -22,7 +20,6 @@ class Poi extends Activity {
 
     /**
      * @return string
-     * @Serializer\VirtualProperty()
      * @Groups({"activity"})
      */
     public function getType() {

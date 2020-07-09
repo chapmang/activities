@@ -85,3 +85,6 @@
 .mainContent .segments:nth-child(1) {
     border-top: 2px solid rgb(83,130,61)!important;
 }
+.dashBoardLock {
+    float: right;
+}
