@@ -7,26 +7,7 @@
     {{ parent() }}
     <div class="container">
         <div class="columnLeft">
-            <form>
-                <div class="ui fluid icon input">
-                    <input class="prompt" type="text" name="q" placeholder="Search...">
-                    <i class="search icon"></i>
-                </div>
-                <div class="grouped fields">
-                    <div class="field">
-                        <div class="ui toggle checkbox">
-                            <input type="radio" name="activity">
-                            <label>Walks</label>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="ui toggle checkbox">
-                            <input type="radio" name="activity">
-                            <label>Bike Rides</label>
-                        </div>
-                    </div>
-                </div>
-            </form>
+            {{ include('@Pub/_sideSearchForm.hml.twig') }}
         </div>
         <div class="columnRight">
             <div class="resultCount">
@@ -37,22 +18,22 @@
                     {%  for walk in pagination %}
                         <div class="item">
                             <div class="ui tiny image">
-                                <img src="{{ asset('images/activity/' ~ walk.activityType ~ '_' ~ walk.difficulty~'.svg') }}">
+                                <img src="{{ asset('images/activity/walk_' ~ walk.difficulty~'.svg') }}">
                             </div>
                             <div class="content">
-                                <a href="{{ path(walk.activityType~'_by_slug', {slug: walk.slug}) }}" class="header">{{ walk.name }}</a>
+                                <a href="{{ path('walk_by_slug', {slug: walk.slug}) }}" class="header">{{ walk.name }}</a>
                                 <div class="activityNav">
                                     {%  if walk.status == 0 %}
                                         <i class="unlock icon" ></i>
                                     {% elseif walk.status == 1 %}
                                         <i class="lock icon" data-content="{{ 'This activity was locked by '~walk.modifiedUser.username }}" data-position="bottom center"></i>
                                     {% endif %}
-                                    <a class="ui icon" data-content="View Activity" data-position="bottom center" href="{{ path(walk.activityType~'_by_slug', {slug: walk.slug}) }}">
+                                    <a class="ui icon" data-content="View Activity" data-position="bottom center" href="{{ path('walk_by_slug', {slug: walk.slug}) }}">
                                         <i class="eye icon"></i>
                                     </a>
                                     {% if is_granted('ROLE_USER') %}
                                         {% if walk.status == 0 or (walk.status == 1 and app.user == walk.modifiedUser) or is_granted('ROLE_ADMIN')%}
-                                            <a class="ui icon" data-content="Edit Activity" data-position="bottom center" href="{{ path(walk.activityType~'_update', {id: walk.id}) }}">
+                                            <a class="ui icon" data-content="Edit Activity" data-position="bottom center" href="{{ path('walk_update', {id: walk.id}) }}">
                                                 <i class="pencil alternate icon"></i>
                                             </a>
                                         {%  else %}

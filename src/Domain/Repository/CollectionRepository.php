@@ -85,7 +85,27 @@ class CollectionRepository extends ServiceEntityRepository implements Collection
         return $query->getResult();
 
     }
-    
+
+    public function findAllByNameAndTags(string $queryTerm, $tags = null)
+    {
+
+        $qb = $this->getOrCreateQueryBuilder()
+            ->select('c');
+
+        $qb->andWhere('c.name LIKE :term OR c.description LIKE :term')
+            ->setParameter('term', '%'.$queryTerm.'%');
+
+        if ($tags && is_array($tags)) {
+            foreach ($tags as $key => $value) {
+                $qb->andWhere(':tag MEMBER OF c.tags')
+                    ->setParameter('tag', $value->getID());
+            }
+        }
+
+        $query = $qb->getQuery();
+        return $query->getResult();
+    }
+
     private function addFindAllWithSearchQueryBuilder(?string $searchTerm, QueryBuilder $qb = null)
     {
         return $this->getOrCreateQueryBuilder($qb)

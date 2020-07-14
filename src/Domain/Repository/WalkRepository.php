@@ -43,41 +43,73 @@ final class WalkRepository extends ServiceEntityRepository implements WalkReposi
         return $query->getSingleScalarResult();
     }
 
-    public function findBySlug(string $slug)
+    public function findBySlug(string $slug): ?Walk
     {
          return $this->findOneBy(['slug' => $slug]);
     }
 
-    public function recentModifiedWalk()
+    public function recentModifiedWalk($max)
     {
         $qb = $this->getOrCreateQueryBuilder();
-        return $qb->orderBy('w.modifiedDate', 'DESC')
-            ->select('w.id, w.name, w.slug, w.status')
-            ->setMaxResults(5)
+        return $this->selectBasicFields($qb)
+            ->orderBy('w.modifiedDate', 'DESC')
+            ->setMaxResults($max)
             ->getQuery()
             ->getResult();
-
     }
 
-    public function getWithSearch(?string $term): QueryBuilder
+    public function findAllByNameAndTagsQueryBuilder(?string $queryTerm, $tags = null): QueryBuilder
     {
-        $qb = $this->getOrCreateQueryBuilder()
-            ->select('w');
-
-        if ($term) {
-            $qb->andWhere('w.name LIKE :term OR w.description LIKE :term')
-                ->setParameter('term', '%'.$term.'%');
-        }
+        $qb = $this->getOrCreateQueryBuilder();
+        $qb = $this->selectAllFields($qb);
+        $qb = $this->addBasicSearch($qb, $queryTerm);
+        $qb = $this->addTagUsed($qb, $tags);
 
         return $qb
             ->orderBy('w.name', 'DESC');
     }
 
+    public function findAllByNameAndTags(?string $queryTerm, $tags = null)
+    {
+
+        $qb = $this->getOrCreateQueryBuilder();
+        $qb = $this->selectBasicFields($qb);
+        $qb = $this->addBasicSearch($qb, $queryTerm);
+        $qb = $this->addTagUsed($qb, $tags);
+
+        $query = $qb->getQuery();
+        return $query->getResult();
+    }
+
+    private function addTagUsed(QueryBuilder $qb, ?array $tags)
+    {
+        if ($tags && is_array($tags)) {
+            foreach ($tags as $key => $value) {
+                $qb->andWhere(':tag MEMBER OF w.tags')
+                    ->setParameter('tag', $value->getID());
+            }
+        }
+        return $qb;
+    }
+
+    private function addBasicSearch(QueryBuilder $qb, ?string $queryTerm)
+    {
+        return $qb->andWhere('w.name LIKE :term OR w.shortDescription LIKE :term OR w.description LIKE :term')
+            ->setParameter('term', '%'.$queryTerm.'%');
+    }
+
+    private function selectBasicFields(QueryBuilder $qb)
+    {
+        return $qb->select('w.id, w.name, w.slug, w.status');
+    }
+
+    private function selectAllFields(QueryBuilder $qb)
+    {
+        return $qb->select('w');
+    }
     private function getOrCreateQueryBuilder(QueryBuilder $qb = null)
     {
         return $qb ?: $this->_em->createQueryBuilder()
             ->from(Walk::class, 'w');
     }
-
-
 }

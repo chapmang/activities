@@ -1,0 +1,8 @@
+{{ form_start(dashboardSearchForm) }}
+    <div class="ui field fluid icon input">
+        {{ form_widget(dashboardSearchForm.string) }}
+        <i class="search icon"></i>
+    </div>
+    {{ form_row(dashboardSearchForm.tags) }}
+    {{ form_row(dashboardSearchForm.search) }}
+{{ form_end(dashboardSearchForm) }}

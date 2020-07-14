@@ -1,0 +1,10 @@
+{{ form_start(walkSearchForm, {'attr': {'id': 'walkSearchForm'}}) }}
+    <form>
+        <div class="ui fluid icon input">
+            <input class="prompt" type="text" name="q" placeholder="Search...">
+            <i class="search icon"></i>
+        </div>
+    </form>
+    {{ form_row(walkForm.string) }}
+    {{ form_row(walkSearchForm.tags) }}
+{{ form_end(walkSearchForm) }}

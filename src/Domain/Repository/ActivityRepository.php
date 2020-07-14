@@ -64,7 +64,7 @@ final class ActivityRepository extends ServiceEntityRepository implements Activi
         $qb = $this->getOrCreateQueryBuilder();
 
         if ($term) {
-            $qb->andWhere('a.name LIKE :term OR a.description LIKE :term')
+            $qb->andWhere('a.name LIKE :term OR a.shortDescription LIKE :term')
                 ->setParameter('term', '%'.$term.'%');
         }
 

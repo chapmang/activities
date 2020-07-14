@@ -39,19 +39,74 @@ class DriveRepository extends ServiceEntityRepository implements DriveRepository
         $query = $this->getOrCreateQueryBuilder()
             ->select('count(d.id)')
             ->getQuery();
+
         return $query->getSingleScalarResult();
     }
 
-    public function recentModifiedDrive()
+    public function findBySlug(string $slug): ?Drive
+    {
+        return $this->findOneBy(['slug' => $slug]);
+    }
+
+    public function recentModifiedDrive($max)
     {
         $qb = $this->getOrCreateQueryBuilder();
-        return $qb->orderBy('d.modifiedDate', 'DESC')
-            ->select('d.id, d.name, d.slug')
-            ->setMaxResults(5)
+        return $this->selectBasicFields($qb)
+            ->orderBy('d.modifiedDate', 'DESC')
+            ->setMaxResults($max)
             ->getQuery()
             ->getResult();
     }
 
+    public function findAllByNameAndTagsQueryBuilder(?string $queryTerm, $tags = null): QueryBuilder
+    {
+        $qb = $this->getOrCreateQueryBuilder();
+        $qb = $this->selectAllFields($qb);
+        $qb = $this->addBasicSearch($qb, $queryTerm);
+        $qb = $this->addTagUsed($qb, $tags);
+
+        return $qb
+            ->orderBy('d.name', 'DESC');
+    }
+
+    public function findAllByNameAndTags(?string $queryTerm, $tags = null)
+    {
+
+        $qb = $this->getOrCreateQueryBuilder();
+        $qb = $this->selectBasicFields($qb);
+        $qb = $this->addBasicSearch($qb, $queryTerm);
+        $qb = $this->addTagUsed($qb, $tags);
+
+        $query = $qb->getQuery();
+        return $query->getResult();
+    }
+
+    private function addTagUsed(QueryBuilder $qb, ?array $tags)
+    {
+        if ($tags && is_array($tags)) {
+            foreach ($tags as $key => $value) {
+                $qb->andWhere(':tag MEMBER OF d.tags')
+                    ->setParameter('tag', $value->getID());
+            }
+        }
+        return $qb;
+    }
+
+    private function addBasicSearch(QueryBuilder $qb, ?string $queryTerm)
+    {
+        return $qb->andWhere('d.name LIKE :term OR d.shortDescription LIKE :term OR d.description LIKE :term')
+            ->setParameter('term', '%'.$queryTerm.'%');
+    }
+
+    private function selectBasicFields(QueryBuilder $qb)
+    {
+        return $qb->select('d.id, d.name, d.slug, d.status');
+    }
+
+    private function selectAllFields(QueryBuilder $qb)
+    {
+        return $qb->select('d');
+    }
     private function getOrCreateQueryBuilder(QueryBuilder $qb = null)
     {
         return $qb ?: $this->_em->createQueryBuilder()

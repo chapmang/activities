@@ -1,0 +1,152 @@
+{% extends '@Pub/base.html.twig' %}
+{% block stylesheets %}
+    {{  parent() }}
+    {{ encore_entry_link_tags('dashboard') }}
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="mainSidebar">
+        {{ include('@Pub/_sideSearchForm.hml.twig') }}
+    </div>
+    <div class="mainContent">
+        <div class="ui header">
+            Search Results: {{ searchQuery }}
+        </div>
+        <div class="ui grid">
+            <div class="two column row">
+                <div class="column">
+                    {% if searchResults.walks|length > 0 %}
+                        <div class="ui segments">
+                            <div class="ui segment">
+                                <div class="ui header">Walks</div>
+                            </div>
+                            <div class="ui segment maxed">
+                                <table class="ui basic table">
+                                    <tbody>
+                                    {% for walk in searchResults.walks %}
+                                        <tr><td class="selectable">
+                                                <a href="{{ path('walk_by_slug', {slug: walk.slug }) }}">
+                                                    {{ walk.name }}
+                                                    <div class="dashBoardLock">
+                                                        {%  if walk.status == 0 %}
+                                                            <i class="unlock icon" ></i>
+                                                        {% elseif walk.status == 1 %}
+                                                            <i class="lock icon"></i>
+                                                        {% endif %}
+                                                    </div>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="ui segment">
+                                <a href="{{ path('walk_list') }}" class="fluid ui blue button"><i class="list icon"></i>View all walks</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if searchResults.rides|length > 0 %}
+                        <div class="ui segments">
+                            <div class="ui segment">
+                                <div class="ui header">Rides</div>
+                            </div>
+                            <div class="ui segment">
+                                <table class="ui basic table">
+                                    <tbody>
+                                    {% for ride in searchResults.rides %}
+                                        <tr><td class="selectable">
+                                                <a href="{{ path('ride_by_slug', {slug: ride.slug }) }}">
+                                                    {{ ride.name }}
+                                                    <div class="dashBoardLock">
+                                                        {%  if ride.status == 0 %}
+                                                            <i class="unlock icon" ></i>
+                                                        {% elseif ride.status == 1 %}
+                                                            <i class="lock icon"></i>
+                                                        {% endif %}
+                                                    </div>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="ui segment">
+                                <a href="{{ path('ride_list') }}" class="fluid ui blue button"><i class="list icon"></i>View all rides</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="column">
+                    {% if searchResults.drives|length > 0 %}
+                        <div class="ui segments">
+                            <div class="ui segment">
+                                <div class="ui header">Drives</div>
+                            </div>
+                            <div class="ui segment">
+                                <table class="ui basic table">
+                                    <tbody>
+                                    {% for drive in searchResults.drives %}
+                                        <tr><td class="selectable">
+                                                <a href="{{ path('drive_by_slug', {slug: drive.slug }) }}">
+                                                    {{ drive.name }}
+                                                    <div class="dashBoardLock">
+                                                        {%  if drive.status == 0 %}
+                                                            <i class="unlock icon" ></i>
+                                                        {% elseif drive.status == 1 %}
+                                                            <i class="lock icon"></i>
+                                                        {% endif %}
+                                                    </div>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="ui segment">
+                                <a href="{{ path('drive_list') }}" class="fluid ui blue button"><i class="list icon"></i>View all drives</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if searchResults.pois|length > 0 %}
+                        <div class="ui segments">
+                            <div class="ui segment">
+                                <div class="ui header">POIs</div>
+                            </div>
+                            <div class="ui segment">
+                                <table class="ui basic table">
+                                    <tbody>
+                                    {% for poi in searchResults.recentPois %}
+                                        <tr><td class="selectable">
+                                                <a href="{{ path('poi_by_slug', {slug: poi.slug }) }}">
+                                                    {{ poi.name }}
+                                                    <div class="dashBoardLock">
+                                                        {%  if poi.status == 0 %}
+                                                            <i class="unlock icon" ></i>
+                                                        {% elseif poi.status == 1 %}
+                                                            <i class="lock icon"></i>
+                                                        {% endif %}
+                                                    </div>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="ui segment">
+                                <a href="{{ path('poi_list') }}" class="fluid ui blue button"><i class="list icon"></i>View all pois</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{  parent() }}
+    {{ encore_entry_script_tags('dashboard') }}
+{% endblock %}

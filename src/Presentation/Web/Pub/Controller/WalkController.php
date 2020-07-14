@@ -7,6 +7,7 @@ use App\Application\GeoConversion\GeoConverter;
 use App\Domain\Entity\Walk;
 use App\Domain\Repository\WalkRepository;
 use App\Domain\Services\WalkServices;
+use App\Presentation\Web\Pub\Form\sideSearchFormType;
 use App\Presentation\Web\Pub\Form\WalkFormType;
 use App\Application\Export\Export;
 use Knp\Component\Pager\PaginatorInterface;
@@ -29,11 +30,6 @@ class WalkController extends AbstractController
     private $exporter;
 
     /**
-     * @var WalkRepository
-     */
-    private $repository;
-
-    /**
      * @var WalkServices
      */
     private $walkService;
@@ -48,13 +44,11 @@ class WalkController extends AbstractController
      */
     private $downloadManager;
 
-    public function __construct(WalkRepository $repository,
-                                WalkServices $walkServices,
+    public function __construct(WalkServices $walkServices,
                                 Export $exporter,
                                 GeoConverter $geoconverter,
                                 DownloadManager $downloadManager)
     {
-        $this->repository = $repository;
         $this->walkService = $walkServices;
         $this->exporter = $exporter;
         $this->geoConverter = $geoconverter;
@@ -107,6 +101,7 @@ class WalkController extends AbstractController
         $form->get('json_route')->setData($this->geoConverter->geom_to_geojson($walk->getRoute()));
 
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid()) {
             $walk->setRoute($this->geoConverter->geojson_to_geom($form['json_route']->getData()));
             //$walk->setPoint($this->geoConverter->geojson_to_geom($form['json_point']->getData()));
@@ -128,40 +123,6 @@ class WalkController extends AbstractController
     }
 
     /**
-     * @Route("/walk/route/view/{id}", name="walk_view_route")
-     * @param Request $request
-     * @return Response
-     */
-    public function fetchRoute(Request $request)
-    {
-        $walk_id = (int) $request->get('id');
-        $walk = $this->walkService->getWalk($walk_id);
-
-        $walkRoute = $this->geoConverter->geom_to_geojson($walk->getRoute());
-        return new Response($walkRoute);
-    }
-
-    /**
-     * @Route("/walk/route/update/{id}", name="walk_update_route", methods={"POST"}, requirements={"id"="^[0-9]+$"})
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function updateRoute(Request $request)
-    {
-        $walk_id = (int) $request->get('id');
-        $drawnGeometry = $request->get('route');
-
-        $walk = $this->walkService->getWalk($walk_id);
-
-        $walkRoute = $this->geoConverter->geojson_to_geom($drawnGeometry);
-        $walk->setRoute($walkRoute);
-        $this->walkService->updateWalk($walk);
-        return new JsonResponse([]);
-    }
-
-
-
-    /**
      * @Route("/walk/export/{id}", name="walk_export", methods={"POST"}, requirements={"id"="^[0-9]+$"})
      * @param Request $request
      * @return string
@@ -181,7 +142,6 @@ class WalkController extends AbstractController
         $fileName = $this->downloadManager->downloadActivity($walk, $text_format, $route_format, true);
         $url = $this->generateUrl('zip_route', ['file' => $fileName]);
         return new JsonResponse(['url' => $url]);
-
     }
 
     /**
@@ -235,20 +195,46 @@ class WalkController extends AbstractController
         ]);
     }
 
+
+//    /**
+//     * @Route("/walk", name="walk_list", methods={"GET"})
+//     * @param Request $request
+//     * @return Response
+//     */
+//    public function listWalks(Request $request)
+//    {
+//        $searchTerm = $request->query->get('q');
+//        $pageNumber = $request->query->getInt('page', 1);
+//        $pagination = $this->walkService->getPaginatedSearchResults($searchTerm, $pageNumber);
+//
+//        return $this->render('@Pub/walk/list.html.twig', [
+//            'pagination' => $pagination
+//        ]);
+//
+//    }
+
     /**
-     * @Route("/walk", name="walk_list", methods={"GET"})
+     * @Route ("/walk", name="walk_list", methods={"GET"})
      * @param Request $request
-     * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function listWalks(Request $request, PaginatorInterface $paginator)
+    public function search(Request $request)
     {
-        $searchTerm = $request->query->get('q');
+        $form = $this->createForm(sideSearchFormType::class, null, [
+            'action' => $this->generateUrl('walk_list'),
+            'method' => 'GET'
+        ]);
         $pageNumber = $request->query->getInt('page', 1);
-        $pagination = $this->walkService->getPaginatedSearchResults($searchTerm, $pageNumber);
+        $form->handleRequest($request);
+
+        $pagination = $this->walkService->getPaginatedSearchResults($form->getData(), $pageNumber);
+
 
         return $this->render('@Pub/walk/list.html.twig', [
-            'pagination' => $pagination
+            'searchQuery' => $form->getData()['string'],
+            //'searchResults' => $queryResults,
+            'pagination' => $pagination,
+            'sideSearchForm' => $form->createView()
         ]);
     }
 

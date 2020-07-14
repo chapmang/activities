@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace App\Domain\Services;
 
 
+use App\Domain\Repository\CollectionRepository;
 use App\Domain\Repository\DriveRepository;
 use App\Domain\Repository\PoiRepository;
 use App\Domain\Repository\RideRepository;
@@ -26,16 +27,22 @@ class DashboardServices
      * @var RideRepository
      */
     private $rideRepository;
+    /**
+     * @var CollectionRepository
+     */
+    private $collectionRepository;
 
     public function __construct(WalkRepository $walkRepository,
                                 DriveRepository $driveRepository,
                                 PoiRepository $poiRepository,
-                                RideRepository $rideRepository)
+                                RideRepository $rideRepository,
+                                CollectionRepository $collectionRepository)
     {
         $this->walkRepository = $walkRepository;
         $this->driveRepository = $driveRepository;
         $this->poiRepository = $poiRepository;
         $this->rideRepository = $rideRepository;
+        $this->collectionRepository = $collectionRepository;
     }
 
     public function countStats()
@@ -62,5 +69,20 @@ class DashboardServices
             'recentDrives' => $recentDrives,
             'recentPois' => $recentPois,
             'recentRides' => $recentRides);
+    }
+
+    public function globalSearch(array $queryData)
+    {
+        $results = [];
+        $queryTerm = $queryData['string'];
+        $tags = $queryData['tags'];
+
+        $results['walks'] = $this->walkRepository->findAllByNameAndTags($queryTerm, $tags);
+        $results['drives'] = $this->driveRepository->findAllByNameAndTags($queryTerm, $tags);
+        $results['pois'] = $this->poiRepository->findAllByNameAndTags($queryTerm, $tags);
+        $results['rides'] = $this->rideRepository->findAllByNameAndTags($queryTerm, $tags);
+        $results['collections'] = $this->collectionRepository->findAllByNameAndTags($queryTerm, $tags);
+
+        return $results;
     }
 }

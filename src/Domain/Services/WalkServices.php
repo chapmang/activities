@@ -27,6 +27,7 @@ final class WalkServices
      * WalkServices constructor.
      * @param WalkRepositoryInterface $walkRepository
      * @param EntityManagerInterface $entityManager
+     * @param PaginatorInterface $paginator
      */
     public function __construct(WalkRepositoryInterface $walkRepository,
                                 EntityManagerInterface $entityManager,
@@ -73,30 +74,31 @@ final class WalkServices
     }
 
     /**
-     * @param $term
-     * @param $pageNumber
+     * @param array $queryData
+     * @param int $pageNumber
      * @return PaginationInterface
      */
-    public function getPaginatedSearchResults($term, $pageNumber)
+    public function getPaginatedSearchResults(array $queryData, int $pageNumber)
     {
-        $queryBuilder = $this->walkRepository->getWithSearch($term);
+        $queryTerm = $queryData['string'];
+        $tags = $queryData['tags'];
 
-        $pagination = $this->paginator->paginate(
+        $queryBuilder = $this->walkRepository->findAllByNameAndTagsQueryBuilder($queryTerm, $tags);
+
+        return $this->paginator->paginate (
             $queryBuilder, /* query NOT result */
             $pageNumber/*page number*/,
             10/*limit per page*/
         );
-
-        return $pagination;
     }
 
-    public function updateRoute(Walk $walk, $json)
+    public function recentModifiedWalk($max)
     {
-        return $walk;
+        return $this->walkRepository->recentModifiedWalk($max);
     }
 
-    public function updatePoint(Walk $walk, $json)
+    public function countWalks(): int
     {
-        return $walk;
+        return $this->walkRepository->size();
     }
 }

@@ -1,0 +1,218 @@
+{% extends '@Pub/base.html.twig' %}
+{% block stylesheets %}
+    {{  parent() }}
+    {{ encore_entry_link_tags('dashboard') }}
+{% endblock %}
+{% block body %}
+    {{ parent() }}
+    <div class="mainSidebar">
+        {{ render(controller(
+            'App\\Presentation\\Web\\Pub\\Controller\\DashboardController::search'
+        )) }}
+    </div>
+    <div class="mainContent">
+        <div class="ui grid">
+            <div class="five column row">
+                <div class="column">
+                    <div class="ui fluid card bg-aqua">
+                        <div class="desktopCardWalk content">
+                            <div class="ui large header">{{ walks.count }}</div>
+                            <div class="description">Walks</div>
+                        </div>
+                        <div class="desktopCardExtra extra content">
+                            <div class="center aligned">
+                                <a href="{{ path('walk_list') }}">View More <i class="arrow alternate circle right icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="ui fluid card bg-green">
+                        <div class="desktopCardRide content">
+                            <div class="ui large header">{{ rides.count }}</div>
+                            <div class="description">Rides</div>
+                        </div>
+                        <div class="desktopCardExtra extra content">
+                            <div class="center aligned">
+                                <a href="{{ path('ride_list') }}">View More <i class="arrow alternate circle right icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="ui fluid card bg-red">
+                        <div class="desktopCardDrive content">
+                            <div class="ui large header">{{ drives.count }}</div>
+                            <div class="description">Drives</div>
+                        </div>
+                        <div class="desktopCardExtra extra content">
+                            <div class="center aligned">
+                                <a href="{{ path('drive_list') }}">View More <i class="arrow alternate circle right icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="ui fluid card bg-yellow">
+                        <div class="desktopCardPoi content">
+                            <div class="ui large header">{{ pois.count }}</div>
+                            <div class="description">Places of Interest</div>
+                        </div>
+                        <div class="desktopCardExtra extra content">
+                            <div class="center aligned">
+                                <a href="{{ path('poi_list') }}">View More <i class="arrow alternate circle right icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="ui fluid teal card">
+                        <div class="desktopCardCollection content">
+                            <div class="header">{{ collections.count }}</div>
+                            <div class="description">Collections</div>
+                        </div>
+                        <div class="desktopCardExtra extra content">
+                            <div class="center aligned">
+                                <a>View More <i class="arrow alternate circle right icon"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="two column row">
+                <div class="column">
+                    {% if walks.recentWalks|length > 0 %}
+                        <div class="ui segments">
+                            <div class="ui segment">
+                                <div class="ui header">Recent Walks</div>
+                            </div>
+                            <div class="ui segment">
+                                <table class="ui basic table">
+                                    <tbody>
+                                    {% for walk in walks.recentWalks %}
+                                        <tr><td class="selectable">
+                                                <a href="{{ path('walk_by_slug', {slug: walk.slug }) }}">
+                                                    {{ walk.name }}
+                                                    <div class="dashBoardLock">
+                                                        {%  if walk.status == 0 %}
+                                                            <i class="unlock icon" ></i>
+                                                        {% elseif walk.status == 1 %}
+                                                            <i class="lock icon"></i>
+                                                        {% endif %}
+                                                    </div>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="ui segment">
+                                <a href="{{ path('walk_list') }}" class="fluid ui blue button"><i class="list icon"></i>View all walks</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if rides.recentRides|length > 0 %}
+                        <div class="ui segments">
+                            <div class="ui segment">
+                                <div class="ui header">Recent Rides</div>
+                            </div>
+                            <div class="ui segment">
+                                <table class="ui basic table">
+                                    <tbody>
+                                    {% for ride in rides.recentRides %}
+                                        <tr><td class="selectable">
+                                                <a href="{{ path('ride_by_slug', {slug: ride.slug }) }}">
+                                                    {{ ride.name }}
+                                                    <div class="dashBoardLock">
+                                                        {%  if ride.status == 0 %}
+                                                            <i class="unlock icon" ></i>
+                                                        {% elseif ride.status == 1 %}
+                                                            <i class="lock icon"></i>
+                                                        {% endif %}
+                                                    </div>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="ui segment">
+                                <a href="{{ path('ride_list') }}" class="fluid ui blue button"><i class="list icon"></i>View all rides</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="column">
+                    {% if drives.recentDrives|length > 0 %}
+                        <div class="ui segments">
+                            <div class="ui segment">
+                                <div class="ui header">Recent Drives</div>
+                            </div>
+                            <div class="ui segment">
+                                <table class="ui basic table">
+                                    <tbody>
+                                    {% for drive in drives.recentDrives %}
+                                        <tr><td class="selectable">
+                                                <a href="{{ path('drive_by_slug', {slug: drive.slug }) }}">
+                                                    {{ drive.name }}
+                                                    <div class="dashBoardLock">
+                                                        {%  if drive.status == 0 %}
+                                                            <i class="unlock icon" ></i>
+                                                        {% elseif drive.status == 1 %}
+                                                            <i class="lock icon"></i>
+                                                        {% endif %}
+                                                    </div>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="ui segment">
+                                <a href="{{ path('drive_list') }}" class="fluid ui blue button"><i class="list icon"></i>View all drives</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if pois.recentPois|length > 0 %}
+                        <div class="ui segments">
+                            <div class="ui segment">
+                                <div class="ui header">Recent POIs</div>
+                            </div>
+                            <div class="ui segment">
+                                <table class="ui basic table">
+                                    <tbody>
+                                    {% for poi in pois.recentPois %}
+                                        <tr><td class="selectable">
+                                                <a href="{{ path('poi_by_slug', {slug: poi.slug }) }}">
+                                                    {{ poi.name }}
+                                                    <div class="dashBoardLock">
+                                                        {%  if poi.status == 0 %}
+                                                            <i class="unlock icon" ></i>
+                                                        {% elseif poi.status == 1 %}
+                                                            <i class="lock icon"></i>
+                                                        {% endif %}
+                                                    </div>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="ui segment">
+                                <a href="{{ path('poi_list') }}" class="fluid ui blue button"><i class="list icon"></i>View all pois</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{  parent() }}
+    {{ encore_entry_script_tags('dashboard') }}
+{% endblock %}
