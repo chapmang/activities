@@ -7,6 +7,7 @@ use App\Domain\Entity\Collection;
 use App\Domain\Services\CollectionServices;
 use App\Presentation\Web\Pub\Form\ActivityCollectionFormType;
 use App\Domain\Repository\CollectionRepository;
+use App\Presentation\Web\Pub\Form\sideSearchFormType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\HeaderUtils;
@@ -20,17 +21,14 @@ class CollectionController extends AbstractController
 
     private $collectionService;
 
-    private $repository;
     /**
      * @var Export
      */
     private $exporter;
 
-    public function __construct(CollectionRepository $collectionRepository,
-                                CollectionServices $collectionServices,
+    public function __construct(CollectionServices $collectionServices,
                                 Export $exporter)
     {
-        $this->repository = $collectionRepository;
         $this->collectionService = $collectionServices;
         $this->exporter = $exporter;
     }
@@ -38,17 +36,24 @@ class CollectionController extends AbstractController
     /**
      * @Route("/collection", name="collection_list", methods={"GET"})
      * @param Request $request
-     * @param PaginatorInterface $paginator
      * @return Response
      */
-    public function index(Request $request, PaginatorInterface $paginator)
+    public function index(Request $request)
     {
-        $searchTerm = $request->get('q');
+        $form = $this->createForm(sideSearchFormType::class, null, [
+            'action' => $this->generateUrl('collection_list'),
+            'method' => 'GET'
+        ]);
+        $pageNumber = $request->query->getInt('page', 1);
+        $form->handleRequest($request);
 
-        $collections = $this->repository->findAllWithSearch($searchTerm);
+        $pagination = $this->collectionService->getPaginatedSearchResults($form->getData(), $pageNumber);
 
         return $this->render('@Pub/collection/list.html.twig', [
-            'collections' => $collections
+            'searchQuery' => ($form->getData() ? $form->getData()['string'] : null),
+            //'searchResults' => $queryResults,
+            'pagination' => $pagination,
+            'sideSearchForm' => $form->createView()
         ]);
     }
 
@@ -126,22 +131,6 @@ class CollectionController extends AbstractController
 
        $download->headers->set('Content-Disposition', $disposition);
         return $download;
-    }
-
-    /**
-     * @Route("/collection/api/collections", name="collection_api", methods={"GET"})
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function getCollectionsApi(Request $request)
-    {
-        $searchTerm = $request->get('q');
-
-        $collections = $this->repository->findAllWithSearch($searchTerm);
-
-        return $this->json([
-            'collections' => $collections
-        ], 200, [], ['groups' => ['details']]);
     }
 
     /**

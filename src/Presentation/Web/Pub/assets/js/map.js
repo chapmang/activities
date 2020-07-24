@@ -2,6 +2,7 @@ import '../css/map.css';
 let coordinates = require('./jsCoordinateConverter/coordinates');
 let transMerConversion = require('./jsCoordinateConverter/TransversMercatorConversion');
 let datumConversion = require('./jsCoordinateConverter/DatumConversion');
+
 // Mapping Control
 let map;
 
@@ -41,24 +42,37 @@ let map;
     }));
 
     let url ='/map/activities';
-    let geojson;
+
     fetch(url, {
         method: 'GET'
     }).then((response) => {
         return response.json()
     }).then((data) =>{
-        geojson = data
-        geojson.features.forEach(function(marker) {
+
+        data.features.forEach(function(marker) {
 
             // create a HTML element for each feature
-            var el = document.createElement('div');
-            el.className = marker.properties.activityType;
+            let el = document.createElement('div');
+            el.innerHTML = "<div class='"+marker.properties.activityType+"'></div>" +
+                "<div class='marker-shadow'></div>";
+
+            let markerHeight = 50, markerRadius = 20, linearOffset = 25;
+            let popupOffsets = {
+                'top': [0, 0],
+                'top-left': [0,0],
+                'top-right': [0,0],
+                'bottom': [0, -markerHeight],
+                'bottom-left': [linearOffset, (markerHeight - markerRadius + linearOffset) * -1],
+                'bottom-right': [-linearOffset, (markerHeight - markerRadius + linearOffset) * -1],
+                'left': [markerRadius, (markerHeight - markerRadius) * -1],
+                'right': [-markerRadius, (markerHeight - markerRadius) * -1]
+            };
 
             // make a marker for each feature and add to the map
             new mapboxgl.Marker(el)
                 .setLngLat(marker.geometry.coordinates)
-                .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-                    .setHTML('<h3><a href="/'+marker.properties.activityType+'/'+marker.properties.slug+'">' + marker.properties.name + '</a></h3>'))
+                .setPopup(new mapboxgl.Popup({ offset: popupOffsets, closeButton: false, className: 'activityPopup' }) // add popups
+                    .setHTML('<h3><a href="/'+marker.properties.activityType+'/'+marker.properties.slug+'">' + marker.properties.name + '</a></h3><p>'+marker.properties.shortDescription+'</p>'))
                 .addTo(map);
         });
     });
@@ -66,6 +80,7 @@ let map;
     var iconMarkerEl = document.createElement("div");
     iconMarkerEl.innerHTML = "<div class='marker-arrow'></div>" +
         "<div class='marker-pulse'></div>";
+
     map.on('load', function (){
         map.addControl(new MapSearch({
             params: {'key': '1DqRCvF1tLgcjEKo8undpO7lHCkzAAcl'},
@@ -295,7 +310,7 @@ MapSearch.prototype._updateMarkers = function (features) {
     }
     if (this.opts.marker.icon instanceof HTMLElement) {
         for (var i = 0; i < features.length; ++i) {
-            let coordinates = this._getLonLat(features[i].GAZETTEER_ENTRY.GEOMETRY_X, features[i].GAZETTEER_ENTRY.GEOMETRY_X, 0)
+            let coordinates = this._getLonLat(features[i].GAZETTEER_ENTRY.GEOMETRY_X, features[i].GAZETTEER_ENTRY.GEOMETRY_Y, 0)
             this._customHtmlMarkers.push(this._addAndGetCustomHtmlMarker(coordinates));
         }
     } else {

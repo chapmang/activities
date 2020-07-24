@@ -12,11 +12,12 @@
     </div>
     <div class="mainContent">
         <div class="ui grid">
+
             <div class="five column row">
                 <div class="column">
                     <div class="ui fluid card bg-aqua">
                         <div class="desktopCardWalk content">
-                            <div class="ui large header">{{ walks.count }}</div>
+                            <div class="ui large header">{{ count.walkCount }}</div>
                             <div class="description">Walks</div>
                         </div>
                         <div class="desktopCardExtra extra content">
@@ -29,7 +30,7 @@
                 <div class="column">
                     <div class="ui fluid card bg-green">
                         <div class="desktopCardRide content">
-                            <div class="ui large header">{{ rides.count }}</div>
+                            <div class="ui large header">{{ count.rideCount }}</div>
                             <div class="description">Rides</div>
                         </div>
                         <div class="desktopCardExtra extra content">
@@ -42,7 +43,7 @@
                 <div class="column">
                     <div class="ui fluid card bg-red">
                         <div class="desktopCardDrive content">
-                            <div class="ui large header">{{ drives.count }}</div>
+                            <div class="ui large header">{{ count.driveCount }}</div>
                             <div class="description">Drives</div>
                         </div>
                         <div class="desktopCardExtra extra content">
@@ -55,7 +56,7 @@
                 <div class="column">
                     <div class="ui fluid card bg-yellow">
                         <div class="desktopCardPoi content">
-                            <div class="ui large header">{{ pois.count }}</div>
+                            <div class="ui large header">{{ count.poiCount }}</div>
                             <div class="description">Places of Interest</div>
                         </div>
                         <div class="desktopCardExtra extra content">
@@ -68,12 +69,12 @@
                 <div class="column">
                     <div class="ui fluid teal card">
                         <div class="desktopCardCollection content">
-                            <div class="header">{{ collections.count }}</div>
+                            <div class="header">{{ count.collectionCount }}</div>
                             <div class="description">Collections</div>
                         </div>
                         <div class="desktopCardExtra extra content">
                             <div class="center aligned">
-                                <a>View More <i class="arrow alternate circle right icon"></i></a>
+                                <a href="{{ path('collection_list') }}">View More <i class="arrow alternate circle right icon"></i></a>
                             </div>
                         </div>
                     </div>
@@ -81,7 +82,7 @@
             </div>
             <div class="two column row">
                 <div class="column">
-                    {% if walks.recentWalks|length > 0 %}
+                    {% if recent.walks|length > 0 %}
                         <div class="ui segments">
                             <div class="ui segment">
                                 <div class="ui header">Recent Walks</div>
@@ -89,7 +90,7 @@
                             <div class="ui segment">
                                 <table class="ui basic table">
                                     <tbody>
-                                    {% for walk in walks.recentWalks %}
+                                    {% for walk in recent.walks %}
                                         <tr><td class="selectable">
                                                 <a href="{{ path('walk_by_slug', {slug: walk.slug }) }}">
                                                     {{ walk.name }}
@@ -112,7 +113,7 @@
                             </div>
                         </div>
                     {% endif %}
-                    {% if rides.recentRides|length > 0 %}
+                    {% if recent.rides|length > 0 %}
                         <div class="ui segments">
                             <div class="ui segment">
                                 <div class="ui header">Recent Rides</div>
@@ -120,7 +121,7 @@
                             <div class="ui segment">
                                 <table class="ui basic table">
                                     <tbody>
-                                    {% for ride in rides.recentRides %}
+                                    {% for ride in recent.rides %}
                                         <tr><td class="selectable">
                                                 <a href="{{ path('ride_by_slug', {slug: ride.slug }) }}">
                                                     {{ ride.name }}
@@ -145,7 +146,7 @@
                     {% endif %}
                 </div>
                 <div class="column">
-                    {% if drives.recentDrives|length > 0 %}
+                    {% if recent.drives|length > 0 %}
                         <div class="ui segments">
                             <div class="ui segment">
                                 <div class="ui header">Recent Drives</div>
@@ -153,7 +154,7 @@
                             <div class="ui segment">
                                 <table class="ui basic table">
                                     <tbody>
-                                    {% for drive in drives.recentDrives %}
+                                    {% for drive in recent.drives %}
                                         <tr><td class="selectable">
                                                 <a href="{{ path('drive_by_slug', {slug: drive.slug }) }}">
                                                     {{ drive.name }}
@@ -176,7 +177,7 @@
                             </div>
                         </div>
                     {% endif %}
-                    {% if pois.recentPois|length > 0 %}
+                    {% if recent.pois|length > 0 %}
                         <div class="ui segments">
                             <div class="ui segment">
                                 <div class="ui header">Recent POIs</div>
@@ -184,7 +185,7 @@
                             <div class="ui segment">
                                 <table class="ui basic table">
                                     <tbody>
-                                    {% for poi in pois.recentPois %}
+                                    {% for poi in recent.pois %}
                                         <tr><td class="selectable">
                                                 <a href="{{ path('poi_by_slug', {slug: poi.slug }) }}">
                                                     {{ poi.name }}

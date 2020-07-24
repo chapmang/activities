@@ -106,27 +106,4 @@ class ActivityServices
 
     }
 
-    public function getMapActivities()
-    {
-        $activityArray['features'] = [];
-        $activities = $this->activityRepository->findAllMapActivities();
-        $i = 0;
-        foreach ($activities as $activity)
-        {
-            foreach ($activity as $key => $value)
-            {
-                $activityArray['features'][$i]['type'] = 'Feature';
-                if ($key == 'point') {
-                    $b = $this->geoConverter->wkt_to_json($value);
-                    $activityArray['features'][$i]['geometry'] = json_decode($b);
-                } else {
-                    $activityArray['features'][$i]['properties'][$key] = $value;
-                }
-            }
-            $i++;
-        }
-        return $activityArray;
-    }
-
-
 }

@@ -52,23 +52,27 @@ class DashboardServices
         $poiCount = $this->poiRepository->size();
         $rideCount = $this->rideRepository->size();
 
-        return array('walkCount' => $walkCount,
+        $total = $walkCount+$driveCount+$poiCount+$rideCount;
+
+        return array(
+            'total' => $total,
+            'walkCount' => $walkCount,
             'driveCount' => $driveCount,
             'poiCount' => $poiCount,
             'rideCount' => $rideCount);
     }
 
-    public function recentActivitiesByCategory()
+    public function recentActivitiesByCategory(int $max)
     {
-        $recentWalks = $this->walkRepository->recentModifiedWalk();
-        $recentDrives = $this->driveRepository->recentModifiedDrive();
-        $recentPois = $this->poiRepository->recentModifiedPoi();
-        $recentRides = $this->rideRepository->recentModifiedRide();
+        $recentWalks = $this->walkRepository->recentModifiedWalk($max);
+        $recentDrives = $this->driveRepository->recentModifiedDrive($max);
+        $recentPois = $this->poiRepository->recentModifiedPoi($max);
+        $recentRides = $this->rideRepository->recentModifiedRide($max);
 
-        return array('recentWalks' => $recentWalks,
-            'recentDrives' => $recentDrives,
-            'recentPois' => $recentPois,
-            'recentRides' => $recentRides);
+        return array('walks' => $recentWalks,
+            'drives' => $recentDrives,
+            'pois' => $recentPois,
+            'rides' => $recentRides);
     }
 
     public function globalSearch(array $queryData)

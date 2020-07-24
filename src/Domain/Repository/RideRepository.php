@@ -48,7 +48,7 @@ class RideRepository extends ServiceEntityRepository implements RideRepositoryIn
         return $this->findOneBy(['slug' => $slug]);
     }
 
-    public function recentModifiedRide($max)
+    public function recentModifiedRide(int $max)
     {
         $qb = $this->getOrCreateQueryBuilder();
         return $this->selectBasicFields($qb)

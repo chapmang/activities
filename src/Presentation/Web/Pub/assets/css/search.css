@@ -22,11 +22,11 @@
     overflow-y: auto;
     padding:0px 30px 10px 30px;
 }
-.activityNav {
+.resultNav {
     float: right;
     /*height: 100%;*/
 }
-.activityNav a{
+.resultNav a{
     margin-left:15px;
     color: rgba(0,0,0,.87);
 }

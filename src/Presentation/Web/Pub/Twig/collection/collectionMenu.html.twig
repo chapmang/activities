@@ -15,12 +15,12 @@
             Admin Notes
         </a>
         {% if collection is defined %}
-            {% if collection.status == 'public' %}
-                {{ include('@Pub/collection/_public.html.twig') }}
-            {% elseif (collection.status == 'protected' and app.user == collection.modifiedUser) or is_granted('ROLE_ADMIN') %}
-                {{ include('@Pub/collection/_protected.html.twig') }}
+            {% if collection.status == '0' %}
+                {{ include('@Pub/collection/_unlocked.html.twig') }}
+            {% elseif (collection.status == '1' and app.user == collection.modifiedUser) or is_granted('ROLE_ADMIN') %}
+                {{ include('@Pub/collection/_lockedOwned.html.twig') }}
             {%  else %}
-                {{ include('@Pub/collection/_private.html.twig') }}
+                {{ include('@Pub/collection/_locked.html.twig') }}
             {% endif %}
         {% endif %}
     </div>

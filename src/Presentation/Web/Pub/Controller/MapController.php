@@ -3,6 +3,9 @@ declare(strict_types=1);
 namespace App\Presentation\Web\Pub\Controller;
 
 use App\Domain\Services\ActivityServices;
+use App\Domain\Services\CollectionServices;
+use App\Domain\Services\MapServices;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,13 +18,13 @@ class MapController extends AbstractController
 {
 
     /**
-     * @var ActivityServices
+     * @var MapServices
      */
-    private $activityService;
+    private $mapService;
 
-    public function __construct(ActivityServices $activityServices)
+    public function __construct(MapServices $mapServices)
     {
-        $this->activityService = $activityServices;
+        $this->mapService = $mapServices;
     }
 
     /**
@@ -33,11 +36,24 @@ class MapController extends AbstractController
     }
 
     /**
-     * @Route("/map/activities", name="map_activities")
+     * @Route("/map/activities/{collection}", name="collection_activities")
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function mapActivities()
+    public function collectionActivities(Request $request)
     {
-        $activities = $this->activityService->getMapActivities();
+        $collection_id = (int)$request->get('collection');
+        $activities = $this->mapService->getCollectionActivities($collection_id);
+        return new JsonResponse($activities);
+    }
+
+    /**
+     * @Route("/map/activities", name="map_activities")
+     * @return JsonResponse
+     */
+    public function allActivities()
+    {
+        $activities = $this->mapService->getAllActivities();
         return new JsonResponse($activities);
     }
 }

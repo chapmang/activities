@@ -195,24 +195,6 @@ class WalkController extends AbstractController
         ]);
     }
 
-
-//    /**
-//     * @Route("/walk", name="walk_list", methods={"GET"})
-//     * @param Request $request
-//     * @return Response
-//     */
-//    public function listWalks(Request $request)
-//    {
-//        $searchTerm = $request->query->get('q');
-//        $pageNumber = $request->query->getInt('page', 1);
-//        $pagination = $this->walkService->getPaginatedSearchResults($searchTerm, $pageNumber);
-//
-//        return $this->render('@Pub/walk/list.html.twig', [
-//            'pagination' => $pagination
-//        ]);
-//
-//    }
-
     /**
      * @Route ("/walk", name="walk_list", methods={"GET"})
      * @param Request $request
@@ -229,9 +211,8 @@ class WalkController extends AbstractController
 
         $pagination = $this->walkService->getPaginatedSearchResults($form->getData(), $pageNumber);
 
-
         return $this->render('@Pub/walk/list.html.twig', [
-            'searchQuery' => $form->getData()['string'],
+            'searchQuery' => ($form->getData() ? $form->getData()['string'] : null),
             //'searchResults' => $queryResults,
             'pagination' => $pagination,
             'sideSearchForm' => $form->createView()

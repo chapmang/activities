@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace App\Domain\Repository;
 
+use App\Application\GeoConversion\GeoConverter;
 use App\Domain\Entity\Activity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -14,9 +15,15 @@ use Doctrine\ORM\QueryBuilder;
 final class ActivityRepository extends ServiceEntityRepository implements ActivityRepositoryInterface
 {
 
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var GeoConverter
+     */
+    private $geconverter;
+
+    public function __construct(ManagerRegistry $registry, GeoConverter $geoConverter)
     {
         parent::__construct($registry, Activity::class);
+        $this->geconverter = $geoConverter;
     }
 
     public function add(Activity $activity): void
@@ -37,16 +44,21 @@ final class ActivityRepository extends ServiceEntityRepository implements Activi
     public function findAllMapActivities()
     {
         $conn = $this->_em->getConnection();
-        $sql = 'SELECT id, name, type as activityType, slug, point.ToString() AS point FROM activity';
+        $sql = 'SELECT id, name, type as activityType, slug, short_description as shortDescription, point.ToString() AS point FROM activity';
         $stmt = $conn->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll();
+        $results = $stmt->fetchAll();
 
-//       $query = $this->_em->createQueryBuilder()
-//           ->select('a.name', 'a.type')
-//           ->from(Activity::class, 'a')
-//           ->getQuery();
-//        return $query->getResult();
+        for ($i = 0; $i < count($results); ++$i) {
+            foreach ($results[$i] as $key => $value) {
+                if ($key == 'point') {
+
+                    $results[$i]['point'] = $this->geconverter->wkt_to_geom($value);
+                }
+            }
+        }
+        return $results;
+
     }
 
     public function size(): int

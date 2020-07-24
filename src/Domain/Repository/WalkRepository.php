@@ -48,7 +48,7 @@ final class WalkRepository extends ServiceEntityRepository implements WalkReposi
          return $this->findOneBy(['slug' => $slug]);
     }
 
-    public function recentModifiedWalk($max)
+    public function recentModifiedWalk(int $max)
     {
         $qb = $this->getOrCreateQueryBuilder();
         return $this->selectBasicFields($qb)
@@ -107,6 +107,7 @@ final class WalkRepository extends ServiceEntityRepository implements WalkReposi
     {
         return $qb->select('w');
     }
+
     private function getOrCreateQueryBuilder(QueryBuilder $qb = null)
     {
         return $qb ?: $this->_em->createQueryBuilder()

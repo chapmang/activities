@@ -53,14 +53,6 @@ class CollectionRepository extends ServiceEntityRepository implements Collection
         return $this->findBy(array(), array('name' => 'ASC'));
     }
 
-    public function findAllWithSearch(?string $searchTerm)
-    {
-        return $this->addFindAllWithSearchQueryBuilder($searchTerm)
-            ->orderBy('c.name', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
-
     public function searchActivitiesNotInCollection($searchCollection, $searchTerm)
     {
         // Build the DQL for the sub-query
@@ -68,6 +60,7 @@ class CollectionRepository extends ServiceEntityRepository implements Collection
         $sub->select('IDENTITY(cc.activity)')
             ->from('Domain:CollectionContents', 'cc')
             ->andWhere('cc.collection = :collectionID');
+
 
         // Build the fully nested query
         $qb = $this->_em->createQueryBuilder();
@@ -86,31 +79,64 @@ class CollectionRepository extends ServiceEntityRepository implements Collection
 
     }
 
-    public function findAllByNameAndTags(string $queryTerm, $tags = null)
+    public function recentModifiedCollection($max)
+    {
+        $qb = $this->getOrCreateQueryBuilder();
+        return $this->selectBasicFields($qb)
+            ->orderBy('c.modifiedDate', 'DESC')
+            ->setMaxResults($max)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllByNameAndTagsQueryBuilder(?string $queryTerm, $tags = null): QueryBuilder
+    {
+        $qb = $this->getOrCreateQueryBuilder();
+        $qb = $this->selectAllFields($qb);
+        $qb = $this->addBasicSearch($qb, $queryTerm);
+        $qb = $this->addTagUsed($qb, $tags);
+
+        return $qb
+            ->orderBy('c.name', 'DESC');
+    }
+
+    public function findAllByNameAndTags(?string $queryTerm, $tags = null)
     {
 
-        $qb = $this->getOrCreateQueryBuilder()
-            ->select('c');
+        $qb = $this->getOrCreateQueryBuilder();
+        $qb = $this->selectBasicFields($qb);
+        $qb = $this->addBasicSearch($qb, $queryTerm);
+        $qb = $this->addTagUsed($qb, $tags);
 
-        $qb->andWhere('c.name LIKE :term OR c.description LIKE :term')
-            ->setParameter('term', '%'.$queryTerm.'%');
+        $query = $qb->getQuery();
+        return $query->getResult();
+    }
 
+    private function addTagUsed(QueryBuilder $qb, ?array $tags)
+    {
         if ($tags && is_array($tags)) {
             foreach ($tags as $key => $value) {
                 $qb->andWhere(':tag MEMBER OF c.tags')
                     ->setParameter('tag', $value->getID());
             }
         }
-
-        $query = $qb->getQuery();
-        return $query->getResult();
+        return $qb;
     }
 
-    private function addFindAllWithSearchQueryBuilder(?string $searchTerm, QueryBuilder $qb = null)
+    private function addBasicSearch(QueryBuilder $qb, ?string $queryTerm)
     {
-        return $this->getOrCreateQueryBuilder($qb)
-            ->andWhere('c.name LIKE :term')
-            ->setParameter('term', '%'.$searchTerm.'%');
+        return $qb->andWhere('c.name LIKE :term OR c.description LIKE :term')
+            ->setParameter('term', '%'.$queryTerm.'%');
+    }
+
+    private function selectBasicFields(QueryBuilder $qb)
+    {
+        return $qb->select('c.id, c.name, c.slug, c.status');
+    }
+
+    private function selectAllFields(QueryBuilder $qb)
+    {
+        return $qb->select('c');
     }
 
     private function getOrCreateQueryBuilder(QueryBuilder $qb = null)

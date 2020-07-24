@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200709150500 extends AbstractMigration
+final class Version20200719144228 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -39,11 +39,11 @@ final class Version20200709150500 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_A1315D76AC74095A ON admin_notes (activity)');
         $this->addSql('CREATE INDEX IDX_A1315D767AF16D89 ON admin_notes (createdUser)');
         $this->addSql('CREATE INDEX IDX_A1315D76160C1387 ON admin_notes (modifiedUser)');
-        $this->addSql('CREATE TABLE collection (id INT IDENTITY NOT NULL, name NVARCHAR(190) NOT NULL, description VARCHAR(MAX), status NVARCHAR(45) NOT NULL, slug NVARCHAR(255) NOT NULL, created_date DATETIME2(6) NOT NULL, modified_date DATETIME2(6) NOT NULL, createdUser INT NOT NULL, modifiedUser INT NOT NULL, PRIMARY KEY (id))');
+        $this->addSql('CREATE TABLE collection (id INT IDENTITY NOT NULL, name NVARCHAR(190) NOT NULL, description VARCHAR(MAX), status INT NOT NULL, slug NVARCHAR(255) NOT NULL, created_date DATETIME2(6) NOT NULL, modified_date DATETIME2(6) NOT NULL, createdUser INT NOT NULL, modifiedUser INT NOT NULL, PRIMARY KEY (id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_FC4D65325E237E06 ON collection (name) WHERE name IS NOT NULL');
         $this->addSql('CREATE INDEX IDX_FC4D65327AF16D89 ON collection (createdUser)');
         $this->addSql('CREATE INDEX IDX_FC4D6532160C1387 ON collection (modifiedUser)');
-        $this->addSql('ALTER TABLE collection ADD CONSTRAINT DF_FC4D6532_7B00651C DEFAULT \'public\' FOR status');
+        $this->addSql('ALTER TABLE collection ADD CONSTRAINT DF_FC4D6532_7B00651C DEFAULT 0 FOR status');
         $this->addSql('CREATE TABLE collection_tag (collection_id INT NOT NULL, tag_id INT NOT NULL, PRIMARY KEY (collection_id, tag_id))');
         $this->addSql('CREATE INDEX IDX_AB0018E7514956FD ON collection_tag (collection_id)');
         $this->addSql('CREATE INDEX IDX_AB0018E7BAD26311 ON collection_tag (tag_id)');

@@ -45,6 +45,11 @@ class GeoConverter
         return $this->geoEncoder->encodeGeometry('wkt', $geom, null);
     }
 
+    public function wkt_to_geom($text)
+    {
+        return $this->geoDecoder->decodeGeometry('wkt', $text);
+    }
+
 
 //
 //    public function wkt_to_geojson ($text)

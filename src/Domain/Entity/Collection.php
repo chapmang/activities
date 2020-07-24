@@ -51,14 +51,13 @@ class Collection {
 	 */
 	protected $description = null;
 
-	/**
-     * Status of the activity
-     * 
-	 * @ORM\Column(type="string", length=45, nullable=false, options={"default": "public"})
-     * @Assert\Choice({"public","protected","private"})
-     * @Groups({"details"})
-	 */
-	protected $status = 'public';
+    /**
+     * Status of the activity (0 = Open, 1 = Locked by modifedUser)
+     *
+     * @ORM\Column(type="integer", nullable=false, options={"default" : 0})
+     * @Groups({"admin"})
+     */
+    protected $status = 0;
 
     /**
      * Url friendly activity name
@@ -134,12 +133,12 @@ class Collection {
         return $this->description;
     }
 
-    public function setStatus(string $status)
+    public function setStatus(int $status = 0)
     {
-        $this->status = ($status === null || $status === '') ? 'public' : $status;
+        $this->status = $status;
     }
 
-    public function getStatus() :?string
+    public function getStatus(): int
     {
         return $this->status;
     }

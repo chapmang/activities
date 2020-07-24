@@ -64,25 +64,15 @@ class DashboardController extends AbstractController
      */
     public function dashboard(Request $request)
     {
-        $walksCount = $this->walkService->countWalks();
-        $ridesCount = $this->rideService->countRides();
-        $drivesCount = $this->driveService->countDrives();
-        $poisCount = $this->poiService->countPois();
-        // $collectionsCount = $this->collectionService->countCollections();
+        $counts = $this->dashboardServices->countStats();
+        $counts['collectionCount'] = $this->collectionService->countCollections();
 
-        $recentWalks = $this->walkService->recentModifiedWalk(5);
-        $recentRides = $this->rideService->recentModifiedRide(5);
-        $recentDrives = $this->driveService->recentModifiedDrive(5);
-        $recentPois = $this->poiService->recentModifiedPoi(5);
-        // $recentCollections = $this->collectionService->recentModifiedCollection(5);
+        $recent = $this->dashboardServices->recentActivitiesByCategory(5);
+        $recent['Collections'] = $this->collectionService->recentModifiedCollection(5);
 
         return $this->render('@Pub/dashboard/dashboard.html.twig', [
-            'walks' => ['count' => $walksCount, 'recentWalks' => $recentWalks],
-            'rides' => ['count' => $ridesCount, 'recentRides' => $recentRides],
-            'drives' => ['count' => $drivesCount, 'recentDrives' => $recentDrives],
-            'pois' => ['count' => $poisCount, 'recentPois' => $recentPois],
-            'collections' => ['count' => 50, 'recent' => ''],
-
+            'count' => $counts,
+            'recent' => $recent
         ]);
     }
 
@@ -106,12 +96,12 @@ class DashboardController extends AbstractController
             return $this->render('@Pub/dashboard/searchResults.html.twig', [
                 'searchQuery' => $form->getData()['string'],
                 'searchResults' => $queryResults,
-                'dashboardSearchForm' => $form->createView()
+                'sideSearchForm' => $form->createView()
             ]);
         }
 
         return $this->render('@Pub/dashboard/_searchForm.hml.twig', [
-            'dashboardSearchForm' => $form->createView()
+            'sideSearchForm' => $form->createView()
         ]);
     }
 }

@@ -1,13 +1,12 @@
 <?php
-
-
+declare(strict_types=1);
 namespace App\Presentation\Web\Pub\Controller;
-
 
 use App\Domain\Entity\CollectionContents;
 use App\Domain\Repository\ActivityRepository;
 use App\Domain\Repository\CollectionContentsRepository;
 use App\Domain\Repository\CollectionRepository;
+use App\Domain\Services\CollectionContentsServices;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,53 +15,48 @@ use Symfony\Component\Routing\Annotation\Route;
 class CollectionContentsController extends AbstractController
 {
 
-    private $collectionContentsRepository;
+    private $collectionContentsService;
 
-    public function __construct(CollectionContentsRepository $collectionContentsRepository)
+    public function __construct(CollectionContentsServices $collectionContentsServices)
     {
-        $this->collectionContentsRepository = $collectionContentsRepository;
+        $this->collectionContentsService = $collectionContentsServices;
     }
 
     /**
      * @Route("/collection/addactivity", name="collection_add_activity", methods={"POST"})
      * @param Request $request
-     * @param CollectionRepository $collectionRepository
-     * @param ActivityRepository $activityRepository
      * @return JsonResponse
      */
-    public function addActivity(Request $request, CollectionRepository $collectionRepository, ActivityRepository $activityRepository)
+    public function addActivity(Request $request)
     {
-        $collectionID = $request->get('collection');
-        $activityID = $request->get('activity');
+        $data = json_decode(
+            $request->getContent(),
+            true
+        );
 
-        $collection = $collectionRepository->find($collectionID);
-        $activity = $activityRepository->find($activityID);
+        $collection_id = (int)$data['collection'];
+        $activity_id = (int)$data['activity'];
 
         // Test if activity is already in collection
-        $a = $this->collectionContentsRepository->findBy([
-            'collection' => $collectionID,
-            'activity' => $activityID
-        ]);
+        $result = $this->collectionContentsService
+            ->activityInCollectionTest($collection_id, $activity_id);
 
-        if ($a) {
+        if ($result == true) {
             return new JsonResponse([
                 'error' => 'Activity already in collection'
             ], 409);
         }
 
-        if (!$a) {
-            $collectionContents = new CollectionContents();
-            $collectionContents->setActivity($activity);
-            $collectionContents->setCollection($collection);
-            $collectionContents->setPosition(1);
+        if ($result == false) {
+             $collectionContents = $this->collectionContentsService->addActivityToCollection($activity_id, $collection_id);
         }
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($collectionContents);
-        $entityManager->flush();
+
+        $activity = $collectionContents->getActivity();
+
         return new JsonResponse([
             'id' => $activity->getId(),
             'name' => $activity->getName(),
-            'type' => $activity->getActivityType()
+            'activityType' => $activity->getActivityType(),
         ], 200);
 
     }

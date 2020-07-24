@@ -37,15 +37,15 @@
 </div>
 
 <div class="right menu">
-    {#<div class="ui simple dropdown item">#}
-{#    <div id="activity_lock"#}
-{#         data-ajax="/activity/lock"#}
-{#         data-activity="{{ activity.id }}"#}
-{#         data-authorised="true"#}
-{#         data-status = "{{ activity.status }}">#}
-{#        <i class="unlock icon"></i>#}
-{#    </div>#}
-{#</div>#}
+    <div class="ui simple dropdown item">
+    <div id="collection_lock"
+         data-ajax="/collection/lock"
+         data-activity="{{ collection.id }}"
+         data-authorised="true"
+         data-status = "{{ collection.status }}">
+        <i class="unlock icon"></i>
+    </div>
+</div>
 <a id='export' class="item">
     <i class="download icon"></i>
     <span class="text">Export</span>

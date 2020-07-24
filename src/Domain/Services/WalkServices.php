@@ -78,10 +78,10 @@ final class WalkServices
      * @param int $pageNumber
      * @return PaginationInterface
      */
-    public function getPaginatedSearchResults(array $queryData, int $pageNumber)
+    public function getPaginatedSearchResults(?array $queryData, int $pageNumber)
     {
-        $queryTerm = $queryData['string'];
-        $tags = $queryData['tags'];
+        $queryTerm = ($queryData ? $queryData['string'] : null);
+        $tags = ($queryData ? $queryData['tags'] : null);
 
         $queryBuilder = $this->walkRepository->findAllByNameAndTagsQueryBuilder($queryTerm, $tags);
 

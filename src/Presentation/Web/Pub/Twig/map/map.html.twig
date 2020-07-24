@@ -1,7 +1,6 @@
 {% extends '@Pub/base.html.twig' %}
 {% block stylesheets %}
     {{  parent() }}
-    {{ encore_entry_link_tags('map') }}
     <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css" rel="stylesheet" />
     <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.0.9/mapbox-gl-draw.css' type='text/css' />
     <link
@@ -10,6 +9,7 @@
             type="text/css"
     />
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600" rel="stylesheet" />
+    {{ encore_entry_link_tags('map') }}
 {% endblock %}
 {%  block body %}
     {{ parent() }}

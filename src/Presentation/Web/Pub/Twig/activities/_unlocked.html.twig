@@ -21,6 +21,7 @@
     <span class="text">Export</span>
 </div>
 {% if is_granted('ROLE_USER') %}
+
     {%  if app.request.pathinfo == path(activity.activityType~'_by_slug', {slug: activity.slug}) %}
         <a class="item" href="{{ path(activity.activityType~'_update', {id: activity.id}) }}">
             <i class="edit icon"></i>Edit

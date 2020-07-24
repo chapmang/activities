@@ -16,3 +16,73 @@
 .collection-contents-search {
     padding-bottom: 1em;
 }
+.mapping .apierror {
+    display: none;
+    width: 100%;
+    position: absolute;
+    top:25%;
+    text-align: center;
+}
+
+/* ---------------------------- */
+/* ---------- marker ---------- */
+/* ---------------------------- */
+
+.marker-arrow {
+    width: 30px;
+    height: 30px;
+    border-radius: 50% 50% 50% 0;
+    background-color: #2999fd;
+    transform: rotate(-45deg);
+    margin: -36px 0 0 0;
+}
+
+.marker-arrow::after {
+    content: '';
+    width: 14px;
+    height: 14px;
+    margin: 8px 0 0 8px;
+    background-color: #fff;
+    position: absolute;
+    border-radius: 50%;
+}
+
+.marker-pulse {
+    border-radius: 50%;
+    height: 14px;
+    width: 14px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -4px 0 0 -7px;
+    transform: rotateX(55deg);
+    z-index: -2;
+}
+
+.marker-pulse:after {
+    content: "";
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    margin: -13px 0 0 -13px;
+    animation: pelias-ctrl-pulsate 1s ease-out;
+    animation-iteration-count: infinite;
+    opacity: 0;
+    box-shadow: 0 0 1px 2px #2999fd;
+}
+
+@keyframes pelias-ctrl-pulsate {
+    0% {
+        transform: scale(0.1, 0.1);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+        filter: none;
+    }
+    100% {
+        transform: scale(1.2, 1.2);
+        opacity: 0;
+    }
+}

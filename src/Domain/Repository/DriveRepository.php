@@ -48,7 +48,7 @@ class DriveRepository extends ServiceEntityRepository implements DriveRepository
         return $this->findOneBy(['slug' => $slug]);
     }
 
-    public function recentModifiedDrive($max)
+    public function recentModifiedDrive(int $max)
     {
         $qb = $this->getOrCreateQueryBuilder();
         return $this->selectBasicFields($qb)

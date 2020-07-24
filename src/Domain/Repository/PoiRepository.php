@@ -48,7 +48,7 @@ class PoiRepository extends ServiceEntityRepository implements PoiRepositoryInte
         return $this->findOneBy(['slug' => $slug]);
     }
 
-    public function recentModifiedPoi($max)
+    public function recentModifiedPoi(int $max)
     {
         $qb = $this->getOrCreateQueryBuilder();
         return $this->selectBasicFields($qb)

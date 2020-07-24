@@ -2,10 +2,11 @@
 {% block stylesheets %}
     {{ parent() }}
     {{ encore_entry_link_tags('collection') }}
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css" rel="stylesheet" />
 {% endblock %}
 {% block body %}
     {{ parent() }}
-    <div class="collectionContent" data-collection="{{ collection.id }}">
+    <div id="collectionContent" data-collection="{{ collection.id }}">
         <div class="details">
            {{ collection.name }}
             <div class="ui tab active" data-tab="details">
@@ -18,19 +19,21 @@
             </div>
         </div>
         <div class="mapping">
-            {#        <div class="ui two item menu attached mapMenu">#}
-            {#            <a class="active item" data-tab="tab-routeMap"><i class="map signs icon"></i>Route</a>#}
-            {#            <a class="item" data-tab="tab-bookMap"><i class="map icon"></i>Map</a>#}
-            {#        </div>#}
-            <div id="collectionMap" class="collectionMap">
-                <!-- <div class="bookMap tab" data-tab="tab-bookMap"></div>-->
-                <!-- <div id="routeMap" class="routeMap active tab" data-tab="tab-routeMap"></div>-->
+            <div class="apierror">
+                <h4>
+                    <i class="exclamation triangle icon"></i>
+                    We're sorry there appears to be an issue with the mapping API
+                </h4>
+                <p>
+                    Please contact the administrator for assistance
+                </p>
             </div>
-            {#        <div class="ui attached segment walkMapping tab" data-tab="tab-bookMap"></div>#}
+            <div id="map" style='width: 100%; height: 100%;'></div>
         </div>
     </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js"></script>
     {{ encore_entry_script_tags('collection') }}
 {% endblock %}

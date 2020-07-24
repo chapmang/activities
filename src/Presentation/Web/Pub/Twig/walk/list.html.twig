@@ -7,11 +7,11 @@
     {{ parent() }}
     <div class="container">
         <div class="columnLeft">
-            {{ include('@Pub/_sideSearchForm.hml.twig') }}
+            {{ include('@Pub/_sideSearchForm.html.twig') }}
         </div>
         <div class="columnRight">
             <div class="resultCount">
-                <h3 class="ui center aligned header">{{ pagination.getTotalItemCount }} Walks Found </h3>
+                <h3 class="ui center aligned header">{{ pagination.getTotalItemCount }} Walk{% if pagination.getTotalItemCount > 1 %}s{% endif%} Found </h3>
             </div>
             <div class="scrollWrapper">
                 <div class="ui divided items">
@@ -22,7 +22,7 @@
                             </div>
                             <div class="content">
                                 <a href="{{ path('walk_by_slug', {slug: walk.slug}) }}" class="header">{{ walk.name }}</a>
-                                <div class="activityNav">
+                                <div class="resultNav">
                                     {%  if walk.status == 0 %}
                                         <i class="unlock icon" ></i>
                                     {% elseif walk.status == 1 %}

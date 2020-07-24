@@ -26,11 +26,6 @@
                     ACTIVITIES
                 </h1>
                 <div class="right icon menu">
-                    {% if app.request.get('_route') != 'activity_list' %}
-                        <a href="{{ path('activity_list')}}" class="ui item">
-                            <i class="search large icon"></i>Search
-                        </a>
-                    {% endif %}
                     {% if is_granted('ROLE_USER') %}
                         {% if app.request.get('_route') not in ['walk_create'] %}
                             <div class="ui pointing dropdown item">
@@ -54,7 +49,7 @@
                     {% endif %}
                     {% if app.request.get('_route') != 'dashboard' %}
                         <a href="{{ path('dashboard') }}" class="ui item">
-                            <i class="home large icon"></i>Home
+                            <i class="desktop large icon"></i>Dashboard
                         </a>
                     {% endif %}
                     {% if is_granted('ROLE_USER') %}

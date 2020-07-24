@@ -251,6 +251,7 @@ let map, draw;
     });
 })();
 
+// Saving Controls
 $('#saveAll').on('click', function(e){
     e.preventDefault();
     let data = draw.getAll()

@@ -38,10 +38,10 @@ security:
     access_control:
         - { path: ^/(zip|map), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/activity, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/dashboard, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/walk/new, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/walk/update/\d+$, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/walk, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
